@@ -1,438 +1,382 @@
-<html><head>
+<html>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-<script src="http://malsup.github.com/jquery.form.js"></script> 
-<script>
-var fileId = 0; 
-var orders = [];
-/*
-$(document).ajaxSend(function(event, xhr, settings) {
-    function getCookie(name) {
-        var cookieValue = null;
-        if (document.cookie && document.cookie != '') {
-            var cookies = document.cookie.split(';');
-            for (var i = 0; i < cookies.length; i++) {
-                var cookie = jQuery.trim(cookies[i]);
-                // Does this cookie string begin with the name we want?
-                if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                    break;
-                }
-            }
-        }
-        return cookieValue;
+<head>
+    {% load staticfiles %}
+    <style>
+    #price_col {
+	width: 30px;
     }
-    function sameOrigin(url) {
-        // url could be relative or scheme relative or absolute
-        var host = document.location.host; // host + port
-        var protocol = document.location.protocol;
-        var sr_origin = '//' + host;
-        var origin = protocol + sr_origin;
-        // Allow absolute or scheme relative URLs to same origin
-        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
-            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
-            // or any other URL that isn't scheme relative or absolute i.e relative.
-            !(/^(\/\/|http:|https:)..test(url));
+    #removebutton {
+	width:60px;    
     }
-    function safeMethod(method) {
-        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    #added_desc {
+	width:280px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;    
     }
-
-    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
-        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    #order_table {
+	width:380px;
+	table-layout:fixed;
     }
-});
-
-
-function checkout()
-{
+    
+    </style>
+    
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+    <script>
+    var fileId = 0; 
+    var orders = [];
+    
+    // Turn JSON into string
+    function stripJsonToString (json)
+    {
+	return JSON.stringify(json).replace(',', ', ').replace('[', '').replace(']', '');
+    }
+    
+    // When the users clicks checkout button
+    function checkout () {
+	var method = "post"; 
 	
-	$.ajax('/checkout', {type: 'POST', data: {
-				'id': '4'
-			}, dataType: 'json'})
-	.done(function(data) {
-		//alert(data);
-		if (data.success) {
-			console.log("jizz");
-		}
-	})
-	.fail(function() { console.log("lookup error"); });
-}*/
-
-//$("#checkoutForm").ajaxSubmit({url: 'checkout', type: 'post'});
-
-//function checkout () {
-
-    /*// using jQuery
-    function getCookie(name) {
-	var cookieValue = null;
-	if (document.cookie && document.cookie != '') {
-	    var cookies = document.cookie.split(';');
-	    for (var i = 0; i < cookies.length; i++) {
-		var cookie = jQuery.trim(cookies[i]);
-		// Does this cookie string begin with the name we want?
-		if (cookie.substring(0, name.length + 1) == (name + '=')) {
-		    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-		    break;
-		}
+	// get string from json
+	var json_string = stripJsonToString(orders);
+    
+	// create form
+	var form = document.createElement("form");
+	form.setAttribute("method", method);
+	form.setAttribute("action", 'checkout');
+    
+	// Create hidden field with the json string 
+	var hiddenField = document.createElement("input");
+	hiddenField.setAttribute("type", "hidden");
+	hiddenField.setAttribute("name", "json_string");
+	hiddenField.setAttribute("value", json_string);
+	form.appendChild(hiddenField);
+	
+	// and add csrf token (cross-site reference forgery)
+	form.innerHTML += "{% csrf_token %}";
+	
+	// add it to document, and submit!
+	document.body.appendChild(form);
+	form.submit();
+    }
+    
+    // remove an element from both the document and the json structure
+    function removeElement(elementId) {
+	// Removes an element from the document
+	var element = document.getElementById(elementId);
+	element.parentNode.removeChild(element);
+	// now delete from json
+	$.each(orders, function(i, item) {
+	    if (item.id == elementId){
+		orders.splice(i,1);
 	    }
+	});
+    }
+    
+    // get the burger price
+    function getPrice(foodtype, moreinfo, size) {
+	switch (foodtype) {
+	    case 'Cheeseburger':
+		switch (moreinfo) {
+		    case 'Single': return {{ cheeseburger_1 }}
+		    case 'Double': return {{ cheeseburger_2 }}
+		    case 'Triple': return {{ cheeseburger_3 }}
+		    case 'Quadruple': return {{ cheeseburger_4 }}
+		}
+		break;
+	    case 'Hamburger':
+		switch (moreinfo) {
+		    case 'Single': return {{ hamburger_1 }}
+		    case 'Double': return {{ hamburger_2 }}
+		    case 'Triple': return {{ hamburger_3 }}
+		    case 'Quadruple': return {{ hamburger_4 }}
+		}
+		break;
+	    case 'Fries':
+		return {{ fries }}
+		break;
+	    case 'Shake':
+		return {{ shake }}
+		break;
+	    case 'Drink':
+		if (size == 'Small') {
+		    return {{ drink_small }}
+		} else {
+		    return {{ drink_large }}		
+		}
+		break;
+	}    
+    
+    }
+    
+    // add a file to the document and to the json structure
+    function addFile() {
+	
+	fileId++; // increment fileId to get a unique ID for the new element
+	var idString = 'order-'+fileId; //i.e. order-2, order-3
+	
+	//create a new json object to add
+	var JSONObject = {};
+	JSONObject.id = idString;
+	
+	//get selected components to construct html
+	var htmlContent = "<table id='order_table' ><tr>";
+	var kindOfMeal = document.getElementById('FoodType').value;
+	var price = 0;
+	var size = ""; //only for drinks
+	
+	// get the sub-type
+	var type;
+	switch (kindOfMeal) {
+	    case 'Cheeseburger':
+	    case 'Hamburger' :
+		type = document.getElementById('BurgerType').value;
+		break;
+	    case 'Shake':
+		type = document.getElementById('ShakeType').value;
+		break;
+	    case 'Drink':
+		type = document.getElementById('DrinkType').value;
+		size = document.getElementById('DrinkSize').value;
+		break;
 	}
-	return cookieValue;
-    }
-    var csrftoken = getCookie('csrftoken');    
-    function csrfSafeMethod(method) {
-	// these HTTP methods do not require CSRF protection
-	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
-    }
-    $.ajaxSetup({
-	crossDomain: false, // obviates need for sameOrigin test
-	beforeSend: function(xhr, settings) {
-	    if (!csrfSafeMethod(settings.type)) {
-		xhr.setRequestHeader("X-CSRFToken", csrftoken);
-	    }
+	// Generate 'removeElement' javascript call to match current elementID
+	var tellToDelete = "removeElement('"+idString+"');"; 
+	
+	// Add to HTML string
+	if (type) {
+	    htmlContent += "<td><b>"+kindOfMeal+", " + type + "</b></td>";
+	} else {
+	    htmlContent += "<td><b>"+kindOfMeal+"</b></td>";
 	}
-    });
-    $.ajax({
-	type: "POST",
-	url: 'checkout',
-	data: orders,
-	success: function(data)
-           {
-               alert(data); // show response from the php script.
-           },
-	dataType: 'json'
-    });*/
-
-function checkout () {
-    var method = method || "post"; // Set method to post by default if not specified.
-    var params = {'json':orders}
-
-    // The rest of this code assumes you are not using a library.
-    // It can be made less wordy if you use one.
-    var form = document.createElement("form");
-    form.setAttribute("method", method);
-    form.setAttribute("action", 'checkout');
-
-    for(var key in params) {
-        if(params.hasOwnProperty(key)) {
-            var hiddenField = document.createElement("input");
-            hiddenField.setAttribute("type", "hidden");
-            hiddenField.setAttribute("name", key);
-            hiddenField.setAttribute("value", params[key]);
-
-            form.appendChild(hiddenField);
-         }
-    }
-    form.innerHTML += "a {% csrf_token %} b";
-    document.body.appendChild(form);
-    console.log(form.innerHTML);    
-    
-    form.submit();
-}
-function removeElement(elementId) {
-    // Removes an element from the document
-    var element = document.getElementById(elementId);
-    element.parentNode.removeChild(element);
-    // now delete from json
-    $.each(orders, function(i, item) {
-	if (item.id == elementId){
-	    orders.splice(i,1);
+	htmlContent+= "<td id='price_col'>"+getPrice(kindOfMeal,type, size)+"</td><td id='removebutton';><input type='button' value='remove' src='{% static 'x.png' %}' onclick="+tellToDelete+"></td></tr>";
+	
+	// look for animal style info, if applicable
+	if (kindOfMeal=="Cheeseburger" || kindOfMeal == "Hamburger" || kindOfMeal == "Fries"
+	    && document.getElementById('AnimalStyle').value == "yes") {
+	    htmlContent+= "<tr><td id='added_desc'>Animal Style</td><td id='price_col'>{{ animal }}</td></tr>"
+	    price += {{animal}}
 	}
-    });
-}
-function addFile() {
-    
-    
-    fileId++; // increment fileId to get a unique ID for the new element
-    var idString = 'order-'+fileId;
-    
-    var JSONObject = {};
-    JSONObject.id = idString;
-    
-    //get selected components to construct html
-    var htmlContent = "<table border='1' width='380px' height='55px' style='table-layout:fixed;'><tr><td>";
-    var kindOfMeal = document.getElementById('FoodType').value;
-    
-    switch (kindOfMeal) {
-	case 'Cheeseburger':
-	    // First add to HTML display string
-	    htmlContent += "Cheeseburger, " + document.getElementById('BurgerType').value;
-	    if (document.getElementById('AnimalStyle').value == "yes") htmlContent += ", Animal Style"
-	    // Then construct JSON object
-	    JSONObject.fpod = 'Cheeseburger';
-	    JSONObject.type = document.getElementById('BurgerType').value;
-	    JSONObject.animal = document.getElementById('AnimalStyle').value
-	    break;
-	case 'Hamburger':
-	    // First add to HTML display string
-	    htmlContent += "Hamburger, " + document.getElementById('BurgerType').value;
-	    if (document.getElementById('AnimalStyle').value == "yes") htmlContent += ", Animal Style"
-	    // Then construct JSON object
-	    JSONObject.fpod = 'Hamburger';
-	    JSONObject.type = document.getElementById('BurgerType').value;
-	    JSONObject.animal = document.getElementById('AnimalStyle').value
-	    break;
-	case 'Fries':
-	    // First add to HTML display string
-	    htmlContent += "Fries, " + document.getElementById('FriesType').value;
-	    // Then construct JSON object
-	    JSONObject.food = 'Fries'
-	    JSONObject.type = document.getElementById('FriesType').value;
-	    break;
-	case 'Shake':
-	    // First add to HTML display string
-	    htmlContent += document.getElementById('ShakeType').value + " Shake";
-	    // Then construct JSON object
-	    JSONObject.food = 'Shake'
-	    JSONObject.type = document.getElementById('ShakeType').value;
-	    break;
-	case 'Drink':
-	    // First add to HTML display string
-	    htmlContent += document.getElementById('DrinkType').value;
-	    // Then construct JSON object
-	    JSONObject.food = 'Drink'
-	    JSONObject.type = document.getElementById('DrinkType').value;
-	    break;
-    }
-    // Generate 'removeElement' javascript call to match current elementID
-    var tellToDelete = "removeElement('"+idString+"');"; 
-    htmlContent+= "</td><td rowspan='2' width=60px>" + "<input type='button' value='remove' onclick="+tellToDelete+">";
-    htmlContent+= "</td></tr><tr><td width=280px style='text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"
-    
-    // If they added instructions, add the text as second line
-    if (document.getElementById('instructionsText').value != "") {
-	htmlContent+= "("+ document.getElementById('instructionsText').value +")"
+	
+	// if drink, show size
+	if (kindOfMeal=="Drink") {
+	    htmlContent+= "<tr><td id='added_desc'>"+size+"</td></tr>"
+	    JSONObject.size = size;
+	}
+	
+	// Add instructions 
+	htmlContent+= "<tr><td id='added_desc'><i>"+ document.getElementById('instructionsText').value +"</i></td></tr>"	
+	
+	// Then construct JSON object
+	JSONObject.food = kindOfMeal;
+	JSONObject.type = type;
+	JSONObject.animal = document.getElementById('AnimalStyle').value
+	JSONObject.price = price + getPrice(kindOfMeal,type)
 	JSONObject.desc = document.getElementById('instructionsText').value;
-    } else {
-	htmlContent+= "&nbsp;"	
-    }
 	
-    // finish up...
-    htmlContent+="</td></tr></table>"
-    // and add it!
-    addElement('orders', 'p', idString, htmlContent);
-    orders.push(JSONObject);
-    console.log(orders);
-}
-
-function addElement(parentId, elementTag, elementId, html) {
-
-    // Adds an element to the document
-    var parent = document.getElementById(parentId);
-    var newElement = document.createElement(elementTag);
-    // set the ID
-    newElement.setAttribute('id', elementId);
-    newElement.innerHTML = html;
-    // and append it!
-    parent.appendChild(newElement);
-    
-    // now, hide all menus
-    $("#AddInstructions").hide();
-    $("#FriesMenu").hide();
-    $("#DrinkMenu").hide();
-    $("#DrinkSubMenu").hide();
-    $("#ShakeMenu").hide();
-    $("#BurgerSubMenu").hide();
-    $("#BurgerMenu").hide();
-    
-    // ... and reset menu values
-    document.getElementById('FoodType').value = "";
-    document.getElementById('instructionsText').value = "";
-    document.getElementById('FriesType').value = "";
-    document.getElementById('DrinkType').value = "";
-    document.getElementById('DrinkSize').value = "";
-    document.getElementById('ShakeType').value = "";
-    document.getElementById('BurgerType').value = "";
-    document.getElementById('AnimalStyle').value = "";
-}
-</script>
-
-<script>
-// If user presses enter in the text box, both prevent silly default form submission and hit the submit button
-$(document).ready(function() {
-  $(window).keydown(function(event){
-    if(event.keyCode == 13) {
-      event.preventDefault();
-      document.getElementById('submitButton').click();
-      return false;
+	// finish up...
+	htmlContent+="</table>"
+	// and add it!
+	addElement('orders', 'p', idString, htmlContent);
+	orders.push(JSONObject);
+	console.log(orders);
     }
-  });
-});
-
-$(document).ready(function (){
-    $("#FoodType").change(function() {
-	// Only show the submenus from selected components
-	if ($(this).val() == "Cheeseburger") {
-	    $("#AddInstructions").hide();
-	    $("#FriesMenu").hide();
-	    $("#DrinkMenu").hide();
-	    $("#ShakeMenu").hide();
-	    $("#BurgerSubMenu").hide();
-	    $("#BurgerMenu").show();
-	} else if ($(this).val() == "Hamburger") {
-	    $("#AddInstructions").hide();
-	    $("#FriesMenu").hide();
-	    $("#DrinkMenu").hide();
-	    $("#DrinkSubMenu").hide();
-	    $("#ShakeMenu").hide();
-	    $("#BurgerSubMenu").hide();
-	    $("#BurgerMenu").show();
-	} else if ($(this).val() == "Fries") {
-	    $("#AddInstructions").hide();
-	    $("#BurgerMenu").hide();
-	    $("#DrinkMenu").hide();
-	    $("#DrinkSubMenu").hide();
-	    $("#ShakeMenu").hide();
-	    $("#BurgerSubMenu").hide();
-	    $("#FriesMenu").show();
-	} else if ($(this).val() == "Drink") {
-	    $("#AddInstructions").hide();
-	    $("#FriesMenu").hide();
-	    $("#BurgerMenu").hide();
-	    $("#ShakeMenu").hide();
-	    $("#BurgerSubMenu").hide();
-	    $("#DrinkSubMenu").hide();
-	    $("#DrinkMenu").show();
-	} else if ($(this).val() == "Shake") {
-	    $("#AddInstructions").hide();
-	    $("#FriesMenu").hide();
-	    $("#BurgerMenu").hide();
-	    $("#BurgerSubMenu").hide();
-	    $("#DrinkMenu").hide();
-	    $("#DrinkSubMenu").hide();
-	    $("#ShakeMenu").show();
+    
+    // Actually adds element to the page, and then resets other menus
+    function addElement(parentId, elementTag, elementId, html) {
+    
+	// Adds an element to the document
+	var parent = document.getElementById(parentId);
+	var newElement = document.createElement(elementTag);
+	// set the ID
+	newElement.setAttribute('id', elementId);
+	newElement.innerHTML = html;
+	// and append it!
+	parent.appendChild(newElement);
+	
+	// now, hide all menus
+	$("#AddInstructions").hide();
+	$("#DrinkMenu").hide();
+	$("#DrinkSubMenu").hide();
+	$("#ShakeMenu").hide();
+	$("#AnimalStyleMenu").hide();
+	$("#BurgerMenu").hide();
+	
+	// ... and reset menu values
+	document.getElementById('FoodType').value = "";
+	document.getElementById('instructionsText').value = "";
+	document.getElementById('DrinkType').value = "";
+	document.getElementById('DrinkSize').value = "";
+	document.getElementById('ShakeType').value = "";
+	document.getElementById('BurgerType').value = "";
+	document.getElementById('AnimalStyle').value = "";
+    }
+    </script>
+    
+    <script>
+    // If user presses enter in the text box, both prevent silly default form submission and hit the submit button
+    $(document).ready(function() {
+      $(window).keydown(function(event){
+	if(event.keyCode == 13) {
+	  event.preventDefault();
+	  document.getElementById('submitButton').click();
+	  return false;
 	}
+      });
     });
-    $("#BurgerMenu").change(function() {
-	$("#BurgerSubMenu").show();
+    
+    
+    // When any of the menus change, update other accordingly
+    $(document).ready(function (){
+	$("#FoodType").change(function() {
+	    // make sure animal style goes back to empty! (corner case)
+	    document.getElementById('AnimalStyle').value = "";
+	    
+	    // Only show the submenus from selected components
+	    if ($(this).val() == "Cheeseburger") {
+		$("#AddInstructions").hide();
+		$("#DrinkMenu").hide();
+		$("#ShakeMenu").hide();
+		$("#AnimalStyleMenu").hide();
+		$("#BurgerMenu").show();
+	    } else if ($(this).val() == "Hamburger") {
+		$("#AddInstructions").hide();
+		$("#DrinkMenu").hide();
+		$("#DrinkSubMenu").hide();
+		$("#ShakeMenu").hide();
+		$("#AnimalStyleMenu").hide();
+		$("#BurgerMenu").show();
+	    } else if ($(this).val() == "Fries") {
+		$("#AddInstructions").hide();
+		$("#BurgerMenu").hide();
+		$("#DrinkMenu").hide();
+		$("#ShakeMenu").hide();
+		$("#BurgerSubMenu").hide();
+		$("#AnimalStyleMenu").show();
+	    } else if ($(this).val() == "Drink") {
+		$("#AddInstructions").hide();
+		$("#BurgerMenu").hide();
+		$("#ShakeMenu").hide();
+		$("#AnimalStyleMenu").hide();
+		$("#DrinkSubMenu").hide();
+		$("#DrinkMenu").show();
+	    } else if ($(this).val() == "Shake") {
+		$("#AddInstructions").hide();
+		$("#BurgerMenu").hide();
+		$("#AnimalStyleMenu").hide();
+		$("#DrinkMenu").hide();
+		$("#DrinkSubMenu").hide();
+		$("#ShakeMenu").show();
+	    }
+	});
+	$("#BurgerMenu").change(function() {
+	    $("#AnimalStyleMenu").show();
+	});
+	$("#AnimalStyleMenu").change(function() {
+	    $("#AddInstructions").show();
+	});
+	$("#DrinkMenu").change(function() {
+	    $("#DrinkSubMenu").show();
+	});
+	$("#DrinkSubMenu").change(function() {
+	    $("#AddInstructions").show();
+	});
+	$("#ShakeMenu").change(function() {
+	    $("#AddInstructions").show();
+	});
     });
-    $("#BurgerSubMenu").change(function() {
-	$("#AddInstructions").show();
-    });
-    $("#DrinkMenu").change(function() {
-	$("#DrinkSubMenu").show();
-    });
-    $("#DrinkSubMenu").change(function() {
-	$("#AddInstructions").show();
-    });
-    $("#FriesMenu").change(function() {
-	$("#AddInstructions").show();
-    });
-    $("#ShakeMenu").change(function() {
-	$("#AddInstructions").show();
-    });
-});
-</script>
-
-
-<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-<title>In n Out Order Form</title>
-</head>
-
-<br>
-
-<body >
-
+    </script>
+    
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+    
+    <title>Order</title>
 </head>
 
 <body>
-
-
-<table border="1" style="margin-left:auto; margin-right:auto;text-align:center;">
-    <tr height="500px">
-      <td width="600px">
-	<form id="submitorder" action="order">
-	<p>
-	    What Would You Like?<br>
-	    <select id="FoodType" >
-		<option selected disabled></option>
-		<option value="Cheeseburger">Cheeseburger</option>
-		<option value="Hamburger">Hamburger</option>
-		<option value="Fries">French Fries</option>
-		<option value="Shake">Shake</option>
-		<option value="Drink">Drink</option>
-	    </select>
-	</p>
     
-	<p id="BurgerMenu" style="display:none;">
-	    What Kind?<br>
-	    <select id="BurgerType">
-		<option selected disabled></option>
-		<option value="Single">Single</option>
-		<option value="Double">Double Double</option>
-		<option value="Triple">Triple Triple</option>
-		<option value="Quadruple">4x4</option>
-	    </select>
-	</p>
+    <table border="1" style="margin-left:auto; margin-right:auto;text-align:center;">
+	<tr height="500px">
+	  <td width="600px">
+	    <form id="submitorder" action="order">
+	    <p>
+		What Would You Like?<br>
+		<select id="FoodType" >
+		    <option selected disabled></option>
+		    <option value="Cheeseburger">Cheeseburger</option>
+		    <option value="Hamburger">Hamburger</option>
+		    <option value="Fries">French Fries</option>
+		    <option value="Shake">Shake</option>
+		    <option value="Drink">Drink</option>
+		</select>
+	    </p>
 	
-	<p id="BurgerSubMenu" style="display:none">
-	    Animal Style?<br>
-	    <select id="AnimalStyle">
-		<option selected disabled></option>
-		<option value="yes">Yup! ($2 extra)</option>
-		<option value="no">No thanks</option>
-	    </select>
-	</p>
-	
-	<p id="FriesMenu" style="display:none;">
-	    How Would You Like Them?<br>
-	    <select id= "FriesType">
-		<option selected disabled></option>
-		<option value="Regular">Regular</option>
-		<option value="Extra Crispy">Extra Crispy</option>
-		<option value="Animal Style">Animal Style</option>
-	    </select>
-	</p>
-	
-	<p id="DrinkMenu" style="display:none;">
-	    What Kind?<br>
-	    <select id="DrinkType">
-		<option selected disabled></option>
-		<option value="Coke">Coke</option>
-		<option value="Diet Coke">Diet Coke</option>
-		<option value="7 Up">7 Up</option>
-		<option value="Dr. Pepper">Dr. Pepper</option>
-		<option value="Root Beer">Root Beer</option>
-		<option value="Lemonade">Lemonade</option>
-		<option value="Strawberry Lemonade">Strawberry Lemonade</option>
-		<option value="Iced Tea">Iced Tea</option>
-	    </select>
-	</p>
-	<p id="DrinkSubMenu" style="display:none">
-	    Size<br>
-	    <select id="DrinkSize">
-		<option selected disabled></option>
-		<option value="Small">Small</option>
-		<option value="Large">Large</option>
-	    </select>
-	</p>
-	<p id="ShakeMenu" style="display:none">
-	    Flavor?<br>
-	    <select id="ShakeType">
-		<option selected disabled></option>
-		<option value="Chocolate">Chocolate</option>
-		<option value="Strawberry">Strawberry</option>
-		<option value="Vanilla">Vanilla</option>
-		<option value="Neopolitan">Neopolitan</option>
-	    </select>
-	</p>
-	<p id="AddInstructions" style="display:none;">
-	    Additional Instructions?<br>
-	    <input id="instructionsText" type="text" size="45" value=""><br>
-	    <input id="submitButton" type="button" onclick="addFile()" value="Add it!" >
-	</p>
-	</form>
-      </td>
-      <td width="400px">
-	<form id="checkoutForm">
-	    <div id="orders" align="center">Your Order: </div>  
-	    <input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" >
-	</form>
-      </td>
-    </tr>
+	    <p id="BurgerMenu" style="display:none;">
+		What Kind?<br>
+		<select id="BurgerType">
+		    <option selected disabled></option>
+		    <option value="Single">Single</option>
+		    <option value="Double">Double Double</option>
+		    <option value="Triple">Triple Triple</option>
+		    <option value="Quadruple">4x4</option>
+		</select>
+	    </p>
+	    
+	    <p id="AnimalStyleMenu" style="display:none">
+		Animal Style?<br>
+		<select id="AnimalStyle">
+		    <option selected disabled></option>
+		    <option value="yes">Yup! ($2 extra)</option>
+		    <option value="no">No thanks</option>
+		</select>
+	    </p>
+	    
+	    <p id="DrinkMenu" style="display:none;">
+		What Kind?<br>
+		<select id="DrinkType">
+		    <option selected disabled></option>
+		    <option value="Coke">Coke</option>
+		    <option value="Diet Coke">Diet Coke</option>
+		    <option value="7 Up">7 Up</option>
+		    <option value="Dr. Pepper">Dr. Pepper</option>
+		    <option value="Root Beer">Root Beer</option>
+		    <option value="Lemonade">Lemonade</option>
+		    <option value="Strawberry Lemonade">Strawberry Lemonade</option>
+		    <option value="Iced Tea">Iced Tea</option>
+		</select>
+	    </p>
+	    <p id="DrinkSubMenu" style="display:none">
+		Size<br>
+		<select id="DrinkSize">
+		    <option selected disabled></option>
+		    <option value="Small">Small</option>
+		    <option value="Large">Large</option>
+		</select>
+	    </p>
+	    <p id="ShakeMenu" style="display:none">
+		Flavor?<br>
+		<select id="ShakeType">
+		    <option selected disabled></option>
+		    <option value="Chocolate">Chocolate</option>
+		    <option value="Strawberry">Strawberry</option>
+		    <option value="Vanilla">Vanilla</option>
+		    <option value="Neopolitan">Neopolitan</option>
+		</select>
+	    </p>
+	    <p id="AddInstructions" style="display:none;">
+		Additional Instructions?<br>
+		<input id="instructionsText" type="text" size="45" value=""><br>
+		<input id="submitButton" type="button" onclick="addFile()" value="Add it!" >
+	    </p>
+	    </form>
+	  </td>
+	  <td width="400px">
+	    <form action = "checkout" method="POST" id="checkoutForm"> {% csrf_token %}
+		<div id="orders" align="center">Your Order: </div>  
+		<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" >
+	    </form>
+	  </td>
+	</tr>
     </table>
 </body>
 
-
-</body>
 </html>

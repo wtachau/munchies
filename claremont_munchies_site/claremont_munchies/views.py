@@ -6,9 +6,11 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from models import *
+import os
 #our login file to verify credentials
 from login import *
 from register import *
+from prices import *
 
 #initialize the same context item for all pages
 context = Context()
@@ -18,16 +20,19 @@ def hello(request):
     return HttpResponse("<h1>Hello Page</h1>Hello world")
 
 def order_form(request):
-    t = get_template('order_form.html')
-    html = t.render(Context())
-    return HttpResponse(html)
+    context = get_prices()
+    context['css_root'] = os.getcwd()+'/templates'
+    return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
     if request.method == 'POST':
-        context['raw_data'] = request.raw_post_data
-        render_to_response('checkout.html', context, RequestContext(request))
+        #context['raw_data'] = request.get_raw_post_data
+        context['raw_data'] = request.POST
+        #for key in request.POST:
+        #    context['raw_data'] = context['raw_data'] + "---" + key
+        return render_to_response('checkout.html', context, RequestContext(request))
     else:
-        render_to_response('checkout.html', context)
+        return render_to_response('checkout.html', context)
 
 
 #checks the integrity of login/register credentials

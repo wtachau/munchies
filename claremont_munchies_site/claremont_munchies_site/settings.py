@@ -3,6 +3,8 @@ import os
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
+PROJECT_PATH = os.path.dirname(__file__)
+
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
@@ -50,12 +52,12 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/var/www/example.com/media/"
-MEDIA_ROOT = ''
+MEDIA_ROOT = os.path.join(PROJECT_PATH, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
 # Examples: "http://example.com/media/", "http://media.example.com/"
-MEDIA_URL = ''
+MEDIA_URL = '/media/'
 
 # Absolute path to the directory static files should be collected to.
 # Don't put anything in this directory yourself; store your static files
@@ -64,8 +66,9 @@ MEDIA_URL = ''
 STATIC_ROOT = ''
 
 # URL prefix for static files.
-# Example: "http://example.com/static/", "http://static.example.com/"
-STATIC_URL = '/static/'
+# Example: "http://example.com/static/", "ht
+#tp://static.example.com/"
+STATIC_URL = os.getcwd()+'/templates/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
@@ -107,13 +110,15 @@ ROOT_URLCONF = 'claremont_munchies_site.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'claremont_munchies_site.wsgi.application'
 
-
-
 TEMPLATE_DIRS = (
     os.getcwd()+'/templates',
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+)
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.media',
 )
 
 INSTALLED_APPS = (
