@@ -8,7 +8,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'claremont_munchies_site.views.home', name='home'),
     # url(r'^claremont_munchies_site/', include('claremont_munchies_site.foo.urls')),
-      url(r'^$', order_form),
+      #url(r'^$', order_form),
     # Uncomment the admin/doc line below to enable admin documentation:
     # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
 
