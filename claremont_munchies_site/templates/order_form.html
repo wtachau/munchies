@@ -1,10 +1,22 @@
-<html><head><script>
+<html><head>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script>
+function formSubmit()
+{
+console.log("asdfasdf");
+document.getElementById("frm1").submit();
+}
+</script>
+<script>
 
 var current_item = "";
 var order = [];
 var num_items = 0;
 
-function update_order(argument)
+
+
+/*function update_order(argument)
 {
     if(argument == "burger"){
 	if(document.getElementById("1").checked == true) current_item = current_item + " Burger (";
@@ -35,45 +47,77 @@ function update_order(argument)
 	add_item(current_item);
 	current_item = "";
     }
+}*/
+
+var fileId = 0; // used by the addFile() function to keep track of IDs
+
+function addFile() {
+    fileId++; // increment fileId to get a unique ID for the new element
+    
+    // get all selected components here
+    console.log("Asdf");
+    //then construct html
+    
+    var html = '<input type="file" name="uploaded_files[]" /> ' +
+               '<a href="" onclick="javascript:removeElement('file-' + fileId + ''); return false;">Remove</a>';
+    addElement('orders', 'p', 'order-' + fileId, html);
+}
+
+function addElement(parentId, elementTag, elementId, html) {
+
+    console.log(parentId, elementTag, elementId, html);
+    // Adds an element to the document
+    var parent = document.getElementById(parentId);
+    var newElement = document.createElement(elementTag);
+    newElement.setAttribute('id', elementId);
+    newElement.innerHTML = html;
+    parent.appendChild(newElement);
 }
 
 </script>
-
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 
 <script>
 $(document).ready(function (){
     $("#FoodType").change(function() {
 	// Only show the submenus from selected components
 	if ($(this).val() == "Cheeseburger") {
+	    $("#AddInstructions").hide();
 	    $("#FriesMenu").hide();
 	    $("#DrinkMenu").hide();
 	    $("#ShakeMenu").hide();
 	    $("#BurgerSubMenu").hide();
 	    $("#BurgerMenu").show();
 	} else if ($(this).val() == "Hamburger") {
+	    $("#AddInstructions").hide();
 	    $("#FriesMenu").hide();
 	    $("#DrinkMenu").hide();
+	    $("#DrinkSubMenu").hide();
 	    $("#ShakeMenu").hide();
 	    $("#BurgerSubMenu").hide();
 	    $("#BurgerMenu").show();
 	} else if ($(this).val() == "Fries") {
+	    $("#AddInstructions").hide();
 	    $("#BurgerMenu").hide();
 	    $("#DrinkMenu").hide();
+	    $("#DrinkSubMenu").hide();
 	    $("#ShakeMenu").hide();
 	    $("#BurgerSubMenu").hide();
 	    $("#FriesMenu").show();
 	} else if ($(this).val() == "Drink") {
+	    $("#AddInstructions").hide();
 	    $("#FriesMenu").hide();
 	    $("#BurgerMenu").hide();
 	    $("#ShakeMenu").hide();
 	    $("#BurgerSubMenu").hide();
+	    $("#DrinkSubMenu").hide();
 	    $("#DrinkMenu").show();
 	} else if ($(this).val() == "Shake") {
+	    $("#AddInstructions").hide();
 	    $("#FriesMenu").hide();
 	    $("#BurgerMenu").hide();
 	    $("#BurgerSubMenu").hide();
 	    $("#DrinkMenu").hide();
+	    $("#DrinkSubMenu").hide();
 	    $("#ShakeMenu").show();
 	}
     });
@@ -81,6 +125,18 @@ $(document).ready(function (){
 	$("#BurgerSubMenu").show();
     });
     $("#BurgerSubMenu").change(function() {
+	$("#AddInstructions").show();
+    });
+    $("#DrinkMenu").change(function() {
+	$("#DrinkSubMenu").show();
+    });
+    $("#DrinkSubMenu").change(function() {
+	$("#AddInstructions").show();
+    });
+    $("#FriesMenu").change(function() {
+	$("#AddInstructions").show();
+    });
+    $("#ShakeMenu").change(function() {
 	$("#AddInstructions").show();
     });
 });
@@ -103,7 +159,7 @@ $(document).ready(function (){
 <table border="1" style="margin-left:auto; margin-right:auto;text-align: center;">
     <tr height="500px">
       <td width="600px">
-	<form>
+	<form action="order">
 	<p>
 	    What Would You Like?<br>
 	    <select id="FoodType" >
@@ -136,7 +192,7 @@ $(document).ready(function (){
 	    </select>
 	</p>
 	
-	 <p id="FriesMenu" style="display:none;">
+	<p id="FriesMenu" style="display:none;">
 	    How Would You Like Them?<br>
 	    <select>
 		<option selected disabled></option>
@@ -160,7 +216,14 @@ $(document).ready(function (){
 		<option value="Iced Tea">Iced Tea</option>
 	    </select>
 	</p>
-	
+	<p id="DrinkSubMenu" style="display:none">
+	    Size<br>
+	    <select>
+		<option selected disabled></option>
+		<option value="small">Small</option>
+		<option value="large">Large</option>
+	    </select>
+	</p>
 	<p id="ShakeMenu" style="display:none">
 	    Flavor?<br>
 	    <select>
@@ -171,29 +234,24 @@ $(document).ready(function (){
 		<option value="Neopolitan">Neopolitan</option>
 	    </select>
 	</p>
-	
-	<p id="DrinkSubMenu" style="display:none">
-	    Size<br>
-	    <select>
-		<option selected disabled></option>
-		<option value="small">Small</option>
-		<option value="large">Large</option>
-	    </select>
-	</p>
-	
-	<p id="AddInstructions" style="display:none;">
+	<p id="AddInstructions" style="//display:none;">
 	    Additional Instructions?<br>
 	    <input type="text" size="45" value=""><br>
-	    <input type="submit" value="Add it!">
+	    <input type="button" onclick="addFile()" value="Add it!" >
 	</p>
 	</form>
+	
+	<form id="frm1" action="order">
+First name: <input type="text" name="fname"><br>
+Last name: <input type="text" name="lname"><br>
+<input type="button" onclick="formSubmit()" value="Submit form">
+</form>
       </td>
-      <td width="400px">Hey!</td>
+      <td width="400px">
+	<div id="orders"> </div>      
+      </td>
     </tr>
     </table>
-
-    
-
 </body>
 
 
