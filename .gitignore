@@ -1,4 +1,2 @@
-/claremont_munchies_site/claremont_munchies_site/wsgi.pyc
-/claremont_munchies_site/claremont_munchies_site/settings.pyc
-/claremont_munchies_site/claremont_munchies_site/__init__.pyc
-/claremont_munchies_site/claremont_munchies/__init__.pyc
+/claremont_munchies_site/claremont_munchies/*.pyc
+/claremont_munchies_site//claremont_munchies_site/*.pyc
