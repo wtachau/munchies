@@ -4,6 +4,7 @@ from django.template.loader import *
 from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
+from django.http import HttpResponseRedirect
 from models import *
 #our login file to verify credentials
 from login import *
@@ -17,6 +18,7 @@ def hello(request):
 
 def order_form(request):
     t = get_template('order_form.html')
+    html = t.render(Context())
     return HttpResponse(html)
 
 def landing_page(request):
@@ -33,7 +35,7 @@ def register(request):
     valid_registration = enter_user(context)
     
     if valid_registration == 0:
-        return render_to_response('order_form.html',context, RequestContext(request))
+        return HttpResponseRedirect("/order")
     elif valid_registration == 1:    
         return HttpResponse('<html><p>That user already exists!</p></html>')
     elif valid_registration == 2:
@@ -50,7 +52,7 @@ def login(request):
     is_logged_in = check_login(context)
 
     if is_logged_in:
-        return render_to_response('order_form.html', context, RequestContext(request))
+        return HttpResponseRedirect("/order")
     
     else:    
         return HttpResponse('<html><p>You are not a registered user!</p></html>')
