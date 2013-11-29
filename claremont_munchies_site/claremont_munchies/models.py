@@ -3,26 +3,14 @@ from django.db import models
 
 
 class user(models.Model):
-    name = models.CharField(max_length=255)
-    location = models.CharField(max_length=255)
-    #the card identification number
-    card = models.IntegerField(null=True)
-    password = models.CharField(max_length=60)
-
+    account_name = models.CharField(max_length=60)
+    password = models.CharField(max_length=30)
+    first_name = models.CharField(max_length=60, null=True)
+    last_name = models.CharField(max_length=60, null=True)
+    location = models.CharField(max_length=255, null=True)
+    claremont_id_number = models.CharField(max_length=20, null=True)
+    credit_card_token = models.CharField(null=True, max_length=255)
     
-class credit_card(models.Model):
-    card_number = models.IntegerField()
-    exp_date_month = models.IntegerField()
-    exp_date_year = models.IntegerField()
-    csv = models.IntegerField()
-    #billing address identification number
-    billing_address = models.IntegerField()
-
-class billing_address(models.Model):
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=2)
-    zip = models.IntegerField()
-    street_address = models.CharField(max_length=255)
     
     
     

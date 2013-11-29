@@ -9,13 +9,13 @@
 	
 	<form name="login" method="POST" action="." >{% csrf_token %}
 	<div style="position:absolute; top:48px; left:200px; width:248px; height:396px; border-image:initial; border:3px solid #000000; " >
-	<input type="text" placeholder="User Name" value="" style="left:50px; top:71px; width:150px; position:inherit; border-image:initial; border:1px solid #000000; " name="login_name" />
+	<input type="text" placeholder="Account Name" value="" style="left:50px; top:71px; width:150px; position:inherit; border-image:initial; border:1px solid #000000; " name="login_name" />
 	<input type="password" placeholder="Password" value="" style="left:50px; top:112px; width:150px; position:inherit; float:right; border-image:initial; border:1px solid #000000; " name="login_password" />
 	<div style="position:absolute; top:40px; left:58px; width:128px; height:17px; " > &nbsp; &nbsp; &nbsp;Login Below</div>
 	<input type="submit" formaction="/" style="left:98px; top:148px; position:absolute; width:51px; height:170px; " value="Login" />
-		
+	</form>
 	
-	{% csrf_token %}	
+	<form name="register" method="POST" action="." >{% csrf_token %}	
 	<div style="position:absolute; top:213px; left:73px; width:119px; height:23px; " >Register Below</div>
 	<input type="text" placeholder="User Name" value="" style="left:48px; top:246px; width:150px; position:absolute; border-image:initial; border:1px solid #000000; " name="register_name" />
 	<input type="password" placeholder="Password" value="" style="left:47px; top:268px; width:150px; position:absolute; float:right; border-image:initial; border:1px solid #000000; " name="register_password" />

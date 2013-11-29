@@ -7,39 +7,48 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from models import *
 #our login file to verify credentials
-from login import *
-from register import *
+from view_helper import *
 
-#initialize the same context item for all pages
-context = Context()
-warning = Context()
 
-def hello(request):
-    return HttpResponse("<h1>Hello Page</h1>Hello world")
 
 def order_form(request):
-    t = get_template('order_form.html')
-    html = t.render(Context())
-    return HttpResponse(html)
+    
+    #check if the user is logged in
+    if not is_logged_in(request):
+        return ask_to_login(request) 
+    
+    return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
+    
+    #check if the user is logged in
+    if not is_logged_in(request):
+        return ask_to_login(request)
+    
     if request.method == 'POST':
-        html = '<html><p> '+request.raw_post_data+'</p></html>'
-        return HttpResponse(html)
+        context['raw_data'] = request.raw_post_data
+        return render_to_response('checkout.html', context, RequestContext(request))
     else:
-        return HttpResponse('<html><p>no post request recognized</p></html>')
+        return render_to_response('checkout.html', context)
 
 
 #checks the integrity of login/register credentials
 def landing_page(request):
+    
+    #redirect the user to the order page if they are logged in
+    if is_logged_in(request):
+        return send_to_order(request)
+    
     if request.method == 'POST':
         
-        #check if the user is trying to register
-        context['name'] = request.POST['register_name']
-        context['password'] = request.POST['register_password']    
-        context['password_2'] = request.POST['register_password_2'] 
+        #check that the post request was for registration
+        if 'register_name' in request.POST:
+            #gather post values
+            context['name'] = request.POST['register_name']
+            context['password'] = request.POST['register_password']    
+            context['password_2'] = request.POST['register_password_2'] 
         
-        if len(context['name']) > 0:
+        
             #check the registration against the database
             valid_registration = enter_user(context)  
             #user commits a valid registration
@@ -52,16 +61,26 @@ def landing_page(request):
             #passwords do not match
             elif valid_registration == 2:
                 warning['warning'] = 'The Passwords Do Not Match'
-                return render_to_response('landing_page.html', warning, RequestContext(request))        
+                return render_to_response('landing_page.html', warning, RequestContext(request))  
+            #account name contains a space
+            elif valid_registration == 3:
+                warning['warning'] = 'Account Names Must Not Contain Spaces'
+                return render_to_response('landing_page.html', warning, RequestContext(request))            
+            #password contains a space
+            elif valid_registration == 4:
+                            warning['warning'] = 'Passwords Must Not Contain Spaces'
+                            return render_to_response('landing_page.html', warning, RequestContext(request))              
         
-        #check if the user is trying to login
-        context['name'] = request.POST['login_name']
-        context['password'] = request.POST['login_password']
         
-        if len(context['name']) > 0:
-            is_logged_in = check_login(context)
-            if is_logged_in:
-                return HttpResponseRedirect("/order")
+        #check that the post request was for login
+        if 'login_name' in request.POST:
+            #gather post values
+            context['name'] = request.POST['login_name']
+            context['password'] = request.POST['login_password']            
+            
+            #login the user
+            if check_login(request, context):
+                return send_to_order(request)
             else:
                 warning['warning'] = 'Invalid Email or Password'
                 return render_to_response('landing_page.html', warning, RequestContext(request))        
@@ -69,3 +88,6 @@ def landing_page(request):
     #the method was not a post so load the regular page
     warning['warning'] = ''
     return render_to_response('landing_page.html', RequestContext(request))
+
+
+
