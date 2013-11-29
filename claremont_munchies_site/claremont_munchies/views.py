@@ -24,22 +24,24 @@ def order_form(request):
 
 def checkout(request):
     if request.method == 'POST':
-        html = '<html><p> '+request.raw_post_data+'</p></html>'
-        return HttpResponse(html)
+        context['raw_data'] = request.raw_post_data
+        render_to_response('checkout.html', context, RequestContext(request))
     else:
-        return HttpResponse('<html><p>no post request recognized</p></html>')
+        render_to_response('checkout.html', context)
 
 
 #checks the integrity of login/register credentials
 def landing_page(request):
     if request.method == 'POST':
         
-        #check if the user is trying to register
-        context['name'] = request.POST['register_name']
-        context['password'] = request.POST['register_password']    
-        context['password_2'] = request.POST['register_password_2'] 
+        #check that the post request was for registration
+        if 'register_name' in request.POST:
+            #gather post values
+            context['name'] = request.POST['register_name']
+            context['password'] = request.POST['register_password']    
+            context['password_2'] = request.POST['register_password_2'] 
         
-        if len(context['name']) > 0:
+        
             #check the registration against the database
             valid_registration = enter_user(context)  
             #user commits a valid registration
@@ -54,11 +56,13 @@ def landing_page(request):
                 warning['warning'] = 'The Passwords Do Not Match'
                 return render_to_response('landing_page.html', warning, RequestContext(request))        
         
-        #check if the user is trying to login
-        context['name'] = request.POST['login_name']
-        context['password'] = request.POST['login_password']
         
-        if len(context['name']) > 0:
+        
+        #check that the post request was for login
+        if 'login_name' in request.POST:
+            #gather post values
+            context['name'] = request.POST['login_name']
+            context['password'] = request.POST['login_password']            
             is_logged_in = check_login(context)
             if is_logged_in:
                 return HttpResponseRedirect("/order")
