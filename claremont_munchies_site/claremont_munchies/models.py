@@ -6,7 +6,7 @@ class user(models.Model):
     name = models.CharField(max_length=255)
     location = models.CharField(max_length=255)
     #the card identification number
-    card = models.IntegerField()
+    card = models.IntegerField(null=True)
     password = models.CharField(max_length=60)
 
     
