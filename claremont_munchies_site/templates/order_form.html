@@ -15,7 +15,7 @@ function addFile() {
     fileId++; // increment fileId to get a unique ID for the new element
     
     //get selected components to construct html
-    var htmlContent = "<table border='1'><tr><td>";
+    var htmlContent = "<table border='1' width='380px' height='55px' style='table-layout:fixed;'><tr><td>";
     var kindOfMeal = document.getElementById('FoodType').value;
     
     switch (kindOfMeal) {
@@ -39,11 +39,16 @@ function addFile() {
     }
     // Generate 'removeElement' javascript call to match current elementID
     var tellToDelete = "removeElement('order-"+fileId+"');"; 
-    htmlContent+= "</td><td rowspan='2'>" + "<input type='button' value='remove' onclick="+tellToDelete+">";
-    htmlContent+= "</td></tr><tr><td>"
+    htmlContent+= "</td><td rowspan='2' width=60px>" + "<input type='button' value='remove' onclick="+tellToDelete+">";
+    htmlContent+= "</td></tr><tr><td width=280px style='text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"
     
     // If they added instructions, add the text as second line
-    if (document.getElementById('instructionsText').value != "") htmlContent+= "("+ document.getElementById('instructionsText').value +")"
+    if (document.getElementById('instructionsText').value != "") {
+	htmlContent+= "("+ document.getElementById('instructionsText').value +")"
+    } else {
+	htmlContent+= "&nbsp;"	
+    }
+	
     
     // finish up...
     htmlContent+="</td></tr></table>"
@@ -173,7 +178,7 @@ $(document).ready(function (){
 <body>
 
 
-<table border="1" style="margin-left:auto; margin-right:auto;text-align: center;">
+<table border="1" style="margin-left:auto; margin-right:auto;text-align:center;">
     <tr height="500px">
       <td width="600px">
 	<form id="submitorder" action="order">
@@ -214,8 +219,8 @@ $(document).ready(function (){
 	    <select id= "FriesType">
 		<option selected disabled></option>
 		<option value="Regular">Regular</option>
-		<option value="ExtraCrispy">Extra Crispy</option>
-		<option value="AnimalStyle">Animal Style</option>
+		<option value="Extra Crispy">Extra Crispy</option>
+		<option value="Animal Style">Animal Style</option>
 	    </select>
 	</p>
 	
@@ -237,8 +242,8 @@ $(document).ready(function (){
 	    Size<br>
 	    <select id="DrinkSize">
 		<option selected disabled></option>
-		<option value="small">Small</option>
-		<option value="large">Large</option>
+		<option value="Small">Small</option>
+		<option value="Large">Large</option>
 	    </select>
 	</p>
 	<p id="ShakeMenu" style="display:none">
@@ -259,7 +264,7 @@ $(document).ready(function (){
 	</form>
       </td>
       <td width="400px">
-	<div id="orders">Your Order: </div>      
+	<div id="orders" align="center">Your Order: </div>      
       </td>
     </tr>
     </table>
