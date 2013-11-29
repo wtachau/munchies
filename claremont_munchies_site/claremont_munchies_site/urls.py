@@ -10,8 +10,6 @@ urlpatterns = patterns('',
     # Examples:
     url(r'^$', landing_page),
     url(r'^order$', order_form),
-    url(r'^login$', login),
-    url(r'^register$', register),
     # url(r'^$', 'claremont_munchies_site.views.home', name='home'),
     # url(r'^claremont_munchies_site/', include('claremont_munchies_site.foo.urls')),
       
