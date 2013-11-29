@@ -3,16 +3,51 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script>
 var fileId = 0; 
+var orders = []
 
+function checkout () {
+    var method = method || "post"; // Set method to post by default if not specified.
+    var params = {'json':orders}
+
+    // The rest of this code assumes you are not using a library.
+    // It can be made less wordy if you use one.
+    var form = document.createElement("form");
+    form.setAttribute("method", method);
+    form.setAttribute("action", 'checkout');
+
+    for(var key in params) {
+        if(params.hasOwnProperty(key)) {
+            var hiddenField = document.createElement("input");
+            hiddenField.setAttribute("type", "hidden");
+            hiddenField.setAttribute("name", key);
+            hiddenField.setAttribute("value", params[key]);
+
+            form.appendChild(hiddenField);
+         }
+    }
+
+    document.body.appendChild(form);
+    form.submit();
+}
 function removeElement(elementId) {
     // Removes an element from the document
     var element = document.getElementById(elementId);
     element.parentNode.removeChild(element);
+    // now delete from json
+    $.each(orders, function(i, item) {
+	if (item.id == elementId){
+	    orders.splice(i,1);
+	}
+    });
 }
 function addFile() {
     
-
+    
     fileId++; // increment fileId to get a unique ID for the new element
+    var idString = 'order-'+fileId;
+    
+    var JSONObject = {};
+    JSONObject.id = idString;
     
     //get selected components to construct html
     var htmlContent = "<table border='1' width='380px' height='55px' style='table-layout:fixed;'><tr><td>";
@@ -20,40 +55,64 @@ function addFile() {
     
     switch (kindOfMeal) {
 	case 'Cheeseburger':
+	    // First add to HTML display string
 	    htmlContent += "Cheeseburger, " + document.getElementById('BurgerType').value;
 	    if (document.getElementById('AnimalStyle').value == "yes") htmlContent += ", Animal Style"
+	    // Then construct JSON object
+	    JSONObject.fpod = 'Cheeseburger';
+	    JSONObject.type = document.getElementById('BurgerType').value;
+	    JSONObject.animal = document.getElementById('AnimalStyle').value
 	    break;
 	case 'Hamburger':
+	    // First add to HTML display string
 	    htmlContent += "Hamburger, " + document.getElementById('BurgerType').value;
 	    if (document.getElementById('AnimalStyle').value == "yes") htmlContent += ", Animal Style"
+	    // Then construct JSON object
+	    JSONObject.fpod = 'Hamburger';
+	    JSONObject.type = document.getElementById('BurgerType').value;
+	    JSONObject.animal = document.getElementById('AnimalStyle').value
 	    break;
 	case 'Fries':
+	    // First add to HTML display string
 	    htmlContent += "Fries, " + document.getElementById('FriesType').value;
+	    // Then construct JSON object
+	    JSONObject.food = 'Fries'
+	    JSONObject.type = document.getElementById('FriesType').value;
 	    break;
 	case 'Shake':
+	    // First add to HTML display string
 	    htmlContent += document.getElementById('ShakeType').value + " Shake";
+	    // Then construct JSON object
+	    JSONObject.food = 'Shake'
+	    JSONObject.type = document.getElementById('ShakeType').value;
 	    break;
 	case 'Drink':
+	    // First add to HTML display string
 	    htmlContent += document.getElementById('DrinkType').value;
+	    // Then construct JSON object
+	    JSONObject.food = 'Drink'
+	    JSONObject.type = document.getElementById('DrinkType').value;
 	    break;
     }
     // Generate 'removeElement' javascript call to match current elementID
-    var tellToDelete = "removeElement('order-"+fileId+"');"; 
+    var tellToDelete = "removeElement('"+idString+"');"; 
     htmlContent+= "</td><td rowspan='2' width=60px>" + "<input type='button' value='remove' onclick="+tellToDelete+">";
     htmlContent+= "</td></tr><tr><td width=280px style='text-overflow: ellipsis;overflow: hidden;white-space: nowrap;'>"
     
     // If they added instructions, add the text as second line
     if (document.getElementById('instructionsText').value != "") {
 	htmlContent+= "("+ document.getElementById('instructionsText').value +")"
+	JSONObject.desc = document.getElementById('instructionsText').value;
     } else {
 	htmlContent+= "&nbsp;"	
     }
 	
-    
     // finish up...
     htmlContent+="</td></tr></table>"
     // and add it!
-    addElement('orders', 'p', 'order-' + fileId, htmlContent);
+    addElement('orders', 'p', idString, htmlContent);
+    orders.push(JSONObject);
+    console.log(orders);
 }
 
 function addElement(parentId, elementTag, elementId, html) {
@@ -89,6 +148,7 @@ function addElement(parentId, elementTag, elementId, html) {
 </script>
 
 <script>
+// If user presses enter in the text box, both prevent silly default form submission and hit the submit button
 $(document).ready(function() {
   $(window).keydown(function(event){
     if(event.keyCode == 13) {
@@ -264,7 +324,8 @@ $(document).ready(function (){
 	</form>
       </td>
       <td width="400px">
-	<div id="orders" align="center">Your Order: </div>      
+	<div id="orders" align="center">Your Order: </div>  
+	<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" >
       </td>
     </tr>
     </table>
