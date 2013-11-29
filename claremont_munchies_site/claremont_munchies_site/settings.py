@@ -102,10 +102,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'django_test.urls'
+ROOT_URLCONF = 'claremont_munchies_site.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'django_test.wsgi.application'
+WSGI_APPLICATION = 'claremont_munchies_site.wsgi.application'
 
 
 
