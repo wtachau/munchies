@@ -2,81 +2,98 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
 <script>
-function formSubmit()
-{
-console.log("asdfasdf");
-document.getElementById("frm1").submit();
+var fileId = 0; 
+
+function removeElement(elementId) {
+    // Removes an element from the document
+    var element = document.getElementById(elementId);
+    element.parentNode.removeChild(element);
 }
-</script>
-<script>
-
-var current_item = "";
-var order = [];
-var num_items = 0;
-
-
-
-/*function update_order(argument)
-{
-    if(argument == "burger"){
-	if(document.getElementById("1").checked == true) current_item = current_item + " Burger (";
-	else if(document.getElementById("2").checked == true) current_item = current_item + " Double Double (";
-	else if(document.getElementById("3").checked == true) current_item = current_item + " Triple Double (";
-	else if(document.getElementById("4").checked == true) current_item = current_item + " Quadruple Double (";
-	
-	if(document.getElementById("onions").checked == true) current_item = current_item + "Onions";
-	if(document.getElementById("cheese").checked == true) current_item = current_item + " Cheese, ";
-	if(document.getElementById("lettuce").checked == true) current_item = current_item + " Lettuce, ";
-	if(document.getElementById("tomatoes").checked == true) current_item = current_item + " Tomatoes, ";
-	if(document.getElementById("grilled_onions").checked == true) current_item = current_item + " Grilled Onions, ";
-	if(document.getElementById("spread").checked == true) current_item = current_item + "Spread";
-
-	current_item = current_item + ")";
-	add_item(current_item);
-	current_item = "";
-    }
-    
-    if(argument == "drink"){
-	var drink_menu = document.getElementById("drink");
-	var drink = drink_menu.options[drink_menu.selectedIndex].value;
-	
-	var size_menu = document.getElementById("size");
-	var size = size_menu.options[size_menu.selectedIndex].value;
-	
-	current_item = size + " " + drink;
-	add_item(current_item);
-	current_item = "";
-    }
-}*/
-
-var fileId = 0; // used by the addFile() function to keep track of IDs
-
 function addFile() {
+    
+
     fileId++; // increment fileId to get a unique ID for the new element
     
-    // get all selected components here
-    console.log("Asdf");
-    //then construct html
+    //get selected components to construct html
+    var htmlContent = "<table border='1'><tr><td>";
+    var kindOfMeal = document.getElementById('FoodType').value;
     
-    var html = '<input type="file" name="uploaded_files[]" /> ' +
-               '<a href="" onclick="javascript:removeElement('file-' + fileId + ''); return false;">Remove</a>';
-    addElement('orders', 'p', 'order-' + fileId, html);
+    switch (kindOfMeal) {
+	case 'Cheeseburger':
+	    htmlContent += "Cheeseburger, " + document.getElementById('BurgerType').value;
+	    if (document.getElementById('AnimalStyle').value == "yes") htmlContent += ", Animal Style"
+	    break;
+	case 'Hamburger':
+	    htmlContent += "Hamburger, " + document.getElementById('BurgerType').value;
+	    if (document.getElementById('AnimalStyle').value == "yes") htmlContent += ", Animal Style"
+	    break;
+	case 'Fries':
+	    htmlContent += "Fries, " + document.getElementById('FriesType').value;
+	    break;
+	case 'Shake':
+	    htmlContent += document.getElementById('ShakeType').value + " Shake";
+	    break;
+	case 'Drink':
+	    htmlContent += document.getElementById('DrinkType').value;
+	    break;
+    }
+    // Generate 'removeElement' javascript call to match current elementID
+    var tellToDelete = "removeElement('order-"+fileId+"');"; 
+    htmlContent+= "</td><td rowspan='2'>" + "<input type='button' value='remove' onclick="+tellToDelete+">";
+    htmlContent+= "</td></tr><tr><td>"
+    
+    // If they added instructions, add the text as second line
+    if (document.getElementById('instructionsText').value != "") htmlContent+= "("+ document.getElementById('instructionsText').value +")"
+    
+    // finish up...
+    htmlContent+="</td></tr></table>"
+    // and add it!
+    addElement('orders', 'p', 'order-' + fileId, htmlContent);
 }
 
 function addElement(parentId, elementTag, elementId, html) {
 
-    console.log(parentId, elementTag, elementId, html);
     // Adds an element to the document
     var parent = document.getElementById(parentId);
     var newElement = document.createElement(elementTag);
+    // set the ID
     newElement.setAttribute('id', elementId);
     newElement.innerHTML = html;
+    // and append it!
     parent.appendChild(newElement);
+    
+    // now, hide all menus
+    $("#AddInstructions").hide();
+    $("#FriesMenu").hide();
+    $("#DrinkMenu").hide();
+    $("#DrinkSubMenu").hide();
+    $("#ShakeMenu").hide();
+    $("#BurgerSubMenu").hide();
+    $("#BurgerMenu").hide();
+    
+    // ... and reset menu values
+    document.getElementById('FoodType').value = "";
+    document.getElementById('instructionsText').value = "";
+    document.getElementById('FriesType').value = "";
+    document.getElementById('DrinkType').value = "";
+    document.getElementById('DrinkSize').value = "";
+    document.getElementById('ShakeType').value = "";
+    document.getElementById('BurgerType').value = "";
+    document.getElementById('AnimalStyle').value = "";
 }
-
 </script>
 
 <script>
+$(document).ready(function() {
+  $(window).keydown(function(event){
+    if(event.keyCode == 13) {
+      event.preventDefault();
+      document.getElementById('submitButton').click();
+      return false;
+    }
+  });
+});
+
 $(document).ready(function (){
     $("#FoodType").change(function() {
 	// Only show the submenus from selected components
@@ -159,7 +176,7 @@ $(document).ready(function (){
 <table border="1" style="margin-left:auto; margin-right:auto;text-align: center;">
     <tr height="500px">
       <td width="600px">
-	<form action="order">
+	<form id="submitorder" action="order">
 	<p>
 	    What Would You Like?<br>
 	    <select id="FoodType" >
@@ -174,7 +191,7 @@ $(document).ready(function (){
     
 	<p id="BurgerMenu" style="display:none;">
 	    What Kind?<br>
-	    <select>
+	    <select id="BurgerType">
 		<option selected disabled></option>
 		<option value="Single">Single</option>
 		<option value="Double">Double Double</option>
@@ -185,7 +202,7 @@ $(document).ready(function (){
 	
 	<p id="BurgerSubMenu" style="display:none">
 	    Animal Style?<br>
-	    <select>
+	    <select id="AnimalStyle">
 		<option selected disabled></option>
 		<option value="yes">Yup! ($2 extra)</option>
 		<option value="no">No thanks</option>
@@ -194,7 +211,7 @@ $(document).ready(function (){
 	
 	<p id="FriesMenu" style="display:none;">
 	    How Would You Like Them?<br>
-	    <select>
+	    <select id= "FriesType">
 		<option selected disabled></option>
 		<option value="Regular">Regular</option>
 		<option value="ExtraCrispy">Extra Crispy</option>
@@ -203,9 +220,9 @@ $(document).ready(function (){
 	</p>
 	
 	<p id="DrinkMenu" style="display:none;">
-	    <select>
+	    What Kind?<br>
+	    <select id="DrinkType">
 		<option selected disabled></option>
-		<option value="" selected disabled>What Kind?</option>
 		<option value="Coke">Coke</option>
 		<option value="Diet Coke">Diet Coke</option>
 		<option value="7 Up">7 Up</option>
@@ -218,7 +235,7 @@ $(document).ready(function (){
 	</p>
 	<p id="DrinkSubMenu" style="display:none">
 	    Size<br>
-	    <select>
+	    <select id="DrinkSize">
 		<option selected disabled></option>
 		<option value="small">Small</option>
 		<option value="large">Large</option>
@@ -226,7 +243,7 @@ $(document).ready(function (){
 	</p>
 	<p id="ShakeMenu" style="display:none">
 	    Flavor?<br>
-	    <select>
+	    <select id="ShakeType">
 		<option selected disabled></option>
 		<option value="Chocolate">Chocolate</option>
 		<option value="Strawberry">Strawberry</option>
@@ -234,46 +251,19 @@ $(document).ready(function (){
 		<option value="Neopolitan">Neopolitan</option>
 	    </select>
 	</p>
-	<p id="AddInstructions" style="//display:none;">
+	<p id="AddInstructions" style="display:none;">
 	    Additional Instructions?<br>
-	    <input type="text" size="45" value=""><br>
-	    <input type="button" onclick="addFile()" value="Add it!" >
+	    <input id="instructionsText" type="text" size="45" value=""><br>
+	    <input id="submitButton" type="button" onclick="addFile()" value="Add it!" >
 	</p>
 	</form>
-	
-	<form id="frm1" action="order">
-First name: <input type="text" name="fname"><br>
-Last name: <input type="text" name="lname"><br>
-<input type="button" onclick="formSubmit()" value="Submit form">
-</form>
       </td>
       <td width="400px">
-	<div id="orders"> </div>      
+	<div id="orders">Your Order: </div>      
       </td>
     </tr>
     </table>
 </body>
-
-
-<script>
-
-function add_item(string_to_add) {
-    var list = document.getElementById('order_display');
-    var entry = document.createElement('li');
-    entry.appendChild(document.createTextNode(string_to_add));
-    list.appendChild(entry);
-    num_items++;
-}
-
-function clear_order(){
-	var list = document.getElementById('order_display');
-	var list = document.getElementById("order_display").getElementsByTagName("li");
-	list[num_items-1].parentNode.removeChild(list[num_items-1]);
-	num_items--;
-		
-}
-</script>
-
 
 
 </body>
