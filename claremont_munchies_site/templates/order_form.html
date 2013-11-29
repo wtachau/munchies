@@ -1,0 +1,222 @@
+<html><head><script>
+
+var current_item = "";
+var order = [];
+var num_items = 0;
+
+function update_order(argument)
+{
+    if(argument == "burger"){
+	if(document.getElementById("1").checked == true) current_item = current_item + " Burger (";
+	else if(document.getElementById("2").checked == true) current_item = current_item + " Double Double (";
+	else if(document.getElementById("3").checked == true) current_item = current_item + " Triple Double (";
+	else if(document.getElementById("4").checked == true) current_item = current_item + " Quadruple Double (";
+	
+	if(document.getElementById("onions").checked == true) current_item = current_item + "Onions";
+	if(document.getElementById("cheese").checked == true) current_item = current_item + " Cheese, ";
+	if(document.getElementById("lettuce").checked == true) current_item = current_item + " Lettuce, ";
+	if(document.getElementById("tomatoes").checked == true) current_item = current_item + " Tomatoes, ";
+	if(document.getElementById("grilled_onions").checked == true) current_item = current_item + " Grilled Onions, ";
+	if(document.getElementById("spread").checked == true) current_item = current_item + "Spread";
+
+	current_item = current_item + ")";
+	add_item(current_item);
+	current_item = "";
+    }
+    
+    if(argument == "drink"){
+	var drink_menu = document.getElementById("drink");
+	var drink = drink_menu.options[drink_menu.selectedIndex].value;
+	
+	var size_menu = document.getElementById("size");
+	var size = size_menu.options[size_menu.selectedIndex].value;
+	
+	current_item = size + " " + drink;
+	add_item(current_item);
+	current_item = "";
+    }
+}
+
+</script>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function (){
+    $("#FoodType").change(function() {
+	// Only show the submenus from selected components
+	if ($(this).val() == "Cheeseburger") {
+	    $("#FriesMenu").hide();
+	    $("#DrinkMenu").hide();
+	    $("#ShakeMenu").hide();
+	    $("#BurgerSubMenu").hide();
+	    $("#BurgerMenu").show();
+	} else if ($(this).val() == "Hamburger") {
+	    $("#FriesMenu").hide();
+	    $("#DrinkMenu").hide();
+	    $("#ShakeMenu").hide();
+	    $("#BurgerSubMenu").hide();
+	    $("#BurgerMenu").show();
+	} else if ($(this).val() == "Fries") {
+	    $("#BurgerMenu").hide();
+	    $("#DrinkMenu").hide();
+	    $("#ShakeMenu").hide();
+	    $("#BurgerSubMenu").hide();
+	    $("#FriesMenu").show();
+	} else if ($(this).val() == "Drink") {
+	    $("#FriesMenu").hide();
+	    $("#BurgerMenu").hide();
+	    $("#ShakeMenu").hide();
+	    $("#BurgerSubMenu").hide();
+	    $("#DrinkMenu").show();
+	} else if ($(this).val() == "Shake") {
+	    $("#FriesMenu").hide();
+	    $("#BurgerMenu").hide();
+	    $("#BurgerSubMenu").hide();
+	    $("#DrinkMenu").hide();
+	    $("#ShakeMenu").show();
+	}
+    });
+    $("#BurgerMenu").change(function() {
+	$("#BurgerSubMenu").show();
+    });
+    $("#BurgerSubMenu").change(function() {
+	$("#AddInstructions").show();
+    });
+});
+</script>
+
+
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+<title>In n Out Order Form</title>
+</head>
+
+<br>
+
+<body >
+
+</head>
+
+<body>
+
+
+<table border="1" style="margin-left:auto; margin-right:auto;text-align: center;">
+    <tr height="500px">
+      <td width="600px">
+	<form>
+	<p>
+	    What Would You Like?<br>
+	    <select id="FoodType" >
+		<option selected disabled></option>
+		<option value="Cheeseburger">Cheeseburger</option>
+		<option value="Hamburger">Hamburger</option>
+		<option value="Fries">French Fries</option>
+		<option value="Shake">Shake</option>
+		<option value="Drink">Drink</option>
+	    </select>
+	</p>
+    
+	<p id="BurgerMenu" style="display:none;">
+	    What Kind?<br>
+	    <select>
+		<option selected disabled></option>
+		<option value="Single">Single</option>
+		<option value="Double">Double Double</option>
+		<option value="Triple">Triple Triple</option>
+		<option value="Quadruple">4x4</option>
+	    </select>
+	</p>
+	
+	<p id="BurgerSubMenu" style="display:none">
+	    Animal Style?<br>
+	    <select>
+		<option selected disabled></option>
+		<option value="yes">Yup! ($2 extra)</option>
+		<option value="no">No thanks</option>
+	    </select>
+	</p>
+	
+	 <p id="FriesMenu" style="display:none;">
+	    How Would You Like Them?<br>
+	    <select>
+		<option selected disabled></option>
+		<option value="Regular">Regular</option>
+		<option value="ExtraCrispy">Extra Crispy</option>
+		<option value="AnimalStyle">Animal Style</option>
+	    </select>
+	</p>
+	
+	<p id="DrinkMenu" style="display:none;">
+	    <select>
+		<option selected disabled></option>
+		<option value="" selected disabled>What Kind?</option>
+		<option value="Coke">Coke</option>
+		<option value="Diet Coke">Diet Coke</option>
+		<option value="7 Up">7 Up</option>
+		<option value="Dr. Pepper">Dr. Pepper</option>
+		<option value="Root Beer">Root Beer</option>
+		<option value="Lemonade">Lemonade</option>
+		<option value="Strawberry Lemonade">Strawberry Lemonade</option>
+		<option value="Iced Tea">Iced Tea</option>
+	    </select>
+	</p>
+	
+	<p id="ShakeMenu" style="display:none">
+	    Flavor?<br>
+	    <select>
+		<option selected disabled></option>
+		<option value="Chocolate">Chocolate</option>
+		<option value="Strawberry">Strawberry</option>
+		<option value="Vanilla">Vanilla</option>
+		<option value="Neopolitan">Neopolitan</option>
+	    </select>
+	</p>
+	
+	<p id="DrinkSubMenu" style="display:none">
+	    Size<br>
+	    <select>
+		<option selected disabled></option>
+		<option value="small">Small</option>
+		<option value="large">Large</option>
+	    </select>
+	</p>
+	
+	<p id="AddInstructions" style="display:none;">
+	    Additional Instructions?<br>
+	    <input type="text" size="45" value=""><br>
+	    <input type="submit" value="Add it!">
+	</p>
+	</form>
+      </td>
+      <td width="400px">Hey!</td>
+    </tr>
+    </table>
+
+    
+
+</body>
+
+
+<script>
+
+function add_item(string_to_add) {
+    var list = document.getElementById('order_display');
+    var entry = document.createElement('li');
+    entry.appendChild(document.createTextNode(string_to_add));
+    list.appendChild(entry);
+    num_items++;
+}
+
+function clear_order(){
+	var list = document.getElementById('order_display');
+	var list = document.getElementById("order_display").getElementsByTagName("li");
+	list[num_items-1].parentNode.removeChild(list[num_items-1]);
+	num_items--;
+		
+}
+</script>
+
+
+
+</body>
+</html>
