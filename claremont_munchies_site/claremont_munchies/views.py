@@ -18,16 +18,15 @@ def hello(request):
     return HttpResponse("<h1>Hello Page</h1>Hello world")
 
 def order_form(request):
-    t = get_template('order_form.html')
-    html = t.render(Context())
-    return HttpResponse(html)
+    
+    return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
     if request.method == 'POST':
         context['raw_data'] = request.raw_post_data
-        render_to_response('checkout.html', context, RequestContext(request))
+        return render_to_response('checkout.html', context, RequestContext(request))
     else:
-        render_to_response('checkout.html', context)
+        return render_to_response('checkout.html', context)
 
 
 #checks the integrity of login/register credentials
