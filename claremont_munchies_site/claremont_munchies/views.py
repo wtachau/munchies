@@ -22,6 +22,15 @@ def order_form(request):
     html = t.render(Context())
     return HttpResponse(html)
 
+def checkout(request):
+    if request.method == 'POST':
+        html = '<html><p> '+request.raw_post_data+'</p></html>'
+        return HttpResponse(html)
+    else:
+        return HttpResponse('<html><p>no post request recognized</p></html>')
+
+
+#checks the integrity of login/register credentials
 def landing_page(request):
     if request.method == 'POST':
         
