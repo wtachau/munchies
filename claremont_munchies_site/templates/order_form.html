@@ -1,9 +1,107 @@
 <html><head>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script src="http://malsup.github.com/jquery.form.js"></script> 
 <script>
 var fileId = 0; 
-var orders = []
+var orders = [];
+/*
+$(document).ajaxSend(function(event, xhr, settings) {
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie != '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    function sameOrigin(url) {
+        // url could be relative or scheme relative or absolute
+        var host = document.location.host; // host + port
+        var protocol = document.location.protocol;
+        var sr_origin = '//' + host;
+        var origin = protocol + sr_origin;
+        // Allow absolute or scheme relative URLs to same origin
+        return (url == origin || url.slice(0, origin.length + 1) == origin + '/') ||
+            (url == sr_origin || url.slice(0, sr_origin.length + 1) == sr_origin + '/') ||
+            // or any other URL that isn't scheme relative or absolute i.e relative.
+            !(/^(\/\/|http:|https:)..test(url));
+    }
+    function safeMethod(method) {
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+
+    if (!safeMethod(settings.type) && sameOrigin(settings.url)) {
+        xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+    }
+});
+
+
+function checkout()
+{
+	
+	$.ajax('/checkout', {type: 'POST', data: {
+				'id': '4'
+			}, dataType: 'json'})
+	.done(function(data) {
+		//alert(data);
+		if (data.success) {
+			console.log("jizz");
+		}
+	})
+	.fail(function() { console.log("lookup error"); });
+}*/
+
+//$("#checkoutForm").ajaxSubmit({url: 'checkout', type: 'post'});
+
+//function checkout () {
+
+    /*// using jQuery
+    function getCookie(name) {
+	var cookieValue = null;
+	if (document.cookie && document.cookie != '') {
+	    var cookies = document.cookie.split(';');
+	    for (var i = 0; i < cookies.length; i++) {
+		var cookie = jQuery.trim(cookies[i]);
+		// Does this cookie string begin with the name we want?
+		if (cookie.substring(0, name.length + 1) == (name + '=')) {
+		    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+		    break;
+		}
+	    }
+	}
+	return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');    
+    function csrfSafeMethod(method) {
+	// these HTTP methods do not require CSRF protection
+	return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+	crossDomain: false, // obviates need for sameOrigin test
+	beforeSend: function(xhr, settings) {
+	    if (!csrfSafeMethod(settings.type)) {
+		xhr.setRequestHeader("X-CSRFToken", csrftoken);
+	    }
+	}
+    });
+    $.ajax({
+	type: "POST",
+	url: 'checkout',
+	data: orders,
+	success: function(data)
+           {
+               alert(data); // show response from the php script.
+           },
+	dataType: 'json'
+    });*/
 
 function checkout () {
     var method = method || "post"; // Set method to post by default if not specified.
@@ -25,8 +123,10 @@ function checkout () {
             form.appendChild(hiddenField);
          }
     }
-
+    form.innerHTML += "a {% csrf_token %} b";
     document.body.appendChild(form);
+    console.log(form.innerHTML);    
+    
     form.submit();
 }
 function removeElement(elementId) {
@@ -324,8 +424,10 @@ $(document).ready(function (){
 	</form>
       </td>
       <td width="400px">
-	<div id="orders" align="center">Your Order: </div>  
-	<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" >
+	<form id="checkoutForm">
+	    <div id="orders" align="center">Your Order: </div>  
+	    <input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" >
+	</form>
       </td>
     </tr>
     </table>
