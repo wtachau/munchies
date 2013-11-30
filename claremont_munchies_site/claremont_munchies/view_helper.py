@@ -14,7 +14,7 @@ warning = Context()
 
 #helper functions
 def is_logged_in(request):
-    if request.session['logged_in'] == True:
+    if request.session.get('logged_in'):
         return True
     else:
         return False
