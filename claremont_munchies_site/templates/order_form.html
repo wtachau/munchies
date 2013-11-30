@@ -1,5 +1,5 @@
 <html><head>
-    </head><body>{% load staticfiles %}
+    </head><body style="left:0; top:1px; " >{% load staticfiles %}
     <style>
 #price_col {
 	width:30px;
@@ -295,7 +295,7 @@
 
 
     
-    <table border="1" style="margin-left:auto; margin-right:auto; text-align:center; " >
+    <table border="1" style="margin-left:auto; margin-right:auto; text-align:center; left:-8px; top:-3px; position:absolute; " >
 	<tbody><tr height="500px" style="position:absolute; left:439px; top:99px; width:362px; " >
 	  <td width="600px" style="left:-387px; top:2px; position:absolute; height:473px; width:394px; " >
 	    <form id="submitorder" action="order" >
@@ -370,7 +370,7 @@
 	    </p>
 	    </form>
 	  </td>
-	  <td width="400px" style="left:10px; top:2px; float:inherit; position:absolute; height:468px; width:329px; " >
+	  <td width="400px" style="left:10px; top:2px; float:inherit; position:absolute; height:473px; width:374px; " >
 	    <form action="checkout" method="POST" id="checkoutForm" style="left:-25px; top:202px; " > {% csrf_token %}
 		<div id="orders" align="center" >Your Order: </div>  
 		<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" />
@@ -380,8 +380,8 @@
     </tbody></table>
 
 
-<form name="myform" action="/logout" >
+<form name="myform" action="/logout" style="left:46px; top:3px; position:absolute; " >
 <input type="submit" style="position:absolute; width:68px; left:707px; top:74px; " onclick="value" value="Logout" />
 </form>
-</body>
-</html>
+
+</body></html>
