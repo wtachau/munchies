@@ -80,11 +80,13 @@
 	var element = document.getElementById(elementId);
 	element.parentNode.removeChild(element);
 	// now delete from json
-	$.each(orders, function(i, item) {
+	/*$.each(orders, function(i, item) {
 	    if (item.id == elementId){
 		orders.splice(i,1);
 	    }
-	});
+	});*/
+	
+	updateTotal();
 	
 	// delete from server!
 	$.post("order",
@@ -93,6 +95,19 @@
 	{
 	      //console.log(data);
 	});
+    }
+    
+    function updateTotal() {
+	subtotal = document.getElementById('subtotal');
+	
+	newAmount = 0;
+	$('[id=price_col]').each(function(index, value) {
+	    newAmount += Number(value.innerText);
+	});
+	
+	document.getElementById('subtotal').innerText = "$"+newAmount;
+	
+    
     }
     
     // get the burger price
@@ -217,7 +232,6 @@
 	// and add it!
 	addElement('orders', 'p', idString, htmlContent);
 	
-	
 	//do a POST here to move session 
 	postOrder(JSONObject);
     }
@@ -233,6 +247,8 @@
 	newElement.innerHTML = html;
 	// and append it!
 	parent.appendChild(newElement);
+	
+	updateTotal()
 	
 	// now, hide all menus
 	$("#AddInstructions").hide();
@@ -448,7 +464,7 @@
 		    
 		{% endfor %}
 		
-		
+		<p id="subtotal">{{ subtotal }}</p>
 		<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" />
 	    </form>
 	  </td>

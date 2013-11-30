@@ -18,11 +18,21 @@ def logout(request):
     request.session['user_name'] = ''
     return HttpResponseRedirect("/")
 
+def updateTotal(request):
+    if 'orders' in request.session:
+        if 'order_total' in request.session:
+            request.session['order_total'] = 0
+            for k,v in request.session['orders'].iteritems():
+                request.session['order_total'] += v.get('price')
+        else:
+            request.session['order_total'] = 0
+            
 def order_form(request):
 
     context = get_prices()
-    if 'orders' in request.session:
+    if 'orders' in request.session and 'order_total' in request.session:
         context['orders'] = request.session['orders'] # give the page all session orders
+        context['subtotal'] = "$"+str(request.session['order_total'])
     
     if request.method == 'POST':
         
@@ -33,6 +43,8 @@ def order_form(request):
             delete_object = data['delete']
             if delete_object in request.session['orders']:
                 del request.session['orders'][delete_object]
+                
+            updateTotal(request)
             return HttpResponse();
         # otherwise, we're creating a new item. Add it to the session dictionary
         else:
@@ -40,15 +52,18 @@ def order_form(request):
         
             # initialize request session if it's not there already
             if 'orders' not in request.session:
-                request.session['orders'] = {} 
+                request.session['orders'] = {}
+            if 'order_total' not in request.session:
+                request.session['order_total'] = 0
                     
             index = json_object['id']
             
             #request.session['orders'] = {} #ONLY TO FLUSH SESSION ORDERS
             request.session['orders'][index] = json_object
             
-            return HttpResponse();
-            #return HttpResponse("<html>"+str(index)+" "+ str(request.session.items())+ "</html>")
+            updateTotal(request)
+            #return HttpResponse();
+            return HttpResponse("<html>"+str(request.session['orders'])+"      "+str(index)+" "+ str(request.session.items())+ "</html>")
     
     return render_to_response('order_form.html', context, RequestContext(request))
 
