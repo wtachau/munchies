@@ -7,28 +7,23 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from models import *
 import os
-#our login file to verify credentials
-<<<<<<< HEAD
-from login import *
-from register import *
+
 from prices import *
-=======
+
 from view_helper import *
->>>>>>> james
+
 
 
 
 def order_form(request):
-<<<<<<< HEAD
+
     context = get_prices()
-    context['css_root'] = os.getcwd()+'/templates'
-=======
-    
+
     #check if the user is logged in
     if not is_logged_in(request):
         return ask_to_login(request) 
     
->>>>>>> james
+
     return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
