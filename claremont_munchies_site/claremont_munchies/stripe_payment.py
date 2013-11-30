@@ -6,8 +6,7 @@ stripe.api_key = "sk_test_lOyq2bIOtEfGJR6yoEsJjA3h"
 
 def process_order(request):
     
-    if 'stripeToken' not in request.POST:
-        return ''
+    
     
     # Get the credit card details submitted by the form
     token = request.POST['stripeToken']

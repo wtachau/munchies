@@ -54,10 +54,15 @@ def order_form(request):
 
 def checkout(request):
     
+    #user purchased the cart
     if request.method == 'POST':
-        token = process_order(request)
-        return HttpResponse(token)
-    
+        if 'stripeToken' in request.POST:      
+            token = process_order(request)
+            return HttpResponse(token)
+        
+    #user came from our order form
+    if 'orders' in request.session:
+        context['orders'] = request.session['orders'] # give the page all session orders    
     return render_to_response('checkout.html', context, RequestContext(request))
     
 #checks the integrity of login/register credentials

@@ -3,15 +3,45 @@
 
 <p>Give us your money ya bitchass</p>
 
+<div id="orders" align="center" >Your Order: </div>  
+		
+		{% for index, order in orders.items %}
+		    
+		    <p id = {{order.id}}><table id='order_table'><tr>
+		    
+		    {% if order.food == "Shake" %}
+		    <td><b>{%if order.type%}{{order.type}} {% endif %}{{order.food}}</b></td>
+		    {%endif%}
+		    {% if order.food == "Drink" %}
+		    <td><b>{{order.type}} </b></td>
+		    {% endif%}
+		    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
+		    <td><b>{{order.food}}, {{order.type}}</b></td>
+		    {% endif%}
+		    {% if order.food == "French Fries" %}
+		    <td><b>{{order.food}}</b></td>
+		    {%endif%}
+		    
+		    <td id='price_col'>{{order.price}}</td><td id='removebutton';><input type='button' value='remove' onclick= "removeElement('{{order.id}}');"></td></tr>
+		    
+		    {% if order.animal == 'yes' %}
+		    <tr><td id='added_desc'>Animal Style</td></tr>"
+		    {% endif %}
+		    
+		    {% if order.food == 'Drink' %}
+		    <tr><td id='added_desc'>{{order.size}}</td></tr>
+		    {% endif %}
+		    
+		    {% if order.desc %}
+		    <tr><td id='added_desc'><i>{{order.desc}}</i></td></tr>
+		    {% endif %}
+		    
+		    <tr></table></p>
+		    
+		{% endfor %}
 
-<<<<<<< HEAD
 
 <form action="" method="POST">{% csrf_token %}
-=======
-<body>
-<p>{{raw_data}}</p>
-<form action="" method="POST">
->>>>>>> e1a942f3d0e3f7b6e8ec254d933db3be775522bd
   <script
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f"
@@ -21,17 +51,12 @@
     data-image="/128x128.png">
   </script>
 </form>
-<<<<<<< HEAD
 
 
 
 
-
-</html>
-
-=======
-</body>
 
 
 </html>
->>>>>>> e1a942f3d0e3f7b6e8ec254d933db3be775522bd
+
+
