@@ -22,7 +22,6 @@ def order_form(request):
     #check if the user is logged in
     if not is_logged_in(request):
         return ask_to_login(request) 
-    
 
     return render_to_response('order_form.html', context, RequestContext(request))
 
@@ -34,7 +33,13 @@ def checkout(request):
     
     if request.method == 'POST':
         #context['raw_data'] = request.get_raw_post_data
-        context['raw_data'] = request.POST
+        #q = QueryDict(request.POST)
+        #context['raw_data'] = request
+        
+        querydict_data = request.POST
+        json_data = querydict_data['json_string']
+        context['raw_data'] = json.loads(json_data) 
+        
         #for key in request.POST:
         #    context['raw_data'] = context['raw_data'] + "---" + key
         return render_to_response('checkout.html', context, RequestContext(request))
