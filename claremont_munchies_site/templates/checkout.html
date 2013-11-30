@@ -1,22 +1,54 @@
-<html><head></head><body><div id="order_container" style="position:absolute; width:598px; left:100px; top:47px; height:453px; border-image:initial; border:1px groove #000000; " >
-<div id="orders" align="center" >Your Order: </div>  
+<html>
+<head>
+<style>
+#order_container{
+position:relative;
+width:880px; 
+margin-left:auto;
+margin-right:auto;
+margin-top:40px;
+height:453px;
+border-image:initial; 
+border:1px 
+groove #000000;
+}
+#checkout_table{
+margin-left:auto;
+margin-right:auto;
+margin-top:30px;
+}
+#table_list{
+	width:380px;
+	table-layout:fixed;
+}
+#price_col {
+	width:30px;
+}
+#orders{
+margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+{% include "header.html" %}
+<div id="order_container" >
+<div id="orders" align="center" >Your Order: 
 		
+		<div id="checkout_table">
 		{% for index, order in orders.items %}
-		    
-		   
-		    <table id="order_table" ><tbody><tr>
-		    
+		    <table id="table_list">
 		    {% if order.food == "Shake" %}
-		    <td><b>{%if order.type%}<!--FLUXDJANGOVARIABLESTYLECODEorder.type}} {% endif %}{{order.food}}</b></td>
+		    <tr><td><b>{{order.type}} {{order.t}}</b></td>
 		    {%endif%}
 		    {% if order.food == "Drink" %}
-		    <td><b>{{order.type}} </b></td>
+		    <tr><td><b>{{order.type}} </b></td></tr>
 		    {% endif%}
 		    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
-		    <td><b>{{order.food}}, {{order.type}}</b></td>
+		    <tr><td><b>{{order.food}}, {{order.type}}</b></td>
 		    {% endif%}
 		    {% if order.food == "French Fries" %}
-		    <td><b>{{order.food}}</b></td>
+		    <tr><td><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
 		    <td id="price_col" >{{order.price}}</td> </tr>
@@ -32,17 +64,19 @@
 		    <tr><td id="added_desc" ><i>{{order.desc--&gt;</i></td></tr>
 		    {% endif %}
 		    
-		    <tr></tr></tbody></table><p></p>
+		    <tr></tr></table><p></p>
 		    
 		{% endfor %}
-		{{order_total_desc}}
+		<table id="table_list">{{order_total_desc}}</table>
+		</div>
+</div>
 
 
 
-<form action="" method="POST" style="position:inherit; left:201px; top:328px; " >{% csrf_token %}
-  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
-  </script>
+<form action="" method="POST" style="position:inherit; left:201px; " >{% csrf_token %}
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
+    </script>
+</form></div>
   
-  </form></div>
-  
-</body></html>
+</body>
+</html>
