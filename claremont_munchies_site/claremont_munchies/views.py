@@ -15,6 +15,11 @@ from view_helper import *
 
 
 
+def logout(request):
+    request.session['logged_in'] = False
+    return HttpResponseRedirect("/")
+
+
 def order_form(request):
 
     context = get_prices()
@@ -65,7 +70,7 @@ def landing_page(request):
         
         
             #check the registration against the database
-            valid_registration = enter_user(context)  
+            valid_registration = enter_user(request, context)  
             #user commits a valid registration
             if valid_registration == 0:
                 return HttpResponseRedirect("/order")
@@ -83,8 +88,8 @@ def landing_page(request):
                 return render_to_response('landing_page.html', warning, RequestContext(request))            
             #password contains a space
             elif valid_registration == 4:
-                            warning['warning'] = 'Passwords Must Not Contain Spaces'
-                            return render_to_response('landing_page.html', warning, RequestContext(request))              
+                warning['warning'] = 'Passwords Must Not Contain Spaces'
+                return render_to_response('landing_page.html', warning, RequestContext(request))              
         
         
         #check that the post request was for login

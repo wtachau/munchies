@@ -11,6 +11,7 @@ urlpatterns = patterns('',
     url(r'^$', landing_page),
     url(r'^order$', order_form),
     url(r'checkout$', checkout),
+    url(r'^logout$', logout),
     # url(r'^$', 'claremont_munchies_site.views.home', name='home'),
     # url(r'^claremont_munchies_site/', include('claremont_munchies_site.foo.urls')),
       

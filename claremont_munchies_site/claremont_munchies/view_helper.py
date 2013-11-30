@@ -29,7 +29,7 @@ def send_to_order(request):
 
 
 #function is passed login credentials to be checked with the database
-def enter_user(login_credentials):
+def enter_user(request, login_credentials):
     
     #value to be entered into db; other fields null
     entry = user(account_name=login_credentials['name'].lower(), password=login_credentials['password'])
@@ -51,7 +51,7 @@ def enter_user(login_credentials):
         return 4    
     #save the entry into the database
     else:
-        request.session['is_logged_in'] = True
+        request.session['logged_in'] = True
         entry.save()
         return 0
     
@@ -60,7 +60,7 @@ def enter_user(login_credentials):
 def check_login(request, l_c):
     validate = user.objects.filter(account_name=l_c['name'].lower(), password=l_c['password']).count()
     if validate > 0:
-        request.session['is_logged_in'] = True
+        request.session['logged_in'] = True
         return True
     else:
         return False
