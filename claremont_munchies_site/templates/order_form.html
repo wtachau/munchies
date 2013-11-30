@@ -11,10 +11,23 @@
     <style>
 #price_col {
 	width:30px;
+	text-align:right;
 }
 
 #removebutton {
-	width:60px;
+	width:25px;
+	background:url('{% static "images/x.png" %}'); 
+	background-size:18px;
+}
+
+body {
+    background-color:#f3f3f3;
+}
+
+#menu {
+    background-color:#FFFFFF;
+    border-radius:40px;
+    margin-bottom:40px;
 }
 
 #added_desc {
@@ -24,10 +37,19 @@
 	white-space:nowrap;
 }
 
-#order_table {
+.order_table {
 	width:380px;
-	table-layout:fixed;
+	border-spacing:10px 0px;
+	margin-top:20px
 }
+
+#orders {
+    margin-top:25px;
+}
+#order_title {
+    padding-bottom:15px;
+}
+
 
 </style>
     
@@ -164,7 +186,7 @@
 	JSONObject.id = idString;
 	
 	//get selected components to construct html
-	var htmlContent = "<table id='order_table' ><tr>";
+	var htmlContent = "<table class='order_table' ><tr>";
 	var kindOfMeal = document.getElementById('FoodType').value;
 	var price = 0;
 	var size = ""; //only for drinks
@@ -197,7 +219,7 @@
 	} else {
 	    htmlContent += "<td><b>"+kindOfMeal+"</b></td>";
 	}
-	htmlContent+= "<td id='price_col'>"+getPrice(kindOfMeal,type, size)+"</td><td id='removebutton';><input type='button' value='remove' src='{% static 'x.png' %}' onclick="+tellToDelete+"></td></tr>";
+	htmlContent+= "<td id='price_col'>"+getPrice(kindOfMeal,type, size)+"</td><td id='removebutton';><input  type='image' src='{% static "images/x.png" %}' width=30 value='remove' onclick="+tellToDelete+"></td></tr>";
 	
 	// look for animal style info, if applicable
 	if (kindOfMeal=="Cheeseburger" || kindOfMeal == "Hamburger" || kindOfMeal == "French Fries"
@@ -343,12 +365,11 @@
     <title>Order</title>
 
     {% load staticfiles %}
-    <img src={% static "images/x.png" %} alt="My image"/>
 
     
-    <table border="1" style="margin-left:auto; margin-right:auto; text-align:center; left:-8px; top:-3px; position:absolute; " >
-	<tbody><tr height="500px" style="position:absolute; left:439px; top:99px; width:362px; " >
-	  <td width="600px" style="left:-387px; top:2px; position:absolute; height:473px; width:394px; " >
+    <table id="menu" style="margin-left:auto; margin-right:auto; margin-top:25px; text-align:center; " >
+	<tr >
+	  <td  width=600px>
 	    <form id="submitorder" action="order" >
 	    <p style="left:2px; top:47px; " >
 		What Would You Like?<br>
@@ -421,13 +442,13 @@
 	    </p>
 	    </form>
 	  </td>
-	  <td width="400px" style="left:10px; top:2px; float:inherit; position:absolute; height:473px; width:374px; " >
+	  <td width="400px" >
 	    <form action="checkout" method="POST" id="checkoutForm" style="left:-25px; top:202px; " > {% csrf_token %}
-		<div id="orders" align="center" >Your Order: </div>  
+		<div id="orders" align="center" ><div id="order_title">Your Order: </div>
 		
 		{% for index, order in orders.items %}
-		    
-		    <p id = {{order.id}}><table id='order_table'><tr>
+		
+		    <table id = {{order.id}} class='order_table'><tr>
 		    
 		    {% if order.food == "Shake" %}
 		    <td><b>{%if order.type%}{{order.type}} {% endif %}{{order.food}}</b></td>
@@ -442,10 +463,10 @@
 		    <td><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
-		    <td id='price_col'>{{order.price}}</td><td id='removebutton';><input type='button' value='remove' onclick= "removeElement('{{order.id}}');"></td></tr>
+		    <td id='price_col'>{{order.price}}</td><td><input id='removebutton' type='submit' value='remove' onclick= "removeElement('{{order.id}}');"></td></tr>
 		    
 		    {% if order.animal == 'yes' %}
-		    <tr><td id='added_desc'>Animal Style</td></tr>"
+		    <tr><td id='added_desc'>Animal Style</td></tr>
 		    {% endif %}
 		    
 		    {% if order.food == 'Drink' %}
@@ -456,16 +477,17 @@
 		    <tr><td id='added_desc'><i>{{order.desc}}</i></td></tr>
 		    {% endif %}
 		    
-		    <tr></table></p>
+		    <tr></table>
 		    
 		{% endfor %}
-		
+		</div> 
 		<p id="subtotal">{{ subtotal }}</p>
 		<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" />
+		
 	    </form>
 	  </td>
 	</tr>
-    </tbody></table>
+    </table>
     
 
 </body>
