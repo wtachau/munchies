@@ -21,7 +21,8 @@ def logout(request):
 def order_form(request):
 
     context = get_prices()
-    context['orders'] = request.session['orders'] # give the page all session orders
+    if 'orders' in request.session:
+        context['orders'] = request.session['orders'] # give the page all session orders
     
     if request.method == 'POST':
         
@@ -39,7 +40,7 @@ def order_form(request):
         
             # initialize request session if it's not there already
             if 'orders' not in request.session:
-                    request.session['orders'] = {} 
+                request.session['orders'] = {} 
                     
             index = json_object['id']
             
