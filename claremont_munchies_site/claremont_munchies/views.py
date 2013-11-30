@@ -6,6 +6,7 @@ from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from models import *
+from stripe_payment import *
 import os
 import json
 from prices import *
@@ -14,6 +15,7 @@ from view_helper import *
 
 def logout(request):
     request.session['logged_in'] = False
+    request.session['user_name'] = ''
     return HttpResponseRedirect("/")
 
 def order_form(request):
@@ -51,26 +53,12 @@ def order_form(request):
 
 def checkout(request):
     
-    #check if the user is logged in
-    if not is_logged_in(request):
-        return ask_to_login(request)
-    
     if request.method == 'POST':
-        #context['raw_data'] = request.get_raw_post_data
-        #q = QueryDict(request.POST)
-        #context['raw_data'] = request
-        
-        querydict_data = request.POST
-        json_data = querydict_data['json_string']
-        context['raw_data'] = json.loads(json_data) 
-        
-        #for key in request.POST:
-        #    context['raw_data'] = context['raw_data'] + "---" + key
-        return render_to_response('checkout.html', context, RequestContext(request))
-    else:
-        return render_to_response('checkout.html', context)
-
-
+        token = process_order(request)
+        return HttpResponse(token)
+    
+    return render_to_response('checkout.html', context, RequestContext(request))
+    
 #checks the integrity of login/register credentials
 def landing_page(request):
     

@@ -51,15 +51,18 @@ def enter_user(request,login_credentials):
     #save the entry into the database
     else:
         request.session['logged_in'] = True
+        request.session['user_name'] = login_credentials['name']
         entry.save()
         return 0
     
 
 #function is passed login credentials to be checked with the database
-def check_login(request, l_c):
-    validate = user.objects.filter(account_name=l_c['name'].lower(), password=l_c['password']).count()
+def check_login(request, login_credentials):
+    validate = user.objects.filter(account_name=login_credentials['name'].lower(), 
+                                   password=login_credentials['password']).count()
     if validate > 0:
         request.session['logged_in'] = True
+        request.session['user_name'] = login_credentials['name']
         return True
     else:
         return False
