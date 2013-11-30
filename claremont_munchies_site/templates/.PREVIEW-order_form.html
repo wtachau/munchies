@@ -23,8 +23,7 @@
 
 </style>
     
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <script src="jquery.cookie.js"></script>  
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" ></script>
     <script>
     var fileId = 0; 
     var orders = [];
@@ -111,13 +110,6 @@
     
     }
     
-    postOrder(object) {
-	var csrftoken = $.cookie('csrftoken');
-	console.log("here");
-    
-    
-    }
-    
     // add a file to the document and to the json structure
     function addFile() {
 	
@@ -187,10 +179,8 @@
 	htmlContent+="</table>"
 	// and add it!
 	addElement('orders', 'p', idString, htmlContent);
-	
-	
-	//do a POST here to move session 
-	postOrder(JSONObject);
+	orders.push(JSONObject);
+	console.log(orders);
     }
     
     // Actually adds element to the page, and then resets other menus
