@@ -14,10 +14,8 @@ warning = Context()
 
 #helper functions
 def is_logged_in(request):
-    if request.session.get('logged_in') == True:
-        return True
-    else:
-        return False
+    request.session.get('logged_in')
+
 
 def ask_to_login(request):
     warning['warning'] = 'You Must Login'
@@ -29,7 +27,8 @@ def send_to_order(request):
 
 
 #function is passed login credentials to be checked with the database
-def enter_user(request, login_credentials):
+
+def enter_user(request,login_credentials):
     
     #value to be entered into db; other fields null
     entry = user(account_name=login_credentials['name'].lower(), password=login_credentials['password'])

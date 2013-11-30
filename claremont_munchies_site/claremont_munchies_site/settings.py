@@ -88,6 +88,9 @@ STATICFILES_FINDERS = (
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = '_t9wecfk!$b79v&!l#xwrwhc!61shno172f28jw!2(e-ey)*9x'
 
+# For session dictionaries
+SESSION_SAVE_EVERY_REQUEST = True
+
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
