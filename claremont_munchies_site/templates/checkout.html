@@ -1,16 +1,13 @@
-<html>
-
-
-<p>Give us your money ya bitchass</p>
-
+<html><head></head><body><div id="order_container" style="position:absolute; width:598px; left:100px; top:47px; height:453px; border-image:initial; border:1px groove #000000; " >
 <div id="orders" align="center" >Your Order: </div>  
 		
 		{% for index, order in orders.items %}
 		    
-		    <p id = {{order.id}}><table id='order_table'><tr>
+		   
+		    <table id="order_table" ><tbody><tr>
 		    
 		    {% if order.food == "Shake" %}
-		    <td><b>{%if order.type%}{{order.type}} {% endif %}{{order.food}}</b></td>
+		    <td><b>{%if order.type%}<!--FLUXDJANGOVARIABLESTYLECODEorder.type}} {% endif %}{{order.food}}</b></td>
 		    {%endif%}
 		    {% if order.food == "Drink" %}
 		    <td><b>{{order.type}} </b></td>
@@ -22,41 +19,29 @@
 		    <td><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
-		    <td id='price_col'>{{order.price}}</td><td id='removebutton';><input type='button' value='remove' onclick= "removeElement('{{order.id}}');"></td></tr>
+		    <td id="price_col" >{{order.price}}</td> </tr>
 		    
 		    {% if order.animal == 'yes' %}
-		    <tr><td id='added_desc'>Animal Style</td></tr>"
-		    {% endif %}
+		    <tr><td id="added_desc" >Animal Style</td></tr>{% endif %}
 		    
 		    {% if order.food == 'Drink' %}
-		    <tr><td id='added_desc'>{{order.size}}</td></tr>
+		    <tr><td id="added_desc" >{{order.size--&gt;</td></tr>
 		    {% endif %}
 		    
 		    {% if order.desc %}
-		    <tr><td id='added_desc'><i>{{order.desc}}</i></td></tr>
+		    <tr><td id="added_desc" ><i>{{order.desc--&gt;</i></td></tr>
 		    {% endif %}
 		    
-		    <tr></table></p>
+		    <tr></tr></tbody></table><p></p>
 		    
 		{% endfor %}
 
 
-<form action="" method="POST">{% csrf_token %}
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f"
-    data-amount="2000"
-    data-name="Claremont Munchies"
-    data-description="($20.00)"
-    data-image="/128x128.png">
+
+<form action="" method="POST" style="position:inherit; left:201px; top:328px; " >{% csrf_token %}
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="2000" data-name="Claremont Munchies" data-description="($20.00)" data-image="/128x128.png" >
   </script>
-</form>
-
-
-
-
-
-
-</html>
-
-
+  
+  </form></div>
+  
+</body></html>
