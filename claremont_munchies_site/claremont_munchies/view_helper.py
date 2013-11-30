@@ -14,7 +14,7 @@ warning = Context()
 
 #helper functions
 def is_logged_in(request):
-    if request.session['logged_in'] == True:
+    if request.session.get('logged_in') == True:
         return True
     else:
         return False
@@ -51,6 +51,7 @@ def enter_user(login_credentials):
         return 4    
     #save the entry into the database
     else:
+        request.session['is_logged_in'] = True
         entry.save()
         return 0
     
