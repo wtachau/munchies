@@ -39,9 +39,7 @@ def checkout(request):
         
         querydict_data = request.POST
         json_data = querydict_data['json_string']
-        context['raw_data'] = json.loads(json_data)
-        
-        #urllib.unquote(request.body).decode('utf8') 
+        context['raw_data'] = json.loads(json_data) 
         
         #for key in request.POST:
         #    context['raw_data'] = context['raw_data'] + "---" + key
