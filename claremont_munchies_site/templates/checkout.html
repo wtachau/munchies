@@ -1,31 +1,24 @@
-<<<<<<< HEAD
 <html>
-<head>
-<script>
-
-var data = {{ raw_data }}
 
 
-//var json = JSON.stringify(eval("(" + raw_data + ")"));
-</script>
-</head>
+<p>Give us your money ya bitchass</p>
 
-<body>
-<p>{{raw_data}}</p>
-</body>
 
-</html>
-=======
-<html><p>{{raw_data}}</p>
-<form action="" method="POST">
+
+<form action="" method="POST">{% csrf_token %}
   <script
     src="https://checkout.stripe.com/checkout.js" class="stripe-button"
     data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f"
     data-amount="2000"
-    data-name="Demo Site"
-    data-description="2 widgets ($20.00)"
+    data-name="Claremont Munchies"
+    data-description="($20.00)"
     data-image="/128x128.png">
   </script>
 </form>
+
+
+
+
+
 </html>
->>>>>>> b1f38263255e9bd4ea8b8bc1b72a58df4fb7ea76
+

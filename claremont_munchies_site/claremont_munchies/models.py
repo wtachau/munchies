@@ -9,8 +9,14 @@ class user(models.Model):
     last_name = models.CharField(max_length=60, null=True)
     location = models.CharField(max_length=255, null=True)
     claremont_id_number = models.CharField(max_length=20, null=True)
-    credit_card_token = models.CharField(null=True, max_length=255)
+    email = models.CharField(max_length=255)
+    stripe_id = models.CharField(null=True, max_length=255)
     
+class orders(models.Model):
+    credit_card_token = models.CharField(max_length=255)
+    order = models.CharField(max_length=500)
+    date = models.DateField(auto_now = True, auto_now_add=True)
+    total_amount = models.IntegerField()
     
     
     
