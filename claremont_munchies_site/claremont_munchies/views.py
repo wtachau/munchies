@@ -7,22 +7,41 @@ from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
 from models import *
 import os
-
+import json
 from prices import *
-
 from view_helper import *
-
-
-
 
 def order_form(request):
 
     context = get_prices()
-
-    #check if the user is logged in
-    if not is_logged_in(request):
-        return ask_to_login(request) 
-
+    context['orders'] = request.session['orders'] # give the page all session orders
+    
+    if request.method == 'POST':
+        
+        data = request.POST.dict() # grab queryDict object, put into dict
+        
+        # if we were told to delete an item, delete it from session
+        if 'delete' in data:
+            delete_object = data['delete']
+            if delete_object in request.session['orders']:
+                del request.session['orders'][delete_object]
+            return HttpResponse();
+        # otherwise, we're creating a new item. Add it to the session dictionary
+        else:
+            json_object = json.loads(data['object']) # grab the object (leave behind csrf token)
+        
+            # initialize request session if it's not there already
+            if 'orders' not in request.session:
+                    request.session['orders'] = {} 
+                    
+            index = json_object['id']
+            
+            #request.session['orders'] = {} #ONLY TO FLUSH SESSION ORDERS
+            request.session['orders'][index] = json_object
+            
+            return HttpResponse();
+            #return HttpResponse("<html>"+str(index)+" "+ str(request.session.items())+ "</html>")
+    
     return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
@@ -63,9 +82,8 @@ def landing_page(request):
             context['password'] = request.POST['register_password']    
             context['password_2'] = request.POST['register_password_2'] 
         
-        
             #check the registration against the database
-            valid_registration = enter_user(context)  
+            valid_registration = enter_user(request,context)  
             #user commits a valid registration
             if valid_registration == 0:
                 return HttpResponseRedirect("/order")

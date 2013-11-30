@@ -24,9 +24,8 @@
 </style>
     
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-    <script src="jquery.cookie.js"></script>  
     <script>
-    var fileId = 0; 
+    var fileId = Math.round(Math.random()*100000000); 
     var orders = [];
     
     // Turn JSON into string
@@ -73,6 +72,14 @@
 		orders.splice(i,1);
 	    }
 	});
+	
+	// delete from server!
+	$.post("order",
+	{csrfmiddlewaretoken: '{{ csrf_token }}', 'delete':elementId},
+	function(data, textStatus, jqXHR)
+	{
+	      //console.log(data);
+	});
     }
     
     // get the burger price
@@ -111,17 +118,22 @@
     
     }
     
-    postOrder(object) {
-	var csrftoken = $.cookie('csrftoken');
-	console.log("here");
-    
+    // Send the new order to the server
+    function postOrder(object) {
+	
+	$.post("order",
+	{csrfmiddlewaretoken: '{{ csrf_token }}', 'object':stripJsonToString(object)},
+	function(data, textStatus, jqXHR)
+	{
+	      console.log(data);
+	});
     
     }
     
     // add a file to the document and to the json structure
     function addFile() {
 	
-	fileId++; // increment fileId to get a unique ID for the new element
+	fileId = Math.round(Math.random()*100000000); // change fileId to get a unique ID for the new element
 	var idString = 'order-'+fileId; //i.e. order-2, order-3
 	
 	//create a new json object to add
@@ -180,7 +192,7 @@
 	JSONObject.food = kindOfMeal;
 	JSONObject.type = type;
 	JSONObject.animal = document.getElementById('AnimalStyle').value
-	JSONObject.price = price + getPrice(kindOfMeal,type)
+	JSONObject.price = price + getPrice(kindOfMeal,type,size)
 	JSONObject.desc = document.getElementById('instructionsText').value;
 	
 	// finish up...
@@ -383,6 +395,32 @@
 	  <td width="400px" style="left:10px; top:2px; float:inherit; position:absolute; height:468px; width:329px; " >
 	    <form action="checkout" method="POST" id="checkoutForm" style="left:-25px; top:202px; " > {% csrf_token %}
 		<div id="orders" align="center" >Your Order: </div>  
+		
+		{% for index, order in orders.items %}
+		    
+		    <p id = {{order.id}}><table id='order_table'><tr>
+		    
+		    <td><b>{{order.food}}{%if order.type%}, {{order.type}} {% endif %}</b></td>
+		    
+		    <td id='price_col'>{{order.price}}</td><td id='removebutton';><input type='button' value='remove' onclick= "removeElement('{{order.id}}');"></td></tr>
+		    
+		    {% if order.animal == 'yes' %}
+		    <tr><td id='added_desc'>Animal Style</td></tr>"
+		    {% endif %}
+		    
+		    {% if order.food == 'Drink' %}
+		    <tr><td id='added_desc'>{{order.size}}</td></tr>
+		    {% endif %}
+		    
+		    {% if order.desc %}
+		    <tr><td id='added_desc'><i>{{order.desc}}</i></td></tr>
+		    {% endif %}
+		    
+		    <tr></table></p>
+		    
+		{% endfor %}
+		
+		
 		<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" />
 	    </form>
 	  </td>
