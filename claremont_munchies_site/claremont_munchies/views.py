@@ -11,6 +11,8 @@ import os
 from login import *
 from register import *
 from prices import *
+#url encoding issues
+import json
 
 #initialize the same context item for all pages
 context = Context()
@@ -27,7 +29,15 @@ def order_form(request):
 def checkout(request):
     if request.method == 'POST':
         #context['raw_data'] = request.get_raw_post_data
-        context['raw_data'] = request.POST
+        #q = QueryDict(request.POST)
+        #context['raw_data'] = request
+        
+        querydict_data = request.POST
+        json_data = querydict_data['json_string']
+        context['raw_data'] = json.loads(json_data)
+        
+        #urllib.unquote(request.body).decode('utf8') 
+        
         #for key in request.POST:
         #    context['raw_data'] = context['raw_data'] + "---" + key
         return render_to_response('checkout.html', context, RequestContext(request))
