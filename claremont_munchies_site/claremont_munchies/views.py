@@ -69,6 +69,10 @@ def order_form(request):
 
 def checkout(request):
     
+    total = request.session.get('order_total')
+    context['order_total'] = total*100
+    context['order_total_desc'] = '$'+str(total)
+    
     #user purchased the cart
     if request.method == 'POST':
         if 'stripeToken' in request.POST:      
