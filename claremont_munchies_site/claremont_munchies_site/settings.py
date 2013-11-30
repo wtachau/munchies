@@ -68,7 +68,7 @@ STATIC_ROOT = ''
 # URL prefix for static files.
 # Example: "http://example.com/static/", "ht
 #tp://static.example.com/"
-STATIC_URL = os.getcwd()+'/templates/static/'
+STATIC_URL = '/static/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (
