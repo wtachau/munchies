@@ -16,8 +16,14 @@
 
 #removebutton {
 	width:25px;
+	height:25px;
 	background:url('{% static "images/x.png" %}'); 
-	background-size:18px;
+	background-size:25px;
+	border:none;
+}
+#removebutton:hover {
+	background:url('{% static "images/x_alt.png" %}');
+	background-size:25px;
 }
 
 body {
@@ -463,7 +469,7 @@ body {
 		    <td><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
-		    <td id='price_col'>{{order.price}}</td><td><input id='removebutton' type='submit' value='remove' onclick= "removeElement('{{order.id}}');"></td></tr>
+		    <td id='price_col'>{{order.price}}</td><td><input id='removebutton' type='submit' value='' onclick= "removeElement('{{order.id}}');"></td></tr>
 		    
 		    {% if order.animal == 'yes' %}
 		    <tr><td id='added_desc'>Animal Style</td></tr>
