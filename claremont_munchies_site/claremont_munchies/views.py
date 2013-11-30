@@ -8,23 +8,35 @@ from django.http import HttpResponseRedirect
 from models import *
 import os
 #our login file to verify credentials
+<<<<<<< HEAD
 from login import *
 from register import *
 from prices import *
+=======
+from view_helper import *
+>>>>>>> james
 
-#initialize the same context item for all pages
-context = Context()
-warning = Context()
 
-def hello(request):
-    return HttpResponse("<h1>Hello Page</h1>Hello world")
 
 def order_form(request):
+<<<<<<< HEAD
     context = get_prices()
     context['css_root'] = os.getcwd()+'/templates'
+=======
+    
+    #check if the user is logged in
+    if not is_logged_in(request):
+        return ask_to_login(request) 
+    
+>>>>>>> james
     return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
+    
+    #check if the user is logged in
+    if not is_logged_in(request):
+        return ask_to_login(request)
+    
     if request.method == 'POST':
         #context['raw_data'] = request.get_raw_post_data
         context['raw_data'] = request.POST
@@ -37,6 +49,11 @@ def checkout(request):
 
 #checks the integrity of login/register credentials
 def landing_page(request):
+    
+    #redirect the user to the order page if they are logged in
+    if is_logged_in(request):
+        return send_to_order(request)
+    
     if request.method == 'POST':
         
         #check that the post request was for registration
@@ -59,8 +76,15 @@ def landing_page(request):
             #passwords do not match
             elif valid_registration == 2:
                 warning['warning'] = 'The Passwords Do Not Match'
-                return render_to_response('landing_page.html', warning, RequestContext(request))        
-        
+                return render_to_response('landing_page.html', warning, RequestContext(request))  
+            #account name contains a space
+            elif valid_registration == 3:
+                warning['warning'] = 'Account Names Must Not Contain Spaces'
+                return render_to_response('landing_page.html', warning, RequestContext(request))            
+            #password contains a space
+            elif valid_registration == 4:
+                            warning['warning'] = 'Passwords Must Not Contain Spaces'
+                            return render_to_response('landing_page.html', warning, RequestContext(request))              
         
         
         #check that the post request was for login
@@ -68,9 +92,10 @@ def landing_page(request):
             #gather post values
             context['name'] = request.POST['login_name']
             context['password'] = request.POST['login_password']            
-            is_logged_in = check_login(context)
-            if is_logged_in:
-                return HttpResponseRedirect("/order")
+            
+            #login the user
+            if check_login(request, context):
+                return send_to_order(request)
             else:
                 warning['warning'] = 'Invalid Email or Password'
                 return render_to_response('landing_page.html', warning, RequestContext(request))        
@@ -78,3 +103,6 @@ def landing_page(request):
     #the method was not a post so load the regular page
     warning['warning'] = ''
     return render_to_response('landing_page.html', RequestContext(request))
+
+
+
