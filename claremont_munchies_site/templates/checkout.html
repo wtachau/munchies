@@ -35,11 +35,12 @@
 		    <tr></tr></tbody></table><p></p>
 		    
 		{% endfor %}
+		{{order_total_desc}}
 
 
 
 <form action="" method="POST" style="position:inherit; left:201px; top:328px; " >{% csrf_token %}
-  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="2000" data-name="Claremont Munchies" data-description="($20.00)" data-image="/128x128.png" >
+  <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
   </script>
   
   </form></div>
