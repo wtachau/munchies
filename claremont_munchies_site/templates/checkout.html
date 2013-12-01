@@ -33,11 +33,11 @@
 		    <tr><td id="added_desc" >Animal Style</td></tr>{% endif %}
 		    
 		    {% if order.food == 'Drink' %}
-		    <tr><td id="added_desc" >{{order.size--&gt;</td></tr>
+		    <tr><td id="added_desc" >{{order.size}}</td></tr>
 		    {% endif %}
 		    
 		    {% if order.desc %}
-		    <tr><td id="added_desc" ><i>{{order.desc--&gt;</i></td></tr>
+		    <tr><td id="added_desc" ><i>{{order.desc}}</i></td></tr>
 		    {% endif %}
 		    
 		    <tr></tr></table><p></p>
@@ -45,9 +45,11 @@
 		{% endfor %}
 		<table id="table_list">{{order_total_desc}}</table>
 		</div>
+		
 </div>
 
 
+<div id="spacing">&nbsp;</div>
 
 <form action="" method="POST" style="position:inherit; left:201px; " >{% csrf_token %}
     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
