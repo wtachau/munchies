@@ -1,27 +1,28 @@
-<html><head>
-		<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
-		<meta name="author" content="Flux User" >
-		<meta name="description" content="My Website" >
-		<meta name="keywords" content="Flux, Mac" >
+<html>
+	<head>
+		
 		<title>Claremont Munchies</title>
 	</head>
-	<body style="left:0; top:0; " ><div style="position:absolute; top:56px; left:213px; width:229px; height:29px; color:#FF0000; " >{{warning}}</div>
+	<body style="left:0; top:0; " >
+	<div style="position:absolute; top:56px; left:213px; width:229px; height:29px; color:#FF0000; " >{{warning}}</div>
 	
-	<form name="login" method="POST" action="." >{% csrf_token %}
-	<div style="position:absolute; top:48px; left:200px; width:248px; height:396px; border-image:initial; border:3px solid #000000; " >
-	<input type="text" placeholder="Account Name" value="" style="left:50px; top:71px; width:150px; position:inherit; border-image:initial; border:1px solid #000000; " name="login_name" />
-	<input type="password" placeholder="Password" value="" style="left:50px; top:112px; width:150px; position:inherit; float:right; border-image:initial; border:1px solid #000000; " name="login_password" />
-	<div style="position:absolute; top:40px; left:58px; width:128px; height:17px; " > &nbsp; &nbsp; &nbsp;Login Below</div>
-	<input type="submit" formaction="/" style="left:98px; top:148px; position:absolute; width:51px; height:170px; " value="Login" />
-	</form>
+		<form name="login" method="POST" action="." >{% csrf_token %}
+			<div id='landing_page_box'>
+				<div class='landing_page_info'>Login Below</div>
+				<input class='landing_page_field' type="text" placeholder="Account Name" value="" name="login_name" />
+				<input class='landing_page_field' type="password" placeholder="Password"name="login_password" />
+				<input class='landing_page_field' type="submit" formaction='/' value="Login" />
+		</form>
 	
-	<form name="register" method="POST" action="." >{% csrf_token %}	
-	<div style="position:absolute; top:213px; left:73px; width:119px; height:23px; " >Register Below</div>
-	<input type="text" placeholder="User Name" value="" style="left:48px; top:246px; width:150px; position:absolute; border-image:initial; border:1px solid #000000; " name="register_name" />
-	<input type="password" placeholder="Password" value="" style="left:47px; top:268px; width:150px; position:absolute; float:right; border-image:initial; border:1px solid #000000; " name="register_password" />
-	<input type="password" placeholder="Repeat Password" value="" style="left:47px; top:294px; width:150px; position:absolute; float:right; border-image:initial; border:1px solid #000000; " name="register_password_2" />
-	<input type="submit" formaction="/" style="left:93px; top:350px; position:absolute; width:59px; height:170px; " value="Register" />
-	</div></form>
+		<form name="register" method="POST" action="." >{% csrf_token %}	
+			<div class='landing_page_info'>Register Below</div>
+			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" />
+			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" />
+			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" />
+			<input class='landing_page_field' type="submit" formaction="/" value="Register" />
+		</form>
+		
+	</div>
 	
 	
 </body></html>

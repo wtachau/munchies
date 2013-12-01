@@ -2,20 +2,20 @@
 
 
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<link href='http://fonts.googleapis.com/css?family=Molengo' rel='stylesheet' type='text/css'>
 
-
-<div id='header_bar' style="position:relative; margin-left:100px; width:500px; height:50px; " >
+<div id='header_bar'>
 
 <form action="/order" >
-<input id='order_button' type="submit" style="width:100px; height:50px; margin-left50px; position:relative; " value="Order" />
+<input class='header_button' type="submit" value="Order" />
 </form>
 
 <form action="/checkout" >
-<input id='checkout_button' type="submit" style="width:100px; height:50px; margin-left300px position:relative; " value="Checkout" />
+<input class='header_button' type="submit" value="Checkout" />
 </form>
 
 <form action="/logout" >
-<input id='logout_button' type="submit" style="width:100px; height:50px; margin-left450px; position:relative; " value="Logout" />
+<input id='logout_button'class='header_button' type="submit" value="Logout" />
 </form>
 
 </div>
