@@ -4,7 +4,7 @@ import stripe
 stripe.api_key = "sk_test_lOyq2bIOtEfGJR6yoEsJjA3h"
 
 
-def process_order(request):
+def process_order(request, total_amount):
     
     
     
@@ -23,7 +23,7 @@ def process_order(request):
         # Create a Customer
     customer = stripe.Customer.create(
         card=token,
-        description="bitchass"
+        description="in n out"
     )
         #stripe_id = customer.id
         #current_user.stripe_id = stripe_id
@@ -32,7 +32,7 @@ def process_order(request):
     
     # Charge the Customer instead of the card
     stripe.Charge.create(
-        amount=20000, # in cents
+        amount=total_amount, # in cents
         currency="usd",
         customer=customer.id
     )

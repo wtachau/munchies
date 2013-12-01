@@ -29,6 +29,11 @@ def updateTotal(request):
             
 def order_form(request):
 
+
+    #redirect to landing page if they are not logged in
+    if not is_logged_in(request):
+        return send_to_landing_page(request)    
+
     context = get_prices()
     if 'orders' in request.session and 'order_total' in request.session:
         context['orders'] = request.session['orders'] # give the page all session orders
@@ -69,6 +74,10 @@ def order_form(request):
 
 def checkout(request):
     
+    #redirect to landing page if they are not logged in
+    if not is_logged_in(request):
+        return send_to_landing_page(request)    
+    
     total = request.session.get('order_total')
     context['order_total'] = total*100
     context['order_total_desc'] = '$'+str(total)
@@ -76,7 +85,7 @@ def checkout(request):
     #user purchased the cart
     if request.method == 'POST':
         if 'stripeToken' in request.POST:      
-            token = process_order(request)
+            token = process_order(request, context['order_total'])
             return HttpResponse(token)
         
     #user came from our order form

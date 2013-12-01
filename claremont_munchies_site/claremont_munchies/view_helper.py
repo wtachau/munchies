@@ -26,6 +26,9 @@ def ask_to_login(request):
 def send_to_order(request):
     return HttpResponseRedirect("/order")
 
+def send_to_landing_page(request):
+    return HttpResponseRedirect('/')
+
 
 
 #function is passed login credentials to be checked with the database

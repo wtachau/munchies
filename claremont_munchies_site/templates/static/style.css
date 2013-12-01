@@ -1,4 +1,48 @@
-{% load staticfiles %}
+.landing_page_field{
+    width:25%;
+    height:30px;
+    margin-right:50%;
+    margin-left:35%;
+    border-radius:10px;
+    text-align:center;
+    margin-top:1%;
+    font-size:20;
+    background-color:00FFFF;
+}
+
+#landing_page_warning{
+
+    background-color:white;
+
+}
+
+#register_text{
+    margin-top:5%;
+    font-size:30;
+    background-color:white;
+}
+#login_text{
+    margin-top:0;
+    font-size:30;
+    background-color:white;
+}
+#login_button{
+    background-color:red;
+    color:white;
+}
+#register_button{
+    background-color:red;
+    color:white;
+}
+#login_button:hover{
+    background-color:blue;
+    box-shadow: 5px 5px 2px #888888;
+}
+#register_button:hover{
+    background-color:blue;
+    box-shadow: 5px 5px 2px #888888;
+}
+
 
 .header_button{
     height:25;
@@ -11,11 +55,17 @@
     border-radius:50;
     font-family:Molengo;
     font-size:inherit;
+    color:white;
+}
+
+.header_button:hover {
+    background-color:blue;
+    box-shadow: 5px 5px 2px #888888;
 }
 
 #header_bar{
 position:relative; 
-height:50;
+height:60;
 
 }
 
@@ -25,7 +75,9 @@ margin-left:0;
 }
 
 #landing_page_box{
+
 border-color:red;
+
 }
 
 .landing_page_info{
@@ -58,22 +110,28 @@ border-color:red;
 #submitButton {
     width:70px;
     height:50px;
-    background:url('{% static "images/arrow.png" %}'); 
+    background:url('images/arrow.png'); 
     background-size:70px 50px;
     margin-top:15px;
     border:none;
 }
 
 #removebutton {
+	background:url('images/x.png');
+	background-size:25px 25px;
 	width:25px;
 	height:25px;
-	background:url('{% static "x.png" %}'); 
-	background-size:25px;
+	border-radius:5px;
 	border:none;
+	
 }
 #removebutton:hover {
-	background:url('{% static "images/x_alt.png" %}');
-	background-size:25px;
+	background:url('images/x_alt.png');
+	background-size:25px 25px;
+	width:25px;
+	height:25px;
+	background-color:red;
+	border-radius:5px;
 }
 
 body {
@@ -84,7 +142,8 @@ body {
     background-color:#FFFFFF;
     border-radius:40px;
     margin-bottom:40px;
-    height:500px;
+    min-height:500px;
+    height:auto;
     text-align: center;
 }
 
@@ -106,7 +165,7 @@ body {
 #checkoutbutton {
     width:55px;
     height:50px;
-	background:url('{% static "images/eat.png" %}'); 
+	background:url('images/eat.png'); 
 	background-size:55px 50px;
 	border:none;
 }
@@ -114,14 +173,11 @@ body {
 #checkoutbutton:hover {
     width:55px;
     height:50px;
-	background:url('{% static "images/eat_alt.png" %}'); 
+	background:url('images/eat_alt.png'); 
 	background-size:55px 50px;
 	border:none;
 }
 
-#orders {
-    margin-top:25px;
-}
 #order_title {
     padding-bottom:15px;
     font-family: 'Molengo', Georgia, Times, serif;
@@ -147,7 +203,6 @@ body {
     margin-right:auto;
     margin-top:40px;
     height:453px;
-    border-image:initial; 
     border:1px 
     groove #000000;
 }
@@ -165,9 +220,19 @@ margin-top:30px;
 }
 #orders{
 margin-top:30px;
+font-family: 'Cardo', Georgia, Times, serif;
+	font-size: 18px;
 }
 
 .checkout_menu {
+margin-top: 43px;
+width: 1010px;
+margin-left: auto;
+margin-right: auto;
+
+}
+
+.login_menu {
 margin-top: 43px;
 width: 1010px;
 margin-left: auto;
