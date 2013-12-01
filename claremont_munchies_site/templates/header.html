@@ -1,17 +1,21 @@
+{% load staticfiles %}
 
-	
-<div style="position:relative; margin-left:auto; margin-right:auto; width:651px; height:51px; " >
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
+<link href='http://fonts.googleapis.com/css?family=Molengo' rel='stylesheet' type='text/css'>
+
+<div id='header_bar'>
 
 <form action="/order" >
-<input type="submit" style="width:109px; height:49px; left:1px; top:25px; position:absolute; " value="Order" />
+<input class='header_button' type="submit" value="Order" />
 </form>
 
 <form action="/checkout" >
-<input type="submit" style="width:109px; height:49px; left:249px; top:26px; position:absolute; " value="Checkout" />
+<input class='header_button' type="submit" value="Checkout" />
 </form>
 
 <form action="/logout" >
-<input type="submit" style="width:109px; height:49px; left:499px; top:25px; position:absolute; " value="Logout" />
+<input id='logout_button'class='header_button' type="submit" value="Logout" />
 </form>
 
 </div>

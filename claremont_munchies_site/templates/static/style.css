@@ -1,0 +1,37 @@
+
+
+.header_button{
+    height:25;
+    width:150;
+    margin-left:5%;
+    position:relative;
+    float:left;
+    margin-top:40;
+    background-color:red;
+    border-radius:50;
+    font-family:Molengo;
+    font-size:inherit;
+}
+
+#header_bar{
+position:relative; 
+height:50;
+
+}
+
+#logout_button{
+float:right;
+margin-left:0;
+}
+
+#landing_page_box{
+border-color:red;
+}
+
+.landing_page_info{
+
+}
+
+.landing_page_field{
+
+}
