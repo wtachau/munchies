@@ -2,16 +2,38 @@
 
 <head>
     
-    <body style="left:0; top:1px; " >
-    
     {% include "header.html" %}
     
     {% load staticfiles %}
-    
+    <link href='http://fonts.googleapis.com/css?family=Cardo:400,700' rel='stylesheet' type='text/css'>
+    <link href="http://fonts.googleapis.com/css?family=Molengo" rel="stylesheet" type="text/css">
     <style>
 #price_col {
 	width:30px;
 	text-align:right;
+}
+
+#logo {
+    /*left: 50%;
+    position: absolute;
+    margin-top: 50px;
+    width:170px;
+    height:120px;
+    background:url('{% static "images/in-n-out-logo.jpg" %}'); 
+    background-size:170px 120px;*/
+    }
+
+#order_name {
+    width:300px;
+}
+
+#submitButton {
+    width:70px;
+    height:50px;
+    background:url('{% static "images/arrow.png" %}'); 
+    background-size:70px 50px;
+    margin-top:15px;
+    border:none;
 }
 
 #removebutton {
@@ -34,6 +56,7 @@ body {
     background-color:#FFFFFF;
     border-radius:40px;
     margin-bottom:40px;
+    height:500px;
 }
 
 #added_desc {
@@ -46,7 +69,25 @@ body {
 .order_table {
 	width:380px;
 	border-spacing:10px 0px;
-	margin-top:20px
+	margin-top:20px;
+	font-family: 'Cardo', Georgia, Times, serif;
+	font-size: 18px;
+}
+
+#checkoutbutton {
+    width:55px;
+    height:50px;
+	background:url('{% static "images/eat.png" %}'); 
+	background-size:55px 50px;
+	border:none;
+}
+
+#checkoutbutton:hover {
+    width:55px;
+    height:50px;
+	background:url('{% static "images/eat_alt.png" %}'); 
+	background-size:55px 50px;
+	border:none;
 }
 
 #orders {
@@ -54,6 +95,21 @@ body {
 }
 #order_title {
     padding-bottom:15px;
+    font-family: 'Molengo', Georgia, Times, serif;
+    font-size: 30px;
+}
+.select_button {
+    width:250px;
+    font-family: 'Cardo', Georgia, Times, serif;
+    font-size: 40px;
+}
+.menu_q {
+    font-family: 'Molengo', Georgia, Times, serif;
+    font-size: 20px;
+}
+.menu_q_big  {
+    font-size: 35px;
+    font-family: 'Molengo', Georgia, Times, serif;
 }
 
 
@@ -123,12 +179,12 @@ body {
     function updateTotal() {
 	subtotal = document.getElementById('subtotal');
 	
-	newAmount = 0;
+	/*newAmount = 0;
 	$('[id=price_col]').each(function(index, value) {
 	    newAmount += Number(value.innerText);
 	});
 	
-	document.getElementById('subtotal').innerText = "$"+newAmount;
+	document.getElementById('subtotal').innerText = "$"+newAmount;*/
 	
     
     }
@@ -217,31 +273,33 @@ body {
 	
 	// Add to HTML string
 	if (kindOfMeal == "Cheeseburger" || kindOfMeal=="Hamburger") {
-	    htmlContent += "<td><b>"+kindOfMeal+", " + type + "</b></td>";
+	    htmlContent += "<td id='order_name'><b>"+kindOfMeal+", " + type + "</b></td>";
 	} else if (kindOfMeal == "Shake") {
-	    htmlContent += "<td><b>"+type+" "+kindOfMeal+"</b></td>";	
+	    htmlContent += "<td id='order_name'><b>"+type+" "+kindOfMeal+"</b></td>";	
     	} else if (kindOfMeal == "Drink") {
-	    htmlContent += "<td><b>"+type+"</b></td>";	
+	    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
 	} else {
-	    htmlContent += "<td><b>"+kindOfMeal+"</b></td>";
+	    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
 	}
-	htmlContent+= "<td id='price_col'>"+getPrice(kindOfMeal,type, size)+"</td><td id='removebutton';><input  type='image' src='{% static "images/x.png" %}' width=30 value='remove' onclick="+tellToDelete+"></td></tr>";
+	htmlContent+= "<td id='price_col'>"+getPrice(kindOfMeal,type, size)+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
 	
 	// look for animal style info, if applicable
 	if (kindOfMeal=="Cheeseburger" || kindOfMeal == "Hamburger" || kindOfMeal == "French Fries"
 	    && document.getElementById('AnimalStyle').value == "yes") {
-	    htmlContent+= "<tr><td id='added_desc'>Animal Style</td><td id='price_col'>{{ animal }}</td></tr>"
+	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td><td id='price_col'>{{ animal }}</td></tr>"
 	    price += {{animal}}
 	}
 	
 	// if drink, show size
 	if (kindOfMeal=="Drink") {
-	    htmlContent+= "<tr><td id='added_desc'>"+size+"</td></tr>"
+	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;"+size+"</td></tr>"
 	    JSONObject.size = size;
 	}
 	
 	// Add instructions 
-	htmlContent+= "<tr><td id='added_desc'><i>"+ document.getElementById('instructionsText').value +"</i></td></tr>"	
+	if (document.getElementById('instructionsText').value != "") {	
+	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;<i>"+ document.getElementById('instructionsText').value +"</i></td></tr>";
+	}
 	
 	// Then construct JSON object
 	JSONObject.food = kindOfMeal;
@@ -298,7 +356,10 @@ body {
       $(window).keydown(function(event){
 	if(event.keyCode == 13) {
 	  event.preventDefault();
-	  document.getElementById('submitButton').click();
+	  // only submit if the information box is showing!
+	  if ($("#AddInstructions").is(':visible')) {
+	    document.getElementById('submitButton').click();
+	  }
 	  return false;
 	}
       });
@@ -372,14 +433,15 @@ body {
 
     {% load staticfiles %}
 
-    
+    <div id='logo'></div>
     <table id="menu" style="margin-left:auto; margin-right:auto; margin-top:25px; text-align:center; " >
+	
 	<tr >
 	  <td  width=600px>
 	    <form id="submitorder" action="order" >
 	    <p style="left:2px; top:47px; " >
-		What Would You Like?<br>
-		<select id="FoodType" >
+		<span class="menu_q_big">What Would You Like?</span><br>
+		<select class="select_button" id="FoodType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Cheeseburger" >Cheeseburger</option>
 		    <option value="Hamburger" >Hamburger</option>
@@ -390,8 +452,8 @@ body {
 	    </p>
 	
 	    <p id="BurgerMenu" style="display:none; " >
-		What Kind?<br>
-		<select id="BurgerType" >
+		<span class="menu_q">What Kind?</span><br>
+		<select class="select_button" id="BurgerType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Single Single" >Single Single</option>
 		    <option value="Double Double" >Double Double</option>
@@ -401,8 +463,8 @@ body {
 	    </p>
 	    
 	    <p id="AnimalStyleMenu" style="display:none; " >
-		Animal Style?<br>
-		<select id="AnimalStyle" >
+		<span class="menu_q">Animal Style?</span><br>
+		<select class="select_button" id="AnimalStyle" >
 		    <option selected="" disabled="" ></option>
 		    <option value="yes" >Yup! ($2 extra)</option>
 		    <option value="no" >No thanks</option>
@@ -410,8 +472,8 @@ body {
 	    </p>
 	    
 	    <p id="DrinkMenu" style="display:none; " >
-		What Kind?<br>
-		<select id="DrinkType" >
+		<span class="menu_q">What Kind?</span><br>
+		<select class="select_button" id="DrinkType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Coke" >Coke</option>
 		    <option value="Diet Coke" >Diet Coke</option>
@@ -424,16 +486,16 @@ body {
 		</select>
 	    </p>
 	    <p id="DrinkSubMenu" style="display:none; " >
-		Size<br>
-		<select id="DrinkSize" >
+		<span class="menu_q">Size</span><br>
+		<select class="select_button" id="DrinkSize" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Small" >Small</option>
 		    <option value="Large" >Large</option>
 		</select>
 	    </p>
 	    <p id="ShakeMenu" style="display:none; " >
-		Flavor?<br>
-		<select id="ShakeType" >
+		<span class="menu_q">Flavor?</span><br>
+		<select class="select_button" id="ShakeType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Chocolate" >Chocolate</option>
 		    <option value="Strawberry" >Strawberry</option>
@@ -442,9 +504,9 @@ body {
 		</select>
 	    </p>
 	    <p id="AddInstructions" style="display:none; " >
-		Additional Instructions?<br>
+		<span class="menu_q">Additional Instructions?</span><br>
 		<input id="instructionsText" type="text" size="45" value="" /><br>
-		<input id="submitButton" type="button" onclick="addFile()" value="Add it!" />
+		<input id="submitButton" type="button" onclick="addFile()" value="" />
 	    </p>
 	    </form>
 	  </td>
@@ -457,38 +519,38 @@ body {
 		    <table id = {{order.id}} class='order_table'><tr>
 		    
 		    {% if order.food == "Shake" %}
-		    <td><b>{%if order.type%}{{order.type}} {% endif %}{{order.food}}</b></td>
+		    <td id='order_name'><b>{%if order.type%}{{order.type}} {% endif %}{{order.food}}</b></td>
 		    {%endif%}
 		    {% if order.food == "Drink" %}
-		    <td><b>{{order.type}} </b></td>
+		    <td id='order_name'><b>{{order.type}} </b></td>
 		    {% endif%}
 		    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
-		    <td><b>{{order.food}}, {{order.type}}</b></td>
+		    <td id='order_name'><b>{{order.food}}, {{order.type}}</b></td>
 		    {% endif%}
 		    {% if order.food == "French Fries" %}
-		    <td><b>{{order.food}}</b></td>
+		    <td id='order_name'><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
 		    <td id='price_col'>{{order.price}}</td><td><input id='removebutton' type='submit' value='' onclick= "removeElement('{{order.id}}');"></td></tr>
 		    
 		    {% if order.animal == 'yes' %}
-		    <tr><td id='added_desc'>Animal Style</td></tr>
+		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>
 		    {% endif %}
 		    
 		    {% if order.food == 'Drink' %}
-		    <tr><td id='added_desc'>{{order.size}}</td></tr>
+		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;{{order.size}}</td></tr>
 		    {% endif %}
 		    
 		    {% if order.desc %}
-		    <tr><td id='added_desc'><i>{{order.desc}}</i></td></tr>
+		    <tr><td id='added_desc'><i>&nbsp;&nbsp;&nbsp;{{order.desc}}</i></td></tr>
 		    {% endif %}
 		    
 		    <tr></table>
 		    
 		{% endfor %}
 		</div> 
-		<p id="subtotal">{{ subtotal }}</p>
-		<input id="checkoutButton" type="button" onclick="checkout()" value="Checkout!" />
+		<p id="subtotal"><!--{{ subtotal }}--></p>
+		<input id="checkoutButton" type="button" onclick="checkout()" />
 		
 	    </form>
 	  </td>
