@@ -1,4 +1,4 @@
-
+{% load staticfiles %}
 
 .header_button{
     height:25;
@@ -33,5 +33,144 @@ border-color:red;
 }
 
 .landing_page_field{
+
+}
+
+#price_col {
+	width:30px;
+	text-align:right;
+}
+
+#logo {
+    /*left: 50%;
+    position: absolute;
+    margin-top: 50px;
+    width:170px;
+    height:120px;
+    background:url('{% static "images/in-n-out-logo.jpg" %}'); 
+    background-size:170px 120px;*/
+    }
+
+#order_name {
+    width:300px;
+}
+
+#submitButton {
+    width:70px;
+    height:50px;
+    background:url('{% static "images/arrow.png" %}'); 
+    background-size:70px 50px;
+    margin-top:15px;
+    border:none;
+}
+
+#removebutton {
+	width:25px;
+	height:25px;
+	background:url('{% static "x.png" %}'); 
+	background-size:25px;
+	border:none;
+}
+#removebutton:hover {
+	background:url('{% static "images/x_alt.png" %}');
+	background-size:25px;
+}
+
+body {
+    background-color:#f3f3f3;
+}
+
+#menu {
+    background-color:#FFFFFF;
+    border-radius:40px;
+    margin-bottom:40px;
+    height:500px;
+    text-align: center;
+}
+
+#added_desc {
+	width:280px;
+	text-overflow:ellipsis;
+	overflow:hidden;
+	white-space:nowrap;
+}
+
+.order_table {
+	width:380px;
+	border-spacing:10px 0px;
+	margin-top:20px;
+	font-family: 'Cardo', Georgia, Times, serif;
+	font-size: 18px;
+}
+
+#checkoutbutton {
+    width:55px;
+    height:50px;
+	background:url('{% static "images/eat.png" %}'); 
+	background-size:55px 50px;
+	border:none;
+}
+
+#checkoutbutton:hover {
+    width:55px;
+    height:50px;
+	background:url('{% static "images/eat_alt.png" %}'); 
+	background-size:55px 50px;
+	border:none;
+}
+
+#orders {
+    margin-top:25px;
+}
+#order_title {
+    padding-bottom:15px;
+    font-family: 'Molengo', Georgia, Times, serif;
+    font-size: 30px;
+}
+.select_button {
+    width:250px;
+    font-family: 'Cardo', Georgia, Times, serif;
+    font-size: 40px;
+}
+.menu_q {
+    font-family: 'Molengo', Georgia, Times, serif;
+    font-size: 20px;
+}
+.menu_q_big  {
+    font-size: 35px;
+    font-family: 'Molengo', Georgia, Times, serif;
+}
+#order_container{
+    position:relative;
+    width:880px; 
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:40px;
+    height:453px;
+    border-image:initial; 
+    border:1px 
+    groove #000000;
+}
+#checkout_table{
+margin-left:auto;
+margin-right:auto;
+margin-top:30px;
+}
+#table_list{
+	width:380px;
+	table-layout:fixed;
+}
+#price_col {
+	width:30px;
+}
+#orders{
+margin-top:30px;
+}
+
+.checkout_menu {
+margin-top: 43px;
+width: 1010px;
+margin-left: auto;
+margin-right: auto;
 
 }

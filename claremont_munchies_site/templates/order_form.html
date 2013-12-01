@@ -8,109 +8,6 @@
     <link href='http://fonts.googleapis.com/css?family=Cardo:400,700' rel='stylesheet' type='text/css'>
     <link href="http://fonts.googleapis.com/css?family=Molengo" rel="stylesheet" type="text/css">
     <style>
-#price_col {
-	width:30px;
-	text-align:right;
-}
-
-#logo {
-    /*left: 50%;
-    position: absolute;
-    margin-top: 50px;
-    width:170px;
-    height:120px;
-    background:url('{% static "images/in-n-out-logo.jpg" %}'); 
-    background-size:170px 120px;*/
-    }
-
-#order_name {
-    width:300px;
-}
-
-#submitButton {
-    width:70px;
-    height:50px;
-    background:url('{% static "images/arrow.png" %}'); 
-    background-size:70px 50px;
-    margin-top:15px;
-    border:none;
-}
-
-#removebutton {
-	width:25px;
-	height:25px;
-	background:url('{% static "images/x.png" %}'); 
-	background-size:25px;
-	border:none;
-}
-#removebutton:hover {
-	background:url('{% static "images/x_alt.png" %}');
-	background-size:25px;
-}
-
-body {
-    background-color:#f3f3f3;
-}
-
-#menu {
-    background-color:#FFFFFF;
-    border-radius:40px;
-    margin-bottom:40px;
-    height:500px;
-}
-
-#added_desc {
-	width:280px;
-	text-overflow:ellipsis;
-	overflow:hidden;
-	white-space:nowrap;
-}
-
-.order_table {
-	width:380px;
-	border-spacing:10px 0px;
-	margin-top:20px;
-	font-family: 'Cardo', Georgia, Times, serif;
-	font-size: 18px;
-}
-
-#checkoutbutton {
-    width:55px;
-    height:50px;
-	background:url('{% static "images/eat.png" %}'); 
-	background-size:55px 50px;
-	border:none;
-}
-
-#checkoutbutton:hover {
-    width:55px;
-    height:50px;
-	background:url('{% static "images/eat_alt.png" %}'); 
-	background-size:55px 50px;
-	border:none;
-}
-
-#orders {
-    margin-top:25px;
-}
-#order_title {
-    padding-bottom:15px;
-    font-family: 'Molengo', Georgia, Times, serif;
-    font-size: 30px;
-}
-.select_button {
-    width:250px;
-    font-family: 'Cardo', Georgia, Times, serif;
-    font-size: 40px;
-}
-.menu_q {
-    font-family: 'Molengo', Georgia, Times, serif;
-    font-size: 20px;
-}
-.menu_q_big  {
-    font-size: 35px;
-    font-family: 'Molengo', Georgia, Times, serif;
-}
 
 
 </style>
@@ -435,12 +332,13 @@ body {
 
     <div id='logo'></div>
     <table id="menu" style="margin-left:auto; margin-right:auto; margin-top:25px; text-align:center; " >
+    <div id="spacing">&nbsp;</div>
 	
 	<tr >
 	  <td  width=600px>
 	    <form id="submitorder" action="order" >
 	    <p style="left:2px; top:47px; " >
-		<span class="menu_q_big">What Would You Like?</span><br>
+		<span class="menu_q_big">what would you like?</span><br>
 		<select class="select_button" id="FoodType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Cheeseburger" >Cheeseburger</option>
@@ -452,7 +350,7 @@ body {
 	    </p>
 	
 	    <p id="BurgerMenu" style="display:none; " >
-		<span class="menu_q">What Kind?</span><br>
+		<span class="menu_q">what kind?</span><br>
 		<select class="select_button" id="BurgerType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Single Single" >Single Single</option>
@@ -463,7 +361,7 @@ body {
 	    </p>
 	    
 	    <p id="AnimalStyleMenu" style="display:none; " >
-		<span class="menu_q">Animal Style?</span><br>
+		<span class="menu_q">animal style?</span><br>
 		<select class="select_button" id="AnimalStyle" >
 		    <option selected="" disabled="" ></option>
 		    <option value="yes" >Yup! ($2 extra)</option>
@@ -472,7 +370,7 @@ body {
 	    </p>
 	    
 	    <p id="DrinkMenu" style="display:none; " >
-		<span class="menu_q">What Kind?</span><br>
+		<span class="menu_q">what kind?</span><br>
 		<select class="select_button" id="DrinkType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Coke" >Coke</option>
@@ -486,7 +384,7 @@ body {
 		</select>
 	    </p>
 	    <p id="DrinkSubMenu" style="display:none; " >
-		<span class="menu_q">Size</span><br>
+		<span class="menu_q">size</span><br>
 		<select class="select_button" id="DrinkSize" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Small" >Small</option>
@@ -494,7 +392,7 @@ body {
 		</select>
 	    </p>
 	    <p id="ShakeMenu" style="display:none; " >
-		<span class="menu_q">Flavor?</span><br>
+		<span class="menu_q">flavor?</span><br>
 		<select class="select_button" id="ShakeType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Chocolate" >Chocolate</option>
@@ -504,15 +402,15 @@ body {
 		</select>
 	    </p>
 	    <p id="AddInstructions" style="display:none; " >
-		<span class="menu_q">Additional Instructions?</span><br>
-		<input id="instructionsText" type="text" size="45" value="" /><br>
+		<span class="menu_q">special instructions?</span><br>
+		<input id="instructionsText" type="text" placeholder="nope!" size="45" value="" /><br>
 		<input id="submitButton" type="button" onclick="addFile()" value="" />
 	    </p>
 	    </form>
 	  </td>
 	  <td width="400px" >
 	    <form action="checkout" method="POST" id="checkoutForm" style="left:-25px; top:202px; " > {% csrf_token %}
-		<div id="orders" align="center" ><div id="order_title">Your Order: </div>
+		<div id="orders" align="center" ><div id="order_title">your order: </div>
 		
 		{% for index, order in orders.items %}
 		
