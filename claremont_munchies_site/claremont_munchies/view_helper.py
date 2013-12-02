@@ -19,12 +19,11 @@ def is_logged_in(request):
     else:
         return False
 
-def ask_to_login(request):
-    warning['warning'] = 'You Must Login'
-    return render_to_response('landing_page.html', context, RequestContext(request))
-
 def send_to_order(request):
     return HttpResponseRedirect("/order")
+
+def send_to_landing_page(request):
+    return HttpResponseRedirect('/')
 
 
 
@@ -35,7 +34,7 @@ def enter_user(request, login_credentials):
     entry = user(account_name=login_credentials['name'].lower(), password=login_credentials['password'])
     
     #check if user is already in db
-    validate = user.objects.filter(account_name=login_credentials['name'])
+    validate = user.objects.filter(account_name=login_credentials['name']).count()
     
     
     #user is already in the database

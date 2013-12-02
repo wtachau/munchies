@@ -1,25 +1,27 @@
 <html>
+
+	{% include "header.html" %}
+	
 	<head>
 		
 		<title>Claremont Munchies</title>
 	</head>
 	<body style="left:0; top:0; " >
-	<div style="position:absolute; top:56px; left:213px; width:229px; height:29px; color:#FF0000; " >{{warning}}</div>
-	
+	<div id='menu' class='login_menu'>
+		<div id='landing_page_warning'>{{warning}}</div>
 		<form name="login" method="POST" action="." >{% csrf_token %}
-			<div id='landing_page_box'>
-				<div class='landing_page_info'>Login Below</div>
+				<div id='login_text'>Login</div>
 				<input class='landing_page_field' type="text" placeholder="Account Name" value="" name="login_name" />
-				<input class='landing_page_field' type="password" placeholder="Password"name="login_password" />
-				<input class='landing_page_field' type="submit" formaction='/' value="Login" />
+				<input class='landing_page_field' type="password" placeholder="Password" name="login_password" />
+				<input id='login_button' class='landing_page_field' type="submit" formaction='/' value="Login" />
 		</form>
 	
 		<form name="register" method="POST" action="." >{% csrf_token %}	
-			<div class='landing_page_info'>Register Below</div>
+			<div id='register_text'>Register</div>
 			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" />
 			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" />
 			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" />
-			<input class='landing_page_field' type="submit" formaction="/" value="Register" />
+			<input id='register_button' class='landing_page_field' type="submit" formaction="/" value="Register" />
 		</form>
 		
 	</div>
