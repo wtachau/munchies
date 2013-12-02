@@ -8,16 +8,16 @@
 	</head>
 	<body style="left:0; top:0; " >
 	<div id='menu' class='login_menu'>
-		<div class = 'landing_page_field' id='landing_page_warning'>{{warning}}</div>
+		<div id='landing_page_warning'>{{warning}}</div>
 		<form name="login" method="POST" action="." >{% csrf_token %}
-				<div id='login_text' class='landing_page_field'>Login Below</div>
+				<div id='login_text'>Login</div>
 				<input class='landing_page_field' type="text" placeholder="Account Name" value="" name="login_name" />
 				<input class='landing_page_field' type="password" placeholder="Password" name="login_password" />
 				<input id='login_button' class='landing_page_field' type="submit" formaction='/' value="Login" />
 		</form>
 	
 		<form name="register" method="POST" action="." >{% csrf_token %}	
-			<div id='register_text' class='landing_page_field'>Register Below</div>
+			<div id='register_text'>Register</div>
 			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" />
 			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" />
 			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" />
