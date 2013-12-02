@@ -5,7 +5,7 @@
     {% include "header.html" %}
     <style>
     #order_button{
-	background-image:linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);
+	/*background-image:linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);*/
     }
     </style>
     
@@ -29,7 +29,7 @@
     }
     
     // When the users clicks checkout button
-    function checkout () {
+    /*function checkout () {
 	var method = "post"; 
 	
 	// get string from json
@@ -53,7 +53,7 @@
 	// add it to document, and submit!
 	document.body.appendChild(form);
 	form.submit();
-    }
+    }*/
     
     // remove an element from both the document and the json structure
     function removeElement(elementId) {
@@ -92,26 +92,36 @@
     }
     
     // get the burger price
-    function getPrice(foodtype, moreinfo, size) {
+    function getPrice(foodtype, moreinfo, size, animal) {
+	var price = 0;
 	switch (foodtype) {
 	    case 'Cheeseburger':
 		switch (moreinfo) {
-		    case 'Single Single': return {{ cheeseburger_1 }}
-		    case 'Double Double': return {{ cheeseburger_2 }}
-		    case 'Triple Triple': return {{ cheeseburger_3 }}
-		    case '4x4': return {{ cheeseburger_4 }}
+		    case 'Single Single': price += {{ cheeseburger_1 }}; break;
+		    case 'Double Double': price += {{ cheeseburger_2 }}; break;
+		    case 'Triple Triple': price += {{ cheeseburger_3 }}; break;
+		    case '4x4': price += {{ cheeseburger_4 }}; break;
 		}
+		if (animal == 'yes') {
+		    return price+{{animal}};
+		}
+		return price;
 		break;
 	    case 'Hamburger':
 		switch (moreinfo) {
-		    case 'Single Single': return {{ hamburger_1 }}
-		    case 'Double Double': return {{ hamburger_2 }}
-		    case 'Triple Triple': return {{ hamburger_3 }}
-		    case '4x4': return {{ hamburger_4 }}
+		    case 'Single Single': price += {{ hamburger_1 }}; console.log(price); break;
+		    case 'Double Double': price += {{ hamburger_2 }}; break;
+		    case 'Triple Triple': price += {{ hamburger_3 }}; break;
+		    case '4x4': price += {{ hamburger_4 }}; break;
 		}
+		if (animal == 'yes') {
+		    return price+{{animal}};
+		}
+		return price;
 		break;
 	    case 'French Fries':
-		return {{ fries }}
+		if (animal == 'yes') return {{fries}}+{{animal}};
+		return {{fries}}
 		break;
 	    case 'Shake':
 		return {{ shake }}
@@ -149,13 +159,8 @@
 	var JSONObject = {};
 	JSONObject.id = idString;
 	
-	//get selected components to construct html
-	var htmlContent = "<table class='order_table' ><tr>";
+	//// get the sub-type
 	var kindOfMeal = document.getElementById('FoodType').value;
-	var price = 0;
-	var size = ""; //only for drinks
-	
-	// get the sub-type
 	var type;
 	switch (kindOfMeal) {
 	    case 'Cheeseburger':
@@ -170,6 +175,15 @@
 		size = document.getElementById('DrinkSize').value;
 		break;
 	}
+	
+	//get selected components to construct html
+	var htmlContent = "<table class='order_table' ><tr>";
+	var animal = document.getElementById('AnimalStyle').value;
+	console.log(kindOfMeal,type,size,animal);
+	var price = getPrice(kindOfMeal,type, size, animal);
+	console.log(price);
+	var size = ""; //only for drinks
+	
 	// Generate 'removeElement' javascript call to match current elementID
 	var tellToDelete = "removeElement('"+idString+"');"; 
 	
@@ -183,13 +197,11 @@
 	} else {
 	    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
 	}
-	htmlContent+= "<td id='price_col'>"+getPrice(kindOfMeal,type, size)+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
+	htmlContent+= "<td id='price_col'>"+price+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
 	
 	// look for animal style info, if applicable
-	if (kindOfMeal=="Cheeseburger" || kindOfMeal == "Hamburger" || kindOfMeal == "French Fries"
-	    && document.getElementById('AnimalStyle').value == "yes") {
-	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td><td id='price_col'>{{ animal }}</td></tr>"
-	    price += {{animal}}
+	if (animal == "yes") {
+	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>"
 	}
 	
 	// if drink, show size
@@ -206,8 +218,8 @@
 	// Then construct JSON object
 	JSONObject.food = kindOfMeal;
 	JSONObject.type = type;
-	JSONObject.animal = document.getElementById('AnimalStyle').value
-	JSONObject.price = price + getPrice(kindOfMeal,type,size)
+	JSONObject.animal = document.getElementById('AnimalStyle').value;
+	JSONObject.price = price;
 	JSONObject.desc = document.getElementById('instructionsText').value;
 	
 	// finish up...
@@ -340,7 +352,7 @@
     <div id="spacing">&nbsp;</div>
 	
 	<tr >
-	  <td  width=600px>
+	  <td id="col1">
 	    <form id="submitorder" action="order" >
 	    <p style="left:2px; top:47px; " >
 		<span class="menu_q_big">what would you like?</span><br>
@@ -413,8 +425,7 @@
 	    </p>
 	    </form>
 	  </td>
-	  <td width="400px" >
-	    <form action="checkout" method="POST" id="checkoutForm" style="left:-25px; top:202px; " > {% csrf_token %}
+	  <td id="col2" >
 		<div id="orders" align="center" ><div id="order_title">your order: </div>
 		
 		{% for index, order in orders.items %}
@@ -453,12 +464,13 @@
 		{% endfor %}
 		</div> 
 		<p id="subtotal"><!--{{ subtotal }}--></p>
-		<input id="checkoutButton" type="button" onclick="checkout()" />
+
+		<a id="checkoutButton" href="checkout" /></a>
 		
-	    </form>
 	  </td>
 	</tr>
     </table>
+    {% include "footer.html" %}
     
 
 </body>

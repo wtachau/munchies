@@ -3,28 +3,26 @@
 
 <style>
 #checkout_button{
-    background-image: linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);
+    /*background-image: linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);*/
 }
 </style>
+{% load staticfiles %}
 
 <head>
-<style>
-
-</style>
+<title> Checkout </title>
 </head>
 
 <body>
 
 
 <div id="menu" class="checkout_menu" >
-<div id="spacing">&nbsp;</div>
-<div id="orders" align="center" ><div id="order_title">Your Order: </div>
+<div id="orders" class="checkout" align="center" ><div id="order_title">Your Order: </div>
 		
 		<div id="checkout_table">
 		{% for index, order in orders.items %}
 		    <table id="table_list">
 		    {% if order.food == "Shake" %}
-		    <tr><td><b>{{order.type}} {{order.t}}</b></td>
+		    <tr><td><b>{{order.type}} {{order.food}}</b></td>
 		    {%endif%}
 		    {% if order.food == "Drink" %}
 		    <tr><td><b>{{order.type}} </b></td></tr>
@@ -52,18 +50,18 @@
 		    <tr></tr></table><p></p>
 		    
 		{% endfor %}
-		<table id="table_list">{{order_total_desc}}</table>
+		<table id="table_list">your total: {{order_total_desc}}</table>
 		</div>
+    <div id="pay_button">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="{% static 'images/burger.jpg' %}" >
+    </script>
+    </div>
 		
 </div>
 
 
-<div id="spacing">&nbsp;</div>
-
-<form action="" method="POST" style="position:inherit; left:201px; " >{% csrf_token %}
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
-    </script>
-</form></div>
+</div>
+{% include "footer.html" %}
   
 </body>
 </html>
