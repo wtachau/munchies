@@ -1,21 +1,18 @@
 {% load staticfiles %}
 
-
+<link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" />
 <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}" />
 <link href='http://fonts.googleapis.com/css?family=Molengo' rel='stylesheet' type='text/css'>
 
 <div id='header_bar'>
+<img id="logo" src="{% static 'images/palms.png' %}">
+<span id="title"> Claremont Munchies </span>
+<span id="subtitle"> bringing In-N-Out to your door</span>
 
-<form action="/order" >
-<input id='order_button' class='header_button' type="submit" value="Order" />
-</form>
+<a id="logout_button" class='header_button' href="logout"/>Logout</a>
 
-<form action="/checkout" >
-<input id='checkout_button' class='header_button' type="submit" value="Checkout" />
-</form>
+<a id="checkout_button" class='header_button' href="checkout"/>Checkout</a>
 
-<form action="/logout" >
-<input id='logout_button'class='header_button' type="submit" value="Logout" />
-</form>
+<a id="order_button" class='header_button' href="order"/>Order</a>
 
 </div>

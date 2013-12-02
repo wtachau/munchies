@@ -1,3 +1,8 @@
+/* gets rid of blue box on click */
+input:focus, textarea:focus {
+    outline: none;
+}
+
 .landing_page_field{
     width:25%;
     height:30px;
@@ -19,7 +24,7 @@
 
 #landing_page_warning{
     font-size:30;
-    color:red;
+    color:#FD1C25;
 
 }
 
@@ -77,42 +82,48 @@
 
 .header_button{
     height:35;
-    width:150;
-    margin-left:5%;
+    text-decoration: none;
+    /*width:150;*/
+    margin-right:30px;
     position:relative;
-    float:left;
+    float:right;
     margin-top:40;
-    border-radius:50;
+    /*border-radius:50;*/
     font-family:Molengo;
     font-size:20px;
     color:white;
-    background-color: #f62b2b; 
+    background:none;
+    border:none;
+    /*background-color: #f62b2b; 
     background-image: -webkit-gradient(linear, left top, left bottom, from(#f62b2b), to(#d20202));
     background-image: -webkit-linear-gradient(top, #f62b2b, #d20202);
     background-image: -moz-linear-gradient(top, #f62b2b, #d20202);
     background-image: -ms-linear-gradient(top, #f62b2b, #d20202);
     background-image: -o-linear-gradient(top, #f62b2b, #d20202);
-    background-image: linear-gradient(to bottom, #f62b2b, #d20202);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f62b2b, endColorstr=#d20202);
+    background-image: linear-gradient(to bottom, #f62b2b, #d20202);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f62b2b, endColorstr=#d20202);*/
 }
 
 .header_button:hover {
-    box-shadow: 5px 5px 2px #888888;
+    /*box-shadow: 5px 5px 2px #888888;*/
+    text-decoration:underline;
 }
 
 #header_bar{
 position:relative; 
 height:60;
+background-color: #FD1C25;
+height: 117px;
 
 }
 
 #logout_button{
-float:right;
-margin-left:0;
+/*float:right;
+margin-left:0;*/
 }
 
 #landing_page_box{
 
-border-color:red;
+border-color:#FD1C25;
 
 }
 
@@ -166,19 +177,20 @@ border-color:red;
 	background-size:25px 25px;
 	width:25px;
 	height:25px;
-	background-color:red;
+	background-color:#FD1C25;
 	border-radius:5px;
 }
 
 body {
-    background-color:#f3f3f3;
+    background-color:#f6f6f6;
+    margin:0px;
 }
 
 #menu {
-    background-color:#FFFFFF;
-    border-radius:40px;
+    /*background-color:#FFFFFF;
+    border-radius:40px;*/
     margin-bottom:40px;
-    min-height:450px;
+    min-height:430px;
     height:auto;
     text-align: center;
 }
@@ -204,6 +216,9 @@ body {
 	background:url('images/eat.png'); 
 	background-size:55px 50px;
 	border:none;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
 }
 
 #checkoutbutton:hover {
@@ -270,6 +285,7 @@ body {
     margin-right: auto;
     padding-top: 25px;
     border-radius: 30;
+    background:white;
 }
 
 .checkout_menu {
@@ -280,13 +296,75 @@ margin-right: auto;
 
 }
 
-#checkout_button {
-    margin-top: 26px;
-    padding-bottom: 30px;
+#pay_button {
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
 
 .login_menu {
 margin-top: 43px;
 width: 1010px;
 margin-left: auto;
 margin-right: auto;
+}
+
+#footer {
+    background-color: #FD1C25;
+    text-align: center;
+    padding-top: 23px;
+    height: 40px;
+    font-family:Molengo;
+    font-size:18px;
+    color: white;
+}
+#names {
+
+}
+#title {
+    font-family:Molengo;
+    font-size:18px;
+    color: white;
+    float: left;
+    position: relative;
+    font-family: Molengo;
+    font-size: 44px;
+    color: white;
+    float: left;
+    position: relative;
+    top: 24%;
+    margin-left: 10px;
+    text-shadow: 2px 2px 3px #000000;
+}
+#subtitle {
+    top: 70%;
+    color: white;
+    font-family: Molengo;
+    font-size: 18px;
+    margin-left: -86px;
+    float: left;
+    position: absolute;
+    padding-right:270px;
+}
+#logo {
+    width: 17%;
+    top: 3%;
+    position: relative;
+    float: left;
+}
+#col1{
+    border-right: 2px solid;
+    border-color: #CECECE;
+    width: 560px;
+}
+#col2 {
+    padding-left: 65px;
+    width:400px;
+}
+#instructionsText {
+border-radius: 4px;
+border: 1px solid;
+border-color: #B8B8B8;
+height: 21px;
+width: 250px;
+margin-top: 3px;
 }

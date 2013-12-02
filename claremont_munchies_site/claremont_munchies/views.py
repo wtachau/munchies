@@ -81,6 +81,7 @@ def checkout(request):
     total = request.session.get('order_total')
     context['order_total'] = total*100
     context['order_total_desc'] = '$'+str(total)
+    context['orders'] = request.session['orders'] # give the page all session orders 
     
     #user purchased the cart
     if request.method == 'POST':
@@ -89,8 +90,8 @@ def checkout(request):
             return HttpResponse(token)
         
     #user came from our order form
-    if 'orders' in request.session:
-        context['orders'] = request.session['orders'] # give the page all session orders    
+    #if 'orders' in request.session:
+           
     return render_to_response('checkout.html', context, RequestContext(request))
     
 #checks the integrity of login/register credentials

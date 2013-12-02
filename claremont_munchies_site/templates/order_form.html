@@ -5,7 +5,7 @@
     {% include "header.html" %}
     <style>
     #order_button{
-	background-image:linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);
+	/*background-image:linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);*/
     }
     </style>
     
@@ -29,7 +29,7 @@
     }
     
     // When the users clicks checkout button
-    function checkout () {
+    /*function checkout () {
 	var method = "post"; 
 	
 	// get string from json
@@ -53,7 +53,7 @@
 	// add it to document, and submit!
 	document.body.appendChild(form);
 	form.submit();
-    }
+    }*/
     
     // remove an element from both the document and the json structure
     function removeElement(elementId) {
@@ -352,7 +352,7 @@
     <div id="spacing">&nbsp;</div>
 	
 	<tr >
-	  <td  width=600px>
+	  <td id="col1">
 	    <form id="submitorder" action="order" >
 	    <p style="left:2px; top:47px; " >
 		<span class="menu_q_big">what would you like?</span><br>
@@ -425,8 +425,7 @@
 	    </p>
 	    </form>
 	  </td>
-	  <td width="400px" >
-	    <form action="checkout" method="POST" id="checkoutForm" style="left:-25px; top:202px; " > {% csrf_token %}
+	  <td id="col2" >
 		<div id="orders" align="center" ><div id="order_title">your order: </div>
 		
 		{% for index, order in orders.items %}
@@ -465,12 +464,13 @@
 		{% endfor %}
 		</div> 
 		<p id="subtotal"><!--{{ subtotal }}--></p>
-		<input id="checkoutButton" type="button" onclick="checkout()" />
+
+		<a id="checkoutButton" href="checkout" /></a>
 		
-	    </form>
 	  </td>
 	</tr>
     </table>
+    {% include "footer.html" %}
     
 
 </body>
