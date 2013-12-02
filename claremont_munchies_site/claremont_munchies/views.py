@@ -62,8 +62,8 @@ def order_form(request):
             request.session['orders'][index] = json_object
             
             updateTotal(request)
-            #return HttpResponse();
-            return HttpResponse("<html>"+str(request.session['orders'])+"      "+str(index)+" "+ str(request.session.items())+ "</html>")
+            return HttpResponse();
+            #return HttpResponse("<html>"+str(request.session['orders'])+"      "+str(index)+" "+ str(request.session.items())+ "</html>")
     
     return render_to_response('order_form.html', context, RequestContext(request))
 

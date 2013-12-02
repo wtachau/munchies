@@ -88,7 +88,7 @@ body {
     background-color:#FFFFFF;
     border-radius:40px;
     margin-bottom:40px;
-    min-height:500px;
+    min-height:450px;
     height:auto;
     text-align: center;
 }
@@ -153,21 +153,33 @@ body {
     groove #000000;
 }
 #checkout_table{
-margin-left:auto;
-margin-right:auto;
-margin-top:30px;
+    margin-left:auto;
+    margin-right:auto;
+    margin-top:30px;
 }
 #table_list{
-	width:380px;
-	table-layout:fixed;
+    width:380px;
+    table-layout:fixed;
+    font-family: 'Cardo', Georgia, Times, serif;
+	font-size: 18px;
 }
 #price_col {
-	width:30px;
+    width:30px;
 }
-#orders{
-margin-top:30px;
-font-family: 'Cardo', Georgia, Times, serif;
-	font-size: 18px;
+#orders {
+    margin-top:30px;
+}
+#orders.checkout{
+    margin-top:70px;
+    font-family: 'Cardo', Georgia, Times, serif;
+    font-size: 18px;
+    width: 498;
+    border: 1px solid;
+    border-color: black;
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 25px;
+    border-radius: 30;
 }
 
 .checkout_menu {
@@ -176,4 +188,9 @@ width: 1010px;
 margin-left: auto;
 margin-right: auto;
 
+}
+
+#checkout_button {
+    margin-top: 26px;
+    padding-bottom: 30px;
 }

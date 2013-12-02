@@ -1,15 +1,13 @@
 <html>
 <head>
-<style>
-
-</style>
+<title> Checkout </title>
 </head>
 
 <body>
 {% include "header.html" %}
 <div id="menu" class="checkout_menu" >
 <div id="spacing">&nbsp;</div>
-<div id="orders" align="center" ><div id="order_title">Your Order: </div>
+<div id="orders" class="checkout" align="center" ><div id="order_title">Your Order: </div>
 		
 		<div id="checkout_table">
 		{% for index, order in orders.items %}
@@ -43,18 +41,18 @@
 		    <tr></tr></table><p></p>
 		    
 		{% endfor %}
-		<table id="table_list">{{order_total_desc}}</table>
+		<table id="table_list">your total: {{order_total_desc}}</table>
 		</div>
+    <div id="checkout_button">
+    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
+    </script>
+    </div>
 		
 </div>
 
 
 <div id="spacing">&nbsp;</div>
-
-<form action="" method="POST" style="position:inherit; left:201px; " >{% csrf_token %}
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="/128x128.png" >
-    </script>
-</form></div>
+</div>
   
 </body>
 </html>
