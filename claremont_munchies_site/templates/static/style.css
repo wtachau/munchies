@@ -3,6 +3,8 @@ input:focus, textarea:focus {
     outline: none;
 }
 
+
+
 .landing_page_field{
     width:25%;
     height:30px;
@@ -20,6 +22,28 @@ input:focus, textarea:focus {
     background-image: linear-gradient(to bottom, #cef8ff, #7fe0f8);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#cef8ff, endColorstr=#7fe0f8);
 }
 
+#register_form{
+    display: none;
+}
+
+#toggle_to_register{
+    width: 15%;
+    margin-left:42.5%;
+    font-size:15;
+}
+
+#toggle_to_login{
+    width: 15%;
+    margin-left:42.5%;
+    font-size:13;
+}
+
+#toggle_to_register:hover{
+    box-shadow: 5px 5px 2px #888888;
+}
+#toggle_to_login:hover{
+    box-shadow: 5px 5px 2px #888888;
+}
 
 
 #landing_page_warning{
@@ -29,10 +53,10 @@ input:focus, textarea:focus {
 }
 
 #register_text{
+    margin-top:10%;
     margin-bottom:1%;
-    margin-top:8%;
     font-size:30;
-    background-color:white;
+    background-color:#f6f6f6;
     width:25%;
     height:30px;
     margin-right:50%;
@@ -41,9 +65,10 @@ input:focus, textarea:focus {
     text-align:center;
 }
 #login_text{
+    margin-top:10%;
     margin-bottom:1%;
     font-size:30;
-    background-color:white;
+    background-color:#f6f6f6;
     width:25%;
     height:30px;
     margin-right:50%;

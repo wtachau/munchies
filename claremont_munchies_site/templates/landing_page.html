@@ -1,5 +1,13 @@
 <html>
 
+
+<script type="text/javascript">
+	function toggle(hide_id, show_id) {
+		document.getElementById(hide_id).style.display = 'none';
+		document.getElementById(show_id).style.display = 'block';
+	}
+</script>
+
 	{% include "header.html" %}
 	
 	<head>
@@ -9,22 +17,25 @@
 	<body>
 	<div id='menu' class='login_menu'>
 		<div id='landing_page_warning'>{{warning}}</div>
-		<form name="login" method="POST" action="." >{% csrf_token %}
+		<form id='login_form' name="login" method="POST" action="." >{% csrf_token %}
 				<div id='login_text'>Login</div>
 				<input class='landing_page_field' type="text" placeholder="Account Name" value="" name="login_name" />
 				<input class='landing_page_field' type="password" placeholder="Password" name="login_password" />
 				<input id='login_button' class='landing_page_field' type="submit" formaction='/' value="Login" />
+				<input id='toggle_to_register' class='landing_page_field' type="button" value="Need to Register?" onclick="toggle('login_form', 'register_form');" />
 		</form>
 	
-		<form name="register" method="POST" action="." >{% csrf_token %}	
+		<form id='register_form' name="register" method="POST" action="." >{% csrf_token %}	
 			<div id='register_text'>Register</div>
 			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" />
 			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" />
 			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" />
 			<input id='register_button' class='landing_page_field' type="submit" formaction="/" value="Register" />
+			<input id='toggle_to_login' class='landing_page_field'type="button" value="Already Registered?" onclick="toggle('register_form', 'login_form');" />
 		</form>
 		
 	</div>
+	
 	{% include "footer.html" %}
 	
 	
