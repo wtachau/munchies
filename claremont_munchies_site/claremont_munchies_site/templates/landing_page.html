@@ -13,11 +13,14 @@
 	<head>
 		
 		<title>Claremont Munchies</title>
+		<link href='http://fonts.googleapis.com/css?family=Cardo:400,700' rel='stylesheet' type='text/css'>
+    	<link href="http://fonts.googleapis.com/css?family=Molengo" rel="stylesheet" type="text/css">
+    
 	</head>
 	<body>
 	<div id='menu' class='login_menu'>
-		<div id='landing_page_warning'>{{warning}}</div>
 		<form id='login_form' name="login" method="POST" action="." >{% csrf_token %}
+				<div id='landing_page_warning'>{{warning}}</div>
 				<div id='login_text'>Login</div>
 				<input class='landing_page_field' type="text" placeholder="Account Name" value="" name="login_name" />
 				<input class='landing_page_field' type="password" placeholder="Password" name="login_password" />
@@ -26,6 +29,7 @@
 		</form>
 	
 		<form id='register_form' name="register" method="POST" action="." >{% csrf_token %}	
+			<div id='landing_page_warning'>{{warning}}</div>
 			<div id='register_text'>Register</div>
 			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" />
 			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" />

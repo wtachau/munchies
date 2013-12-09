@@ -78,10 +78,11 @@ def checkout(request):
     if not is_logged_in(request):
         return send_to_landing_page(request)    
     
-    total = request.session.get('order_total')
-    context['order_total'] = total*100
-    context['order_total_desc'] = '$'+str(total)
-    context['orders'] = request.session['orders'] # give the page all session orders 
+    if 'order_total' in request.session:
+        total = request.session.get('order_total')
+        context['order_total'] = total*100
+        context['order_total_desc'] = '$'+str(total)
+        context['orders'] = request.session['orders'] # give the page all session orders 
     
     #user purchased the cart
     if request.method == 'POST':
@@ -118,19 +119,19 @@ def landing_page(request):
                 return HttpResponseRedirect("/order")
             #user already exists
             elif valid_registration == 1:
-                warning['warning'] = 'That User Already Exists'
+                warning['warning'] = '*That User Already Exists'
                 return render_to_response('landing_page.html', warning, RequestContext(request))
             #passwords do not match
             elif valid_registration == 2:
-                warning['warning'] = 'The Passwords Do Not Match'
+                warning['warning'] = '*The Passwords Do Not Match'
                 return render_to_response('landing_page.html', warning, RequestContext(request))  
             #account name contains a space
             elif valid_registration == 3:
-                warning['warning'] = 'Account Names Must Not Contain Spaces'
+                warning['warning'] = '*Account Names Must Not Contain Spaces'
                 return render_to_response('landing_page.html', warning, RequestContext(request))            
             #password contains a space
             elif valid_registration == 4:
-                warning['warning'] = 'Passwords Must Not Contain Spaces'
+                warning['warning'] = '*Passwords Must Not Contain Spaces'
                 return render_to_response('landing_page.html', warning, RequestContext(request))              
         
         
@@ -144,7 +145,7 @@ def landing_page(request):
             if check_login(request, context):
                 return send_to_order(request)
             else:
-                warning['warning'] = 'Invalid Email or Password'
+                warning['warning'] = '*Invalid Email or Password'
                 return render_to_response('landing_page.html', warning, RequestContext(request))        
         
     #the method was not a post so load the regular page

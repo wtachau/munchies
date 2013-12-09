@@ -11,7 +11,7 @@ class user(models.Model):
     claremont_id_number = models.CharField(max_length=20, null=True)
     email = models.CharField(max_length=255)
     stripe_id = models.CharField(null=True, max_length=255)
-    registered_timestamp = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
     
 class orders(models.Model):
     credit_card_token = models.CharField(max_length=255)

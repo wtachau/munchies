@@ -11,7 +11,7 @@ input:focus, textarea:focus {
     margin-right:50%;
     margin-left:37.5%;
     border-radius:10px;
-    text-align:center;
+    padding-left: 7px;
     margin-top:1%;
     font-size:20;
     background-color: white; 
@@ -23,36 +23,34 @@ input:focus, textarea:focus {
 }
 
 #toggle_to_register{
-    width: 15%;
-    margin-left:42.5%;
-    font-size:15;
-    color:black;
+    background: transparent;
+    border: none !important;
 }
 
 #toggle_to_login{
-    width: 15%;
-    margin-left:42.5%;
-    font-size:13;
-    color:black;
+    background: transparent;
+    border: none !important;
 }
 
 #toggle_to_register:hover{
-    box-shadow: 5px 5px 2px #888888;
+    text-decoration: underline;
+    /*box-shadow: 5px 5px 2px #888888;*/
 }
 #toggle_to_login:hover{
-    box-shadow: 5px 5px 2px #888888;
+    text-decoration: underline;
+    /*box-shadow: 5px 5px 2px #888888;*/
 }
 
 
 #landing_page_warning{
-    font-size:30;
+    font-size:15;
     color:#FD1C25;
 
 }
 
 #register_text{
-    margin-top:10%;
-    margin-bottom:1%;
+    margin-top: 10px;
+    margin-bottom:10px;
     font-size:30;
     background-color:#f6f6f6;
     width:25%;
@@ -63,7 +61,7 @@ input:focus, textarea:focus {
     text-align:center;
 }
 #login_text{
-    margin-top:10%;
+    margin-top:10px;
     margin-bottom:1%;
     font-size:30;
     background-color:#f6f6f6;
@@ -75,21 +73,32 @@ input:focus, textarea:focus {
     text-align:center;
 }
 #login_button{
-    background-color: #FD1C25; 
+    background-color: #EB353D; 
+    border:none;
     color:white;
+    text-align: center;
 }
 #register_button{
-    background-color: #FD1C25; 
+    background-color: #EB353D; 
     color:white;
+    border:none;
+    text-align: center;
 }
 
 #login_button:hover{
     
-    box-shadow: 5px 5px 2px #888888;
+    box-shadow: 1px 1px 4px #888888;
 }
 #register_button:hover{
     
-    box-shadow: 5px 5px 2px #888888;
+    box-shadow: 1px 1px 4px #888888;
+}
+
+#login_form{
+    margin-top:10%;
+}
+#register_form {
+    margin-top:10%;
 }
 
 
@@ -145,7 +154,9 @@ border-color:#FD1C25;
 }
 
 .landing_page_field{
-
+border:none;
+border: 1px solid;
+border-color: #9C9C9C;
 }
 
 #price_col {
@@ -168,12 +179,15 @@ border-color:#FD1C25;
 }
 
 #submitButton {
-    width:70px;
-    height:50px;
-    background:url('images/arrow.png'); 
-    background-size:70px 50px;
-    margin-top:15px;
-    border:none;
+    background: transparent;
+font-size: 23px;
+font-family: 'Molengo', Georgia, Times, serif;
+margin-top: 15px;
+border: none;
+}
+
+#submitButton:hover{
+    text-decoration: underline;
 }
 
 #removebutton {
@@ -203,7 +217,7 @@ body {
     /*background-color:#FFFFFF;
     border-radius:40px;*/
     margin-bottom:40px;
-    min-height:430px;
+    min-height:400px;
     height:auto;
     text-align: center;
 }
@@ -380,4 +394,9 @@ border-color: #B8B8B8;
 height: 21px;
 width: 250px;
 margin-top: 3px;
+}
+
+.login_menu {
+    font-family: 'Molengo', Georgia, Times, serif;
+    font-size: 30px;
 }
