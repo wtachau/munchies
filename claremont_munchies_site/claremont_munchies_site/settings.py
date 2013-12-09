@@ -13,13 +13,13 @@ MANAGERS = ADMINS
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # Add ' sqlite3, 'mysql', 'sqlite3' or 'oracle'.
         'NAME': 'claremont_munchies_db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
-        'USER': 'james',
-        'PASSWORD': 't00thbrush',
-        'HOST': '',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
-        'PORT': '',                      # Set to empty string for default.
+        'USER': 'admin',
+        'PASSWORD': 'james',
+        'HOST': '127.0.0.1',                      # Empty for localhost through domain sockets or '127.0.0.1' for localhost through TCP.
+        'PORT': '5432',                      # Set to empty string for default.
     }
 }
 
@@ -169,3 +169,32 @@ LOGGING = {
         },
     }
 }
+
+
+# HEROKU CONFIG
+# Parse database configuration from $DATABASE_URL
+import dj_database_url
+DATABASES['default'] =  dj_database_url.config(default='postgres://iztjfhoeeeqctd:1wgYe00RdsSfdOtHOXqCmdiOTV@ec2-54-204-16-70.compute-1.amazonaws.com:5432/d4pihge9es74il')
+
+
+# Honor the 'X-Forwarded-Proto' header for request.is_secure()
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+# Allow all host headers
+ALLOWED_HOSTS = ['*']
+
+# Static asset configuration
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+STATIC_ROOT = 'staticfiles'
+STATIC_URL = os.getcwd()+'/static/'
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
+
+"""
+STATIC_URL = os.getcwd()+'/templates/static/'
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    os.getcwd()+'/templates/static/',"""
