@@ -460,9 +460,11 @@
 		    
 		{% endfor %}
 		</div> 
+		<div id="alert" style="display:none;"><span>Whoops!</span><br>We're not live yet... too bad, that looks tasty. <br> Check back in January 21st to order In-N-Out!</div>
 		<p id="subtotal"><!--{{ subtotal }}--></p>
+		<a id="checkoutButton" onclick="document.getElementById('alert').style.display = 'block';"></a>
 
-		<a id="checkoutButton" href="checkout" /></a>
+		<!-- DISABLE FOR NOW <a id="checkoutButton" href="checkout" /></a> -->
 		
 	  </td>
 	</tr>

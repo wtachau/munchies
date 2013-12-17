@@ -95,10 +95,12 @@ input:focus, textarea:focus {
 }
 
 #login_form{
-    margin-top:10%;
+    /* margin-top:10%; WITHOUT PRE-REGISTER TEXT */
+    margin-top:3%;
 }
 #register_form {
-    margin-top:10%;
+    /* margin-top:10%; WITHOUT PRE-REGISTER TEXT */
+    margin-top:3%;
 }
 
 
@@ -107,7 +109,7 @@ input:focus, textarea:focus {
     text-decoration: none;
     /*width:150;*/
     margin-right:30px;
-    position:relative;
+    position:relative; /*make it fixed! causes some format issues though */
     float:right;
     margin-top:40;
     /*border-radius:50;*/
@@ -211,19 +213,20 @@ border: none;
 body {
     background-color:#f6f6f6;
     margin:0px;
+    padding:0px;
 }
 
 #menu {
     /*background-color:#FFFFFF;
     border-radius:40px;*/
-    margin-bottom:40px;
+    margin-bottom:65px;
     min-height:400px;
     height:auto;
     text-align: center;
 }
 
 #added_desc {
-	width:280px;
+	max-width:280px;
 	text-overflow:ellipsis;
 	overflow:hidden;
 	white-space:nowrap;
@@ -263,8 +266,12 @@ body {
 }
 .select_button {
     width:250px;
+    height:30px;
     font-family: 'Cardo', Georgia, Times, serif;
-    font-size: 40px;
+    font-size: 18px;
+}
+.select_button option {
+    /*font-size:20px;*/
 }
 .menu_q {
     font-family: 'Molengo', Georgia, Times, serif;
@@ -336,13 +343,16 @@ margin-right: auto;
 }
 
 #footer {
+    position: fixed;
+    bottom:0;
     background-color: #EB353D;
     text-align: center;
-    padding-top: 23px;
-    height: 40px;
+    padding-top: 12px;
+    height: 32px;
     font-family:Molengo;
     font-size:18px;
     color: white;
+    width:100%;
 }
 #names {
 
@@ -399,4 +409,18 @@ margin-top: 3px;
 .login_menu {
     font-family: 'Molengo', Georgia, Times, serif;
     font-size: 30px;
+}
+
+#alert {
+    color:#555;
+    border-radius:10px;
+    font-family:Tahoma,Geneva,Arial,sans-serif;font-size:16px;
+    padding:10px 10px 10px 36px;
+    margin:10px;
+    background:#fff8c4 url('images/notice.png') no-repeat 10px 50%;
+    border:1px solid #f2c779;
+}
+#alert span {
+    font-weight:bold;
+    text-transform:uppercase;
 }
