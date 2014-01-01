@@ -1,16 +1,61 @@
 <html>
-
-
-<script type="text/javascript">
-	function toggle(hide_id, show_id) {
-		document.getElementById(hide_id).style.display = 'none';
-		document.getElementById(show_id).style.display = 'block';
-	}
-</script>
-
-	{% include "header.html" %}
-	
 	<head>
+		<!-- Include the needed js files--> 
+		{% load staticfiles %}
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+		<link rel="stylesheet" type="text/css" href="{% static 'tooltipster.css' %}" />
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.0.min.js"></script>
+		<script type="text/javascript" src="{% static 'js/jquery.tooltipster.min.js' %}"></script>
+		<script>
+		        $(document).ready(function() {
+		            $('.tooltip').tooltipster({
+		            	trigger: 'click'
+		            });
+		        });
+		    </script>
+		<script type="text/javascript">
+			function toggle(hide_id, show_id) {
+				document.getElementById(hide_id).style.display = 'none';
+				document.getElementById(show_id).style.display = 'block';
+			}
+			// make sure phone is valid 10 digit number (replace spaces)
+			function validatePhone()
+			{
+				var x = document.forms["register_form"]['register_phone'].value;
+				x = x.split(" ").join("");
+				var reg = /^\d+$/;
+				if (reg.test(x) && x.length == 10)
+				  {
+				  return true;
+				  }
+				 alert("Please enter a valid 10 digit phone number");
+				 return false
+			}
+
+			// When any of the menus change, update other accordingly
+		    $(document).ready(function (){
+				$("#DelivLocation").change(function() {
+				    
+				    // Only show the submenus from selected components
+				    if ($(this).val() == "pomona") {
+						$("#PomonaDormType").show();
+						$("#OtherDormType").hide();
+						$("#OffCampusType").hide();
+					} else if ($(this).val() == "othercollege") {
+						$("#OtherDormType").show();
+						$("#PomonaDormType").hide();
+						$("#OffCampusType").hide();
+					} else if ($(this).val() == "offcampus") {
+						$("#OtherDormType").hide();
+						$("#PomonaDormType").hide();
+						$("#OffCampusType").show();
+					}
+				});
+			});
+
+		</script>
+
+		{% include "header.html" %}
 		
 		<title>Claremont Munchies</title>
 		<link href='http://fonts.googleapis.com/css?family=Cardo:400,700' rel='stylesheet' type='text/css'>
@@ -30,12 +75,43 @@
 				<input id='toggle_to_register' class='landing_page_field' type="button" value="Need to Register?" onclick="toggle('login_form', 'register_form');" />
 		</form>
 	
-		<form id='register_form' name="register" method="POST" action="." >{% csrf_token %}	
+		<form id='register_form' name="register" method="POST" action="." onsubmit="return validatePhone();">{% csrf_token %}	
 			<div id='landing_page_warning'>{{warning}}</div>
 			<div id='register_text'>Register</div>
-			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" />
-			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" />
-			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" />
+			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" required>
+			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" required>
+			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" required>
+			<input class='landing_page_field' type="tel" placeholder="Phone Number" name="register_phone" required>
+			<div class="tooltip" title="We'll text you when your order is on the way, and when we're at your dorm!" style="font-size: 13px; margin-left: 135px; text-decoration: underline;"> 
+   				 why do we need this?
+			</div>
+
+
+			<!-- Get Delivery Location -->
+			<select class="landing_page_field" id="DelivLocation" >
+			    <option selected="" disabled="" >Delivery Location</option>
+			    <option value="pomona" >Pomona</option>
+			    <option value="othercollege" >Other 5C College</option>
+			    <option value="offcampus" >Off-Campus (Claremont Only)</option>
+			</select>
+			<!-- If Pomona -->
+			<select class="landing_page_field" style="display:none;" id="PomonaDormType">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="pomona_lyon" >Lyon</option>
+			    <option value="pomona_wig" >Wig</option>
+			    <option value="pomona_blaisell" >Blaisdell</option>
+			</select>
+			<!-- If non-Pomona -->
+			<select class="landing_page_field" style="display:none;" id="OtherDormType">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="cmc_berger" >CMC - Berger</option>
+			</select>
+			<!-- If Off Campus -->
+			<span id="OffCampusType" style="display:none;">
+			<input class='landing_page_field' type="text" placeholder="Your Address" name="register_address" />
+			<span style="font-size: 13px; width: 259px; display: inline-table; margin-top: 8;" id="address_warning"><i>Note: We do not deliver outside of Claremont. If you place an order, we cannot deliver it and will be unable to give a refund. Sorry!</i></span>
+			</span>
+
 			<input id='register_button' class='landing_page_field' type="submit" formaction="/" value="Register" />
 			<input id='toggle_to_login' class='landing_page_field'type="button" value="Already Registered?" onclick="toggle('register_form', 'login_form');" />
 		</form>
@@ -43,7 +119,10 @@
 	</div>
 	
 	{% include "footer.html" %}
-	
-	
+<script>
+$(document).ready(function() {
+    $('.tooltip').tooltipster();
+});
+</script>
 </body>
 </html>

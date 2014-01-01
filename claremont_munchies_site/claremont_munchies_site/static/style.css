@@ -19,7 +19,7 @@ input:focus, textarea:focus {
 }
 
 #register_form{
-    display: none;
+    display: block;
 }
 
 #toggle_to_register{
@@ -97,6 +97,7 @@ input:focus, textarea:focus {
 #login_form{
     /* margin-top:10%; WITHOUT PRE-REGISTER TEXT */
     margin-top:3%;
+    display:none;
 }
 #register_form {
     /* margin-top:10%; WITHOUT PRE-REGISTER TEXT */
