@@ -13,7 +13,7 @@ input:focus, textarea:focus {
     border-radius:10px;
     padding-left: 7px;
     margin-top:1%;
-    font-size:20;
+    font-size:14;
     background-color: white; 
     color:black;
 }
