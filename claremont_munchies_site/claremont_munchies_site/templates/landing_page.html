@@ -35,44 +35,43 @@
 			// When any of the menus change, update other accordingly
 		    $(document).ready(function (){
 				$("#DelivLocation").change(function() {
-				    
 				    // Only show the submenus from selected components
-				    if ($(this).val() == "pomona") {
+				    if ($(this).val() == "Pomona") {
 						$("#PomonaDormType").show();
 						$("#CMCDormType").hide();
 						$("#PitzerDormType").hide();
 						$("#MuddDormType").hide();
 						$("#ScrippsDormType").hide();
 						$("#OffCampusType").hide();
-					} else if ($(this).val() == "cmc") {
+					} else if ($(this).val() == "Claremont Mckenna") {
 						$("#PomonaDormType").hide();
 						$("#CMCDormType").show();
 						$("#PitzerDormType").hide();
 						$("#MuddDormType").hide();
 						$("#ScrippsDormType").hide();
 						$("#OffCampusType").hide();
-					} else if ($(this).val() == "scripps") {
+					} else if ($(this).val() == "Scripps") {
 						$("#PomonaDormType").hide();
 						$("#CMCDormType").hide();
 						$("#PitzerDormType").hide();
 						$("#MuddDormType").hide();
 						$("#ScrippsDormType").show();
 						$("#OffCampusType").hide();
-					} else if ($(this).val() == "pitzer") {
+					} else if ($(this).val() == "Pitzer") {
 						$("#PomonaDormType").hide();
 						$("#CMCDormType").hide();
 						$("#PitzerDormType").show();
 						$("#MuddDormType").hide();
 						$("#ScrippsDormType").hide();
 						$("#OffCampusType").hide();
-					} else if ($(this).val() == "mudd") {
+					} else if ($(this).val() == "Harvey Mudd") {
 						$("#PomonaDormType").hide();
 						$("#CMCDormType").hide();
 						$("#PitzerDormType").hide();
 						$("#MuddDormType").show();
 						$("#ScrippsDormType").hide();
 						$("#OffCampusType").hide();
-					} else if ($(this).val() == "offcampus") {
+					} else if ($(this).val() == "Off Campus") {
 						$("#PomonaDormType").hide();
 						$("#CMCDormType").hide();
 						$("#PitzerDormType").hide();
@@ -94,7 +93,7 @@
 	</head>
 	<body>
 	<div id='menu' class='login_menu'>
-		<div id="preregister" style ="font-size:20px; margin-top:10%;"> <i>We're getting ready to launch first thing next semester. <br> Be one of the first 50 to register and get off 20% off your first order!</i> </div>
+		<!--<div id="preregister" style ="font-size:20px; margin-top:10%;"> <i>We're getting ready to launch first thing next semester. <br> Be one of the first 50 to register and get off 20% off your first order!</i> </div>-->
 
 		<form id='login_form' name="login" method="POST" action="." >{% csrf_token %}
 				<div id='landing_page_warning'>{{warning}}</div>
@@ -108,6 +107,9 @@
 		<form id='register_form' name="register" method="POST" action="." onsubmit="return validatePhone();">{% csrf_token %}	
 			<div id='landing_page_warning'>{{warning}}</div>
 			<div id='register_text'>Register</div>
+
+			<input class='landing_page_field' id="name" type="text" placeholder="First Name" value="" name="register_fname" required>
+			<input class='landing_page_field' id="name" type="text" placeholder="Last Name" value="" name="register_lname" required>
 			<input class='landing_page_field' type="text" placeholder="User Name" value="" name="register_name" required>
 			<input class='landing_page_field' type="password" placeholder="Password" name="register_password" required>
 			<input class='landing_page_field' type="password" placeholder="Repeat Password" name="register_password_2" required>
@@ -118,87 +120,87 @@
 
 
 			<!-- Get Delivery Location -->
-			<select class="landing_page_field" id="DelivLocation" >
+			<select class="landing_page_field" id="DelivLocation" name="register_location">
 			    <option selected="" disabled="" >Delivery Location</option>
-			    <option value="pomona" >Pomona</option>
-			    <option value="cmc" >Claremont Mckenna</option>
-			    <option value="pitzer" >Pitzer</option>
-			    <option value="scripps" >Scripps</option>
-			    <option value="mudd" >Harvey Mudd</option>
-			    <option value="offcampus" >Off-Campus (Claremont Only)</option>
+			    <option value="Pomona" >Pomona</option>
+			    <option value="Claremont Mckenna" >Claremont Mckenna</option>
+			    <option value="Pitzer" >Pitzer</option>
+			    <option value="Scripps" >Scripps</option>
+			    <option value="Harvey Mudd" >Harvey Mudd</option>
+			    <option value="Off Campus" >Off-Campus (Claremont Only)</option>
 			</select>
 			<!-- If Pomona -->
-			<select class="landing_page_field" style="display:none;" id="PomonaDormType">
+			<select class="landing_page_field" style="display:none;" id="PomonaDormType" name="register_location_dorm">
 			    <option selected="" disabled="" >Which Dorm?</option>
-			    <option value="pomona_blaisell" >Blaisdell</option>
-			    <option value="pomona_clarki" >Clark I</option>
-			    <option value="pomona_clarkiii" >Clark III</option>
-			    <option value="pomona_clarkv" >Clark V</option>
-			    <option value="pomona_gibson" >Gibson</option>
-			    <option value="pomona_harwood" >Harwood</option>
-			    <option value="pomona_lawry" >Lawry</option>
-			    <option value="pomona_lyon" >Lyon</option>
-			    <option value="pomona_mudd" >Mudd</option>
-			    <option value="pomona_norton" >Norton</option>
-			    <option value="pomona_oldenborg" >Oldenborg</option>
-			    <option value="pomona_pomona" >Pomona Hall</option>
-			    <option value="pomona_smiley" >Smiley</option>
-			    <option value="pomona_sontag" >Sontag Hall</option>
-			    <option value="pomona_walker" >Walker</option>
-			    <option value="pomona_wig" >Wig</option>
+			    <option value="Blaisdell" >Blaisdell</option>
+			    <option value="Clark I" >Clark I</option>
+			    <option value="Clark III" >Clark III</option>
+			    <option value="Clark V" >Clark V</option>
+			    <option value="Gibson" >Gibson</option>
+			    <option value="Harwood" >Harwood</option>
+			    <option value="Lawry" >Lawry</option>
+			    <option value="Lyon" >Lyon</option>
+			    <option value="Mudd" >Mudd</option>
+			    <option value="Norton" >Norton</option>
+			    <option value="Oldenborg" >Oldenborg</option>
+			    <option value="Pomona Hall" >Pomona Hall</option>
+			    <option value="Smiley" >Smiley</option>
+			    <option value="Sontag Hall" >Sontag Hall</option>
+			    <option value="Walker" >Walker</option>
+			    <option value="Wig" >Wig</option>
 			</select>
 			<!-- If Pitzer -->
-			<select class="landing_page_field" style="display:none;" id="PitzerDormType">
+			<select class="landing_page_field" style="display:none;" id="PitzerDormType" name="register_location_dorm">
 			    <option selected="" disabled="" >Which Dorm?</option>
-			    <option value="pitzer_atherton" >Atherton</option>
-			    <option value="pitzer_east" >East</option>
-			    <option value="pitzer_mead" >Mead</option>
-			    <option value="pitzer_pitzer" >Pitzer Hall</option>
-			    <option value="pitzer_sanborn" >Sanborn</option>
-			    <option value="pitzer_west" >West</option>
+			    <option value="Atherton" >Atherton</option>
+			    <option value="East" >East</option>
+			    <option value="Mead" >Mead</option>
+			    <option value="Pitzer Hall" >Pitzer Hall</option>
+			    <option value="Sanborn" >Sanborn</option>
+			    <option value="West" >West</option>
 			</select>
 			<!-- If CMC -->
-			<select class="landing_page_field" style="display:none;" id="CMCDormType">
+			<select class="landing_page_field" style="display:none;" id="CMCDormType" name="register_location_dorm">
 			    <option selected="" disabled="" >Which Dorm?</option>
-			    <option value="cmc_appleby" >Appleby</option>
-			    <option value="cmc_auen" >Auen</option>
-			    <option value="cmc_beckett" >Beckett</option>
+			    <option value="Appleby" >Appleby</option>
+			    <option value="Auen" >Auen</option>
+			    <option value="Beckett" >Beckett</option>
 			    <option value="cmc_benson" >Benson</option>
-			    <option value="cmc_berger" >Berger</option>
-			    <option value="cmc_boswell" >Boswell</option>
-			    <option value="cmc_claremont" >Claremont</option>
-			    <option value="cmc_fawcett" >Fawcett</option>
-			    <option value="cmc_green" >Green</option>
-			    <option value="cmc_marks" >Marks</option>
-			    <option value="cmc_phillips" >Phillips</option>
-			    <option value="cmc_apts" >Senior Apartments</option>
-			    <option value="cmc_stark" >Stark</option>
-			    <option value="cmc_wohlford" >Wohlford</option>
+			    <option value="Benson" >Berger</option>
+			    <option value="Boswell" >Boswell</option>
+			    <option value="Claremont" >Claremont</option>
+			    <option value="Fawcett" >Fawcett</option>
+			    <option value="Green" >Green</option>
+			    <option value="Marks" >Marks</option>
+			    <option value="Phillips" >Phillips</option>
+			    <option value="Senior Apartments" >Senior Apartments</option>
+			    <option value="Stark" >Stark</option>
+			    <option value="Wohlford" >Wohlford</option>
 			</select>
 			<!-- If Scripps -->
-			<select class="landing_page_field" style="display:none;" id="ScrippsDormType">
+			<select class="landing_page_field" style="display:none;" id="ScrippsDormType" name="register_location_dorm">
 			    <option selected="" disabled="" >Which Dorm?</option>
-			    <option value="scripps_browning" >Browning</option>
-			    <option value="scripps_dorsey" >Dorsey</option>
-			    <option value="scripps_frankel" >Frankel</option>
-			    <option value="scripps_kimberly" >Kimberly and Wilbur</option>
-			    <option value="scripps_routt_apt" >Routt Apartments</option>
-			    <option value="scripps_routt_hall" >Routt Hall</option>
-			    <option value="scripps_toll" >Toll</option>
-			    <option value="scripps_winkler" >Winkler</option>
+			    <option value="Browning" >Browning</option>
+			    <option value="Dorsey" >Dorsey</option>
+			    <option value="Frankel" >Frankel</option>
+			    <option value="Kimberly and Wilbur" >Kimberly and Wilbur</option>
+			    <option value="Routt Apartments" >Routt Apartments</option>
+			    <option value="Routt Hall" >Routt Hall</option>
+			    <option value="Toll" >Toll</option>
+			    <option value="Winkler" >Winkler</option>
 			    
 			</select>
 			<!-- If Harvey Mudd -->
-			<select class="landing_page_field" style="display:none;" id="HarveyMuddDormType">
+			<select class="landing_page_field" style="display:none;" id="MuddDormType" name="register_location_dorm">
 			    <option selected="" disabled="" >Which Dorm?</option>
-			    <option value="mudd_atwood" >Atwood</option>
-			    <option value="mudd_case" >Case</option>
-			    <option value="mudd_east" >East</option>
-			    <option value="mudd_linde" >Linde</option>
-			    <option value="mudd_north" >North</option>
-			    <option value="mudd_sontag" >Sontag</option>
-			    <option value="mudd_south" >South</option>
-			    <option value="mudd_west" >West</option>
+			    <option value="Atwood" >Atwood</option>
+			    <option value="Case" >Case</option>
+			    <option value="East" >East</option>
+			    <option value="Linde" >Linde</option>
+			    <option value="North" >North</option>
+			    <option value="Sontag" >Sontag</option>
+			    <option value="South" >South</option>
+			    <option value="West" >West</option>
 			</select>
 			<!-- If Off Campus -->
 			<span id="OffCampusType" style="display:none;">

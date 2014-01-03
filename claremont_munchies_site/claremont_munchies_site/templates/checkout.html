@@ -1,15 +1,77 @@
 <html>
 {% include "header.html" %}
 
-<style>
-#checkout_button{
-    /*background-image: linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);*/
-}
-</style>
 {% load staticfiles %}
-
 <head>
 <title> Checkout </title>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+<script>
+// When user selects "new location"
+$(document).ready(function (){
+	$("#select_location").change(function() {
+	    // Only show the submenus from selected components
+	    if ($(this).val() == "default") {
+			$("#DelivLocation").hide();
+			$("#PomonaDormType").hide();
+			$("#CMCDormType").hide();
+			$("#PitzerDormType").hide();
+			$("#MuddDormType").hide();
+			$("#ScrippsDormType").hide();
+			$("#OffCampusType").hide();
+		} else if ($(this).val() == "change") {
+			$("#DelivLocation").show();
+		}
+	});
+	$("#DelivLocation").change(function() {
+	    // Only show the submenus from selected components
+	    if ($(this).val() == "Pomona") {
+			$("#PomonaDormType").show();
+			$("#CMCDormType").hide();
+			$("#PitzerDormType").hide();
+			$("#MuddDormType").hide();
+			$("#ScrippsDormType").hide();
+			$("#OffCampusType").hide();
+		} else if ($(this).val() == "Claremont Mckenna") {
+			$("#PomonaDormType").hide();
+			$("#CMCDormType").show();
+			$("#PitzerDormType").hide();
+			$("#MuddDormType").hide();
+			$("#ScrippsDormType").hide();
+			$("#OffCampusType").hide();
+		} else if ($(this).val() == "Scripps") {
+			$("#PomonaDormType").hide();
+			$("#CMCDormType").hide();
+			$("#PitzerDormType").hide();
+			$("#MuddDormType").hide();
+			$("#ScrippsDormType").show();
+			$("#OffCampusType").hide();
+		} else if ($(this).val() == "Pitzer") {
+			$("#PomonaDormType").hide();
+			$("#CMCDormType").hide();
+			$("#PitzerDormType").show();
+			$("#MuddDormType").hide();
+			$("#ScrippsDormType").hide();
+			$("#OffCampusType").hide();
+		} else if ($(this).val() == "Harvey Mudd") {
+			$("#PomonaDormType").hide();
+			$("#CMCDormType").hide();
+			$("#PitzerDormType").hide();
+			$("#MuddDormType").show();
+			$("#ScrippsDormType").hide();
+			$("#OffCampusType").hide();
+		} else if ($(this).val() == "Off Campus") {
+			$("#PomonaDormType").hide();
+			$("#CMCDormType").hide();
+			$("#PitzerDormType").hide();
+			$("#MuddDormType").hide();
+			$("#ScrippsDormType").hide();
+			$("#OffCampusType").show();
+		}
+	});
+});
+</script>
+
+
 </head>
 
 <body>
@@ -34,7 +96,7 @@
 		    <tr><td><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
-		    <td id="price_col" >{{order.price}}</td> </tr>
+		    <td id="price_col" >${{order.price}}</td> </tr>
 		    
 		    {% if order.animal == 'yes' %}
 		    <tr><td id="added_desc" >Animal Style</td></tr>{% endif %}
@@ -50,12 +112,120 @@
 		    <tr></tr></table><p></p>
 		    
 		{% endfor %}
-		<table id="table_list">your total: {{order_total_desc}}</table>
-		</div>
-    <div id="pay_button">
-    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button" data-key="pk_test_csMu8pSudNNjdOMLJUXUKp0f" data-amount="{{order_total}}" data-name="Claremont Munchies" data-description="{{order_total_desc}}" data-image="{% static 'images/burger.jpg' %}" >
-    </script>
-    </div>
+
+		<table id="table_list">
+		    <tr>
+		    	<td >Tip for Delivery:</td>
+		    	<td><input type="text" id="tip_box" onKeyUp="tipChanged()" placeholder="{{ tip_suggestion }}"></td>
+		    </tr>
+		</table>
+
+		<!-- Show order total -->
+	    <span id="order_total_orig" style="display:none;">{{order_total}}</span>
+		<table id="table_list">total: $<span id="order_total">{{order_total}}</span></table>
+
+		<!-- Get Delivery Location -->
+		<form action="process" id="pay" method="post">{% csrf_token %}
+			<br>deliver to:<br>
+			<select id="select_location" class="checkout_location" name="delivery_location">
+			    <option selected value="default" >{{location}}</option>
+			    <option value="change" > New Delivery Location</option>
+			</select>
+			<br>
+			<!-- Get Delivery Location (if not default) -->
+			<select class="checkout_location" style="display:none;" id="DelivLocation" name="register_location">
+			    <option selected="" disabled="" >Which School?</option>
+			    <option value="Pomona" >Pomona</option>
+			    <option value="Claremont Mckenna" >Claremont Mckenna</option>
+			    <option value="Pitzer" >Pitzer</option>
+			    <option value="Scripps" >Scripps</option>
+			    <option value="Harvey Mudd" >Harvey Mudd</option>
+			    <option value="Off Campus" >Off-Campus (Claremont Only)</option>
+			</select><br>
+			<!-- If Pomona -->
+			<select class="checkout_location" style="display:none;" id="PomonaDormType" name="register_location_dorm">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="Blaisdell" >Blaisdell</option>
+			    <option value="Clark I" >Clark I</option>
+			    <option value="Clark III" >Clark III</option>
+			    <option value="Clark V" >Clark V</option>
+			    <option value="Gibson" >Gibson</option>
+			    <option value="Harwood" >Harwood</option>
+			    <option value="Lawry" >Lawry</option>
+			    <option value="Lyon" >Lyon</option>
+			    <option value="Mudd" >Mudd</option>
+			    <option value="Norton" >Norton</option>
+			    <option value="Oldenborg" >Oldenborg</option>
+			    <option value="Pomona Hall" >Pomona Hall</option>
+			    <option value="Smiley" >Smiley</option>
+			    <option value="Sontag Hall" >Sontag Hall</option>
+			    <option value="Walker" >Walker</option>
+			    <option value="Wig" >Wig</option>
+			</select>
+			<!-- If Pitzer -->
+			<select class="checkout_location" style="display:none;" id="PitzerDormType" name="register_location_dorm">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="Atherton" >Atherton</option>
+			    <option value="East" >East</option>
+			    <option value="Mead" >Mead</option>
+			    <option value="Pitzer Hall" >Pitzer Hall</option>
+			    <option value="Sanborn" >Sanborn</option>
+			    <option value="West" >West</option>
+			</select>
+			<!-- If CMC -->
+			<select class="checkout_location" style="display:none;" id="CMCDormType" name="register_location_dorm">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="Appleby" >Appleby</option>
+			    <option value="Auen" >Auen</option>
+			    <option value="Beckett" >Beckett</option>
+			    <option value="cmc_benson" >Benson</option>
+			    <option value="Benson" >Berger</option>
+			    <option value="Boswell" >Boswell</option>
+			    <option value="Claremont" >Claremont</option>
+			    <option value="Fawcett" >Fawcett</option>
+			    <option value="Green" >Green</option>
+			    <option value="Marks" >Marks</option>
+			    <option value="Phillips" >Phillips</option>
+			    <option value="Senior Apartments" >Senior Apartments</option>
+			    <option value="Stark" >Stark</option>
+			    <option value="Wohlford" >Wohlford</option>
+			</select>
+			<!-- If Scripps -->
+			<select class="checkout_location" style="display:none;" id="ScrippsDormType" name="register_location_dorm">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="Browning" >Browning</option>
+			    <option value="Dorsey" >Dorsey</option>
+			    <option value="Frankel" >Frankel</option>
+			    <option value="Kimberly and Wilbur" >Kimberly and Wilbur</option>
+			    <option value="Routt Apartments" >Routt Apartments</option>
+			    <option value="Routt Hall" >Routt Hall</option>
+			    <option value="Toll" >Toll</option>
+			    <option value="Winkler" >Winkler</option>
+			    
+			</select>
+			<!-- If Harvey Mudd -->
+			<select class="checkout_location" style="display:none;" id="MuddDormType" name="register_location_dorm">
+			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="Atwood" >Atwood</option>
+			    <option value="Case" >Case</option>
+			    <option value="East" >East</option>
+			    <option value="Linde" >Linde</option>
+			    <option value="North" >North</option>
+			    <option value="Sontag" >Sontag</option>
+			    <option value="South" >South</option>
+			    <option value="West" >West</option>
+			</select>
+			<!-- If Off Campus -->
+			<span id="OffCampusType" style="display:none;">
+			<input class="checkout_location" type="text" placeholder="Your Address" name="register_address" />
+			<span style="font-size: 13px; width: 259px; display: inline-table; margin-top: 8;" id="address_warning"><i>Note: We do not deliver outside of Claremont. If you place an order, we cannot deliver it and will be unable to give a refund. Sorry!</i></span>
+			</span>
+		
+			<!-- Pay Button (details in footer script) -->
+			<input type="button" id="pay_button" value="Pay With Card"></input>
+		</form>
+
+	</div>
 		
 </div>
 
@@ -64,4 +234,56 @@
 {% include "footer.html" %}
   
 </body>
+<script src="//checkout.stripe.com/v2/checkout.js"></script>
+<script>
+	var total = {{ order_total }};
+	function tipChanged() {
+		var orig = Number(document.getElementById("order_total_orig").innerHTML);
+		var tip = document.getElementById('tip_box').value;
+		if (tip == "") {
+			tip = 0;
+		} else {
+			tip = parseFloat(tip);
+		}
+		var reg = /^\d*\.?\d*$/;
+		if (reg.test(tip))
+			{
+				document.getElementById("order_total").innerHTML = (orig + tip).toFixed(2);
+				total = orig + tip;
+			}
+	}
+
+	// Turn JSON into string
+    function stripJsonToString (json)
+    {
+		return JSON.stringify(json).replace(',', ', ').replace('[', '').replace(']', '');
+    }
+
+    // configure the stripe checkout, send token to  server
+	var handler = StripeCheckout.configure({
+		key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //change this based on stripe account
+		image: "{% static 'images/burger.jpg' %}",
+		token: function(token, args) {
+			var $form = $('#pay');
+			// add stripe token, and order total
+			$form.append($('<input type="hidden" name="stripeToken" />').val(stripJsonToString(token)));
+			$form.append($('<input type="hidden" name="total_amount" />').val(total*100));
+			// and submit
+			$form.get(0).submit();
+			$form.prop('disabled',true);
+		}
+	});
+
+  document.getElementById('pay_button').addEventListener('click', function(e) {
+    // Open Checkout with further options
+    handler.open({
+      name: 'Claremont Munchies',
+      description: 'bringing In-N-Out to your door',
+      amount: total*100
+    });
+    e.preventDefault();
+  });
+</script>
+
+</script>
 </html>

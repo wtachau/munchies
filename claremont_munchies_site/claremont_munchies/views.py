@@ -12,6 +12,16 @@ import json
 from prices import *
 from view_helper import *
 
+def process(request):
+     #user purchased the cart
+    if request.method == 'POST': 
+        result = process_order(request)
+        return HttpResponseRedirect("thanks")
+    else:
+        return HttpResponse("no post data found")
+
+def thankyou(request):
+    return render_to_response('thankyou.html', context, RequestContext(request))
 
 def logout(request):
     request.session['logged_in'] = False
@@ -28,8 +38,6 @@ def updateTotal(request):
             request.session['order_total'] = 0
             
 def order_form(request):
-
-
     #redirect to landing page if they are not logged in
     if not is_logged_in(request):
         return send_to_landing_page(request)    
@@ -73,25 +81,19 @@ def order_form(request):
     return render_to_response('order_form.html', context, RequestContext(request))
 
 def checkout(request):
-    
+
     #redirect to landing page if they are not logged in
     if not is_logged_in(request):
         return send_to_landing_page(request)    
     
     if 'order_total' in request.session:
         total = request.session.get('order_total')
-        context['order_total'] = total*100
-        context['order_total_desc'] = '$'+str(total)
+        context['order_total_stripe'] = total*100
+        context['order_total'] = "%0.2f" % total
+        context['tip_suggestion'] = "20% = $"+str("%.02f"% (float(total)/5))
         context['orders'] = request.session['orders'] # give the page all session orders 
-    
-    #user purchased the cart
-    if request.method == 'POST':
-        if 'stripeToken' in request.POST:      
-            token = process_order(request, context['order_total'])
-            return HttpResponse(token)
-        
-    #user came from our order form
-    #if 'orders' in request.session:
+
+        context['location'] = "Fix This" # look up from database
            
     return render_to_response('checkout.html', context, RequestContext(request))
     
@@ -107,9 +109,12 @@ def landing_page(request):
         #check that the post request was for registration
         if 'register_name' in request.POST:
             #gather post values
-            context['name'] = request.POST['register_name']
+            context['username'] = request.POST['register_name']
             context['password'] = request.POST['register_password']    
             context['password_2'] = request.POST['register_password_2'] 
+            context['fname'] = request.POST['register_fname']
+            context['lname'] = request.POST['register_lname']
+            context['address'] = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
         
             #check the registration against the database
             valid_registration = enter_user(request,context)  
@@ -138,7 +143,7 @@ def landing_page(request):
         #check that the post request was for login
         if 'login_name' in request.POST:
             #gather post values
-            context['name'] = request.POST['login_name']
+            context['username'] = request.POST['login_name']
             context['password'] = request.POST['login_password']            
             
             #login the user

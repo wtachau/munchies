@@ -3,7 +3,34 @@ input:focus, textarea:focus {
     outline: none;
 }
 
+/* HEADER BAR */
+.header_button{
+    height:35;
+    text-decoration: none;
+    margin-right:30px;
+    position:relative; /*make it fixed! causes some format issues though */
+    float:right;
+    margin-top:40;
+    font-family:Molengo;
+    font-size:20px;
+    color:white;
+    background:none;
+    border:none;
+}
 
+.header_button:hover {
+    text-decoration:underline;
+}
+
+#header_bar{
+    position:relative; 
+    height:60;
+    background-color: #EB353D;
+    height: 117px;
+}
+
+
+/* LANDING PAGE */
 
 .landing_page_field{
     width:25%;
@@ -16,6 +43,16 @@ input:focus, textarea:focus {
     font-size:14;
     background-color: white; 
     color:black;
+    border:none;
+    border: 1px solid;
+    border-color: #9C9C9C;
+}
+
+/* to keep first, last name on one line */
+.landing_page_field#name {
+    margin-left: 0;
+    margin-right: 0;
+    width: 12%;
 }
 
 #register_form{
@@ -95,87 +132,23 @@ input:focus, textarea:focus {
 }
 
 #login_form{
-    /* margin-top:10%; WITHOUT PRE-REGISTER TEXT */
-    margin-top:3%;
+    margin-top:13%; 
     display:none;
 }
 #register_form {
-    /* margin-top:10%; WITHOUT PRE-REGISTER TEXT */
-    margin-top:3%;
-}
-
-
-.header_button{
-    height:35;
-    text-decoration: none;
-    /*width:150;*/
-    margin-right:30px;
-    position:relative; /*make it fixed! causes some format issues though */
-    float:right;
-    margin-top:40;
-    /*border-radius:50;*/
-    font-family:Molengo;
-    font-size:20px;
-    color:white;
-    background:none;
-    border:none;
-    /*background-color: #f62b2b; 
-    background-image: -webkit-gradient(linear, left top, left bottom, from(#f62b2b), to(#d20202));
-    background-image: -webkit-linear-gradient(top, #f62b2b, #d20202);
-    background-image: -moz-linear-gradient(top, #f62b2b, #d20202);
-    background-image: -ms-linear-gradient(top, #f62b2b, #d20202);
-    background-image: -o-linear-gradient(top, #f62b2b, #d20202);
-    background-image: linear-gradient(to bottom, #f62b2b, #d20202);filter:progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr=#f62b2b, endColorstr=#d20202);*/
-}
-
-.header_button:hover {
-    /*box-shadow: 5px 5px 2px #888888;*/
-    text-decoration:underline;
-}
-
-#header_bar{
-position:relative; 
-height:60;
-background-color: #EB353D;
-height: 117px;
-
-}
-
-#logout_button{
-/*float:right;
-margin-left:0;*/
+    margin-top:6%; 
 }
 
 #landing_page_box{
-
-border-color:#FD1C25;
-
+    border-color:#FD1C25;
 }
 
-.landing_page_info{
 
-}
-
-.landing_page_field{
-border:none;
-border: 1px solid;
-border-color: #9C9C9C;
-}
-
+/* ORDER FORM */
 #price_col {
 	width:30px;
 	text-align:right;
 }
-
-#logo {
-    /*left: 50%;
-    position: absolute;
-    margin-top: 50px;
-    width:170px;
-    height:120px;
-    background:url('{% static "images/in-n-out-logo.jpg" %}'); 
-    background-size:170px 120px;*/
-    }
 
 #order_name {
     width:300px;
@@ -183,10 +156,10 @@ border-color: #9C9C9C;
 
 #submitButton {
     background: transparent;
-font-size: 23px;
-font-family: 'Molengo', Georgia, Times, serif;
-margin-top: 15px;
-border: none;
+    font-size: 23px;
+    font-family: 'Molengo', Georgia, Times, serif;
+    margin-top: 15px;
+    border: none;
 }
 
 #submitButton:hover{
@@ -218,8 +191,6 @@ body {
 }
 
 #menu {
-    /*background-color:#FFFFFF;
-    border-radius:40px;*/
     margin-bottom:65px;
     min-height:400px;
     height:auto;
@@ -271,9 +242,6 @@ body {
     font-family: 'Cardo', Georgia, Times, serif;
     font-size: 18px;
 }
-.select_button option {
-    /*font-size:20px;*/
-}
 .menu_q {
     font-family: 'Molengo', Georgia, Times, serif;
     font-size: 20px;
@@ -292,6 +260,9 @@ body {
     border:1px 
     groove #000000;
 }
+
+/* CHECKOUT PAGE */
+
 #checkout_table{
     margin-left:auto;
     margin-right:auto;
@@ -324,23 +295,50 @@ body {
 }
 
 .checkout_menu {
-margin-top: 43px;
-width: 1010px;
-margin-left: auto;
-margin-right: auto;
-
+    margin-top: 43px;
+    width: 1010px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #pay_button {
+    display: block;
+    position: relative;
+    padding: 0 12px;
+    height: 30px;
+    line-height: 30px;
+    background: #1275f;
+    background-image: linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+    -webkit-box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    -moz-box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    -ms-box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    -o-box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.25);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    visibility: visible!important;
+    -webkit-font-smoothing: antialiased;
+    cursor: pointer;
+    border: none;
+
+
     margin-top: 25px;
     margin-bottom: 25px;
 }
 
 .login_menu {
-margin-top: 43px;
-width: 1010px;
-margin-left: auto;
-margin-right: auto;
+    margin-top: 43px;
+    width: 1010px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 #footer {
@@ -348,16 +346,17 @@ margin-right: auto;
     bottom:0;
     background-color: #EB353D;
     text-align: center;
-    padding-top: 12px;
-    height: 32px;
+    padding-top: 9px;
+    height: 26px;
     font-family:Molengo;
-    font-size:18px;
+    font-size:14px;
     color: white;
     width:100%;
 }
-#names {
-
+#footer a{
+    color:white;
 }
+
 #title {
     font-family:Molengo;
     font-size:18px;
@@ -399,12 +398,12 @@ margin-right: auto;
     width:400px;
 }
 #instructionsText {
-border-radius: 4px;
-border: 1px solid;
-border-color: #B8B8B8;
-height: 21px;
-width: 250px;
-margin-top: 3px;
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: #B8B8B8;
+    height: 21px;
+    width: 250px;
+    margin-top: 3px;
 }
 
 .login_menu {
@@ -424,4 +423,32 @@ margin-top: 3px;
 #alert span {
     font-weight:bold;
     text-transform:uppercase;
+}
+
+#tip_box {
+    height: 32;
+    font-size: 17;
+    width: 128;
+    margin-left: 60;
+    border-radius: 5;
+    border: 1px solid;
+    border-color: #9C9C9C;
+    text-align: right;
+    padding-right: 4px;
+}
+
+.checkout_location {
+    font-size: 25;
+    width:200;
+}
+
+/* THANK YOU PAGE */
+.thanks {
+    text-align: center;
+    margin-top: 15%;
+    font-size: 23;
+    font-family: 'Molengo', Georgia, Times, serif;
+}
+.thanks a {
+    color:black;
 }

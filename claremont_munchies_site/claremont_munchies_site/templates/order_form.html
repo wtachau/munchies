@@ -25,44 +25,11 @@
 	return JSON.stringify(json).replace(',', ', ').replace('[', '').replace(']', '');
     }
     
-    // When the users clicks checkout button
-    /*function checkout () {
-	var method = "post"; 
-	
-	// get string from json
-	var json_string = stripJsonToString(orders);
-    
-	// create form
-	var form = document.createElement("form");
-	form.setAttribute("method", method);
-	form.setAttribute("action", 'checkout');
-    
-	// Create hidden field with the json string 
-	var hiddenField = document.createElement("input");
-	hiddenField.setAttribute("type", "hidden");
-	hiddenField.setAttribute("name", "json_string");
-	hiddenField.setAttribute("value", json_string);
-	form.appendChild(hiddenField);
-	
-	// and add csrf token (cross-site reference forgery)
-	form.innerHTML += "{% csrf_token %}";
-	
-	// add it to document, and submit!
-	document.body.appendChild(form);
-	form.submit();
-    }*/
-    
     // remove an element from both the document and the json structure
     function removeElement(elementId) {
 	// Removes an element from the document
 	var element = document.getElementById(elementId);
 	element.parentNode.removeChild(element);
-	// now delete from json
-	/*$.each(orders, function(i, item) {
-	    if (item.id == elementId){
-		orders.splice(i,1);
-	    }
-	});*/
 	
 	updateTotal();
 	
@@ -76,15 +43,7 @@
     }
     
     function updateTotal() {
-	subtotal = document.getElementById('subtotal');
-	
-	/*newAmount = 0;
-	$('[id=price_col]').each(function(index, value) {
-	    newAmount += Number(value.innerText);
-	});
-	
-	document.getElementById('subtotal').innerText = "$"+newAmount;*/
-	
+	subtotal = document.getElementById('subtotal');	
     
     }
     
@@ -194,7 +153,7 @@
 	} else {
 	    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
 	}
-	htmlContent+= "<td id='price_col'>"+price+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
+	htmlContent+= "<td id='price_col'>$"+price+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
 	
 	// look for animal style info, if applicable
 	if (animal == "yes") {
@@ -442,7 +401,7 @@
 		    <td id='order_name'><b>{{order.food}}</b></td>
 		    {%endif%}
 		    
-		    <td id='price_col'>{{order.price}}</td><td><input id='removebutton' type='submit' value='' onclick= "removeElement('{{order.id}}');"></td></tr>
+		    <td id='price_col'>${{order.price}}</td><td><input id='removebutton' type='submit' value='' onclick= "removeElement('{{order.id}}');"></td></tr>
 		    
 		    {% if order.animal == 'yes' %}
 		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>
@@ -460,11 +419,10 @@
 		    
 		{% endfor %}
 		</div> 
-		<div id="alert" style="display:none;"><span>Whoops!</span><br>We're not live yet... too bad, that looks tasty. <br> Check back in January 21st to order In-N-Out!</div>
-		<p id="subtotal"><!--{{ subtotal }}--></p>
-		<a id="checkoutButton" onclick="document.getElementById('alert').style.display = 'block';"></a>
-
-		<!-- DISABLE FOR NOW <a id="checkoutButton" href="checkout" /></a> -->
+		<!--<div id="alert" style="display:none;"><span>Whoops!</span><br>We're not live yet... too bad, that looks tasty. <br> Check back in January 21st to order In-N-Out!</div>-->
+		<!-- <p id="subtotal"><{{ subtotal }}</p> RIGHT NOW, DON'T SHOW SUBTOTAL ON ORDER PAGE -->
+		<!-- TO DISABLE CHECKOUT <a id="checkoutButton" onclick="document.getElementById('alert').style.display = 'block';"></a> -->
+		<a id="checkoutButton" href="checkout" /></a> 
 		
 	  </td>
 	</tr>

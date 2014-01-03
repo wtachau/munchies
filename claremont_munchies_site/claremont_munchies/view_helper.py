@@ -26,15 +26,19 @@ def send_to_landing_page(request):
     return HttpResponseRedirect('/')
 
 
-
 #function is passed login credentials to be checked with the database
 def enter_user(request, login_credentials):
     
     #value to be entered into db; other fields null
-    entry = user(account_name=login_credentials['name'].lower(), password=login_credentials['password'])
+    entry = user(account_name=login_credentials['username'].lower(), 
+        password=login_credentials['password'],
+        first_name=login_credentials['fname'],
+        last_name=login_credentials['lname'],
+        location=login_credentials['address']
+        )
     
     #check if user is already in db
-    validate = user.objects.filter(account_name=login_credentials['name']).count()
+    validate = user.objects.filter(account_name=login_credentials['username']).count()
     
     
     #user is already in the database
@@ -44,7 +48,7 @@ def enter_user(request, login_credentials):
     elif login_credentials['password'] != login_credentials['password_2']:
         return 2
     #if account name has a space
-    elif ' ' in login_credentials['name']:
+    elif ' ' in login_credentials['username']:
         return 3
     #password has a space
     elif ' ' in login_credentials['password']:
@@ -52,18 +56,18 @@ def enter_user(request, login_credentials):
     #save the entry into the database
     else:
         request.session['logged_in'] = True
-        request.session['user_name'] = login_credentials['name']
+        request.session['user_name'] = login_credentials['username']
         entry.save()
         return 0
     
 
 #function is passed login credentials to be checked with the database
 def check_login(request, login_credentials):
-    validate = user.objects.filter(account_name=login_credentials['name'].lower(), 
+    validate = user.objects.filter(account_name=login_credentials['username'].lower(), 
                                    password=login_credentials['password']).count()
     if validate > 0:
         request.session['logged_in'] = True
-        request.session['user_name'] = login_credentials['name']
+        request.session['user_name'] = login_credentials['username']
         return True
     else:
         return False
