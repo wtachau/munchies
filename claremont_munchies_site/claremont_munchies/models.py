@@ -1,6 +1,5 @@
 from django.db import models
-# Create your models here.
-
+# Create your models here
 
 class user(models.Model):
     account_name = models.CharField(max_length=60)
@@ -12,11 +11,20 @@ class user(models.Model):
     email = models.CharField(max_length=255)
     stripe_id = models.CharField(null=True, max_length=255)
     date = models.DateTimeField(auto_now_add=True, blank=True)
+
+class order_part(models.Model):
+    order_id = models.CharField(max_length=255)
+    food = models.CharField(max_length=255)
+    price = models.IntegerField(max_length=3)
+    animal_style = models.CharField(max_length=11)
+    food_type = models.CharField(max_length=255)
+    desc = models.CharField(max_length=500)
+    order_num = models.IntegerField()
     
 class orders(models.Model):
     credit_card_token = models.CharField(max_length=255)
-    order = models.CharField(max_length=500)
-    date = models.DateField(auto_now = True, auto_now_add=True)
+    user = models.CharField(max_length=11)
+    date = models.DateTimeField(auto_now_add=True, blank=True)
     total_amount = models.IntegerField()
 
 class deals(models.Model):
@@ -26,6 +34,6 @@ class deals(models.Model):
 class dealInstances(models.Model):
     user_id = models.IntegerField()
     deal_id = models.IntegerField()
-    
+
     
     

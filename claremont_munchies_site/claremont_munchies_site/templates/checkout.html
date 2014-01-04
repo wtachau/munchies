@@ -126,6 +126,9 @@ $(document).ready(function (){
 
 		<!-- Get Delivery Location -->
 		<form action="process" id="pay" method="post">{% csrf_token %}
+
+			<input type="hidden" name="orders" value="{{orders}}"/>
+
 			<br>deliver to:<br>
 			<select id="select_location" class="checkout_location" name="delivery_location">
 			    <option selected value="default" >{{location}}</option>
@@ -136,7 +139,7 @@ $(document).ready(function (){
 			<select class="checkout_location" style="display:none;" id="DelivLocation" name="register_location">
 			    <option selected="" disabled="" >Which School?</option>
 			    <option value="Pomona" >Pomona</option>
-			    <option value="Claremont Mckenna" >Claremont Mckenna</option>
+			    <option value="Claremont McKenna" >Claremont McKenna</option>
 			    <option value="Pitzer" >Pitzer</option>
 			    <option value="Scripps" >Scripps</option>
 			    <option value="Harvey Mudd" >Harvey Mudd</option>
@@ -178,8 +181,8 @@ $(document).ready(function (){
 			    <option value="Appleby" >Appleby</option>
 			    <option value="Auen" >Auen</option>
 			    <option value="Beckett" >Beckett</option>
-			    <option value="cmc_benson" >Benson</option>
-			    <option value="Benson" >Berger</option>
+			    <option value="Benson" >Benson</option>
+			    <option value="Berger" >Berger</option>
 			    <option value="Boswell" >Boswell</option>
 			    <option value="Claremont" >Claremont</option>
 			    <option value="Fawcett" >Fawcett</option>

@@ -16,9 +16,14 @@ def process(request):
      #user purchased the cart
     if request.method == 'POST': 
         result = process_order(request)
+        if request.POST['delivery_location'] == 'change':
+            newlocation = user.objects.get(account_name=request.session['user_name'])
+            newlocation.location = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
+            newlocation.save()
+        #return HttpResponse(result)
         return HttpResponseRedirect("thanks")
     else:
-        return HttpResponse("no post data found")
+        return HttpResponse("ERROR")
 
 def thankyou(request):
     return render_to_response('thankyou.html', context, RequestContext(request))
@@ -92,8 +97,7 @@ def checkout(request):
         context['order_total'] = "%0.2f" % total
         context['tip_suggestion'] = "20% = $"+str("%.02f"% (float(total)/5))
         context['orders'] = request.session['orders'] # give the page all session orders 
-
-        context['location'] = "Fix This" # look up from database
+        context['location'] = user.objects.filter(account_name=request.session['user_name']).values('location')[0]['location'] # look up from database
            
     return render_to_response('checkout.html', context, RequestContext(request))
     

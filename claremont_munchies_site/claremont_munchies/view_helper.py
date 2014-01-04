@@ -12,6 +12,7 @@ warning = Context()
 
 """These are helper functions for our views.py file"""
 
+
 #helper functions
 def is_logged_in(request):
     if request.session.get('logged_in') == True:
@@ -24,7 +25,6 @@ def send_to_order(request):
 
 def send_to_landing_page(request):
     return HttpResponseRedirect('/')
-
 
 #function is passed login credentials to be checked with the database
 def enter_user(request, login_credentials):

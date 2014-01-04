@@ -39,8 +39,8 @@ def process_order(request):
     
     return customer.id"""
     
-    #current_user = user.objects.get(account_name=request.session.get('user_name'))
-    
+    current_user = user.objects.get(account_name=request.session.get('user_name'))
+
     #stripe_id = current_user.stripe_id
     
     #email = current_user.email
@@ -48,30 +48,18 @@ def process_order(request):
     #if the customer does not have a credit card token
     #if stripe_id == None:
         # Create a Customer
+
+    # Try to create customer with the token ID
     try:
         customer = stripe.Customer.create(
         card=token['id'],
         description="in n out"
         )
     except stripe.CardError, e:
-        # Since it's a decline, stripe.CardError will be caught
-        string = ""
-        body = e.json_body
-        err  = body['error']
-
-        string+= "Status is: %s<br>" % e.http_status
-        string+= "Type is: %s<br>" % err['type']
-        string+= "Code is: %s<br>" % err['code']
-        # param is '' in this case
-        string+= "Param is: %s<br>" % err['param']
-        string+= "Message is: %s" % err['message']
-        string+=" <br><br> "+str(token)
-        return string
-    #stripe_id = customer.id
-    #current_user.stripe_id = stripe_id
-    #current_user.save()
+        return str(e)+" <br><br> "+str(token)
 
     # Create the charge on Stripe's servers - this will charge the user's card
+    # (charge customer, not card)
     try:
       charge = stripe.Charge.create(
         amount=total_amount, # in cents
@@ -79,10 +67,50 @@ def process_order(request):
         customer=customer.id
     )
     except stripe.CardError, e:
-        # The card has been declined
         return str(e)+" <br><br> "+str(token)
 
-    return "success!"
+
+
+    #create new order
+    order_entry = orders(
+                credit_card_token=token['id'], 
+                user= current_user.id, # get user id from session.
+                total_amount=total_amount
+                )
+    order_entry.save()
+
+    # get id from order to assign to each order_part
+    last_id = orders.objects.latest('id').id
+
+    #string = ""
+    for order in request.session['orders']:
+        current_order_part = request.session['orders'][order]
+
+        # Not all orders have type
+        if 'type' in current_order_part: 
+            type_entry = current_order_part['type']
+        else:
+            type_entry = ""
+
+        order_part_entry = order_part(
+                    order_id = current_order_part['id'],
+                    food = current_order_part['food'],
+                    price = current_order_part['price'],
+                    animal_style = current_order_part['animal'],
+                    food_type = type_entry,
+                    desc = current_order_part['desc'],
+                    order_num = last_id
+                    )
+        order_part_entry.save()
+
+
+    """# Save orders to the database (once charge goes through)
+    order_string = ""
+    for thing in request.session['orders']:
+        order_string+=str(request.session['orders'][thing])+" "
+    return order_string"""
+
+    return str(current_user.id)
 
 
 
