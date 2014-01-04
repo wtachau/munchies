@@ -110,7 +110,7 @@ def process_order(request):
         order_string+=str(request.session['orders'][thing])+" "
     return order_string"""
 
-    return str(current_user.id)
+    return "success" # otherwise, will redirect to error page
 
 
 

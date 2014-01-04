@@ -15,18 +15,23 @@ from view_helper import *
 def process(request):
      #user purchased the cart
     if request.method == 'POST': 
-        result = process_order(request)
         if request.POST['delivery_location'] == 'change':
             newlocation = user.objects.get(account_name=request.session['user_name'])
             newlocation.location = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
             newlocation.save()
-        #return HttpResponse(result)
-        return HttpResponseRedirect("thanks")
+        result = process_order(request)
+        if result == "success":
+            return HttpResponseRedirect("thanks")
+        else:
+            return HttpResponseRedirect("error")
     else:
         return HttpResponse("ERROR")
 
 def thankyou(request):
     return render_to_response('thankyou.html', context, RequestContext(request))
+
+def error(request):
+    return render_to_response('error.html', context, RequestContext(request))
 
 def logout(request):
     request.session['logged_in'] = False
