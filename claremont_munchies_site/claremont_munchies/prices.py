@@ -3,16 +3,17 @@ from django.template.loader import *
 context = Context()
 
 def get_prices():
-    context['cheeseburger_1'] = 5
-    context['cheeseburger_2'] = 6
-    context['cheeseburger_3'] = 7.5
-    context['cheeseburger_4'] = 8.5
-    context['hamburger_1'] = 5
-    context['hamburger_2'] = 6
-    context['hamburger_3'] = 7.5
-    context['hamburger_4'] = 8.5
-    context['fries'] = 3
-    context['shake'] = 5
-    context['drink'] = 1
-    context['animal'] = 2.5
+    context['cheeseburger_1'] = 4.99
+    context['cheeseburger_2'] = 6.29
+    context['cheeseburger_3'] = 7.49
+    context['cheeseburger_4'] = 8.49
+    context['grilled_cheese'] = 2.99
+    context['hamburger_1'] = 4.99
+    context['hamburger_2'] = 6.29
+    context['hamburger_3'] = 7.49
+    context['hamburger_4'] = 8.49
+    context['fries'] = 2.99
+    context['shake'] = 4.99
+    context['drink'] = 0.99
+    context['animal_fries'] = 5.99
     return context

@@ -50,39 +50,41 @@
 	var price = 0;
 	switch (foodtype) {
 	    case 'Cheeseburger':
-		switch (moreinfo) {
-		    case 'Single Single': price += {{ cheeseburger_1 }}; break;
-		    case 'Double Double': price += {{ cheeseburger_2 }}; break;
-		    case 'Triple Triple': price += {{ cheeseburger_3 }}; break;
-		    case '4x4': price += {{ cheeseburger_4 }}; break;
-		}
-		if (animal == 'yes') {
-		    return price+{{animal}};
-		}
-		return price;
-		break;
+			switch (moreinfo) {
+			    case 'Single Single': price += {{ cheeseburger_1 }}; break;
+			    case 'Double Double': price += {{ cheeseburger_2 }}; break;
+			    case 'Triple Triple': price += {{ cheeseburger_3 }}; break;
+			    case '4x4': price += {{ cheeseburger_4 }}; break;
+			}
+			/*if (animal == 'yes') {
+			    return price+{{animal}};
+			}*/
+			return price;
+			break;
 	    case 'Hamburger':
-		switch (moreinfo) {
-		    case 'Single Single': price += {{ hamburger_1 }}; break;
-		    case 'Double Double': price += {{ hamburger_2 }}; break;
-		    case 'Triple Triple': price += {{ hamburger_3 }}; break;
-		    case '4x4': price += {{ hamburger_4 }}; break;
-		}
-		if (animal == 'yes') {
-		    return price+{{animal}};
-		}
-		return price;
-		break;
+			switch (moreinfo) {
+			    case 'Single Single': price += {{ hamburger_1 }}; break;
+			    case 'Double Double': price += {{ hamburger_2 }}; break;
+			    case 'Triple Triple': price += {{ hamburger_3 }}; break;
+			    case '4x4': price += {{ hamburger_4 }}; break;
+			}
+			/*if (animal == 'yes') {
+			    return price+{{animal}};
+			}*/
+			return price;
+			break;
 	    case 'French Fries':
-		if (animal == 'yes') return {{fries}}+{{animal}};
-		return {{fries}}
-		break;
-	    case 'Shake':
-		return {{ shake }}
-		break;
+			if (animal == 'yes') {
+				return {{animal_fries}};
+			}
+			return {{fries}}
+			break;
+		case 'Shake':
+			return {{ shake }};
+			break;
 	    case 'Drink':
-	    	return {{ drink }}		
-		break;
+	    	return {{ drink }};		
+			break;
 	}    
     
     }
@@ -324,7 +326,7 @@
 		<span class="menu_q">animal style?</span><br>
 		<select class="select_button" id="AnimalStyle" >
 		    <option selected="" disabled="" ></option>
-		    <option value="yes" >Yup! ($2 extra)</option>
+		    <option value="yes" >Yup!</option>
 		    <option value="no" >No thanks</option>
 		</select>
 	    </p>
@@ -335,12 +337,7 @@
 		    <option selected="" disabled="" ></option>
 		    <option value="Coke" >Coke</option>
 		    <option value="Diet Coke" >Diet Coke</option>
-		    <option value="7 Up" >7 Up</option>
-		    <option value="Dr. Pepper" >Dr. Pepper</option>
-		    <option value="Root Beer" >Root Beer</option>
-		    <option value="Lemonade" >Lemonade</option>
-		    <option value="Strawberry Lemonade" >Strawberry Lemonade</option>
-		    <option value="Iced Tea" >Iced Tea</option>
+		    <option value="Sprite" >Sprite</option>
 		</select>
 	    </p>
 	    <!-- <p id="DrinkSubMenu" style="display:none; " >
