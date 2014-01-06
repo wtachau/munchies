@@ -446,6 +446,15 @@ body {
     width:200;
 }
 
+.checkout_location_input {
+    font-size: 15;
+    width:200;
+    border-radius: 5;
+    border: 1px solid;
+    border-color: #9C9C9C;
+    padding: 2px 0px 2px 5px;
+}
+
 /* THANK YOU PAGE */
 .thanks {
     text-align: center;

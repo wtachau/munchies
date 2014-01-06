@@ -21,9 +21,15 @@ def process(request):
     if request.method == 'POST': 
         if request.POST['delivery_location'] == 'change':
             newlocation = user.objects.get(account_name=request.session['user_name'])
-            newlocation.location = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
+            if 'register_location_dorm' in request.POST:
+                newlocation.location = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
+            else:
+                newlocation.location = str(request.POST['register_location'])+" > "+str(request.POST['register_location_other'])
             newlocation.save()
         result = process_order(request)
+        # and clear orders
+        request.session['orders'] = {}
+        request.session['order_total'] = 0
         if result == "success":
             return HttpResponseRedirect("thanks")
     # if something went wrong
@@ -131,7 +137,10 @@ def landing_page(request):
             context['fname'] = request.POST['register_fname']
             context['lname'] = request.POST['register_lname']
             context['phone_num'] = request.POST['register_phone']
-            context['address'] = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
+            if 'register_location_dorm' in request.POST:
+                context['address'] = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
+            else:
+                context['address'] = str(request.POST['register_location'])+" > "+str(request.POST['register_location_other'])
         
             #check the registration against the database
             valid_registration = enter_user(request,context)  
@@ -234,14 +243,9 @@ def update_orders(request):
                 message = client.messages.create(body=body,
                     to="+1"+str(to_number),
                     from_=our_number)
-                
-            """if not old_status == "order_delivered" and new_status == "order_delivered":
-                body = "Hi %s! The driver has left to pick up your order." % cur_user.first_name
-                message = client.messages.create(body="Jenny please?! I love you <3",
-                to="+15025531965",
-                from_=our_number)"""
 
             cur_order.status = new_status
             cur_order.save()
+
     return HttpResponseRedirect("drivers")
 
