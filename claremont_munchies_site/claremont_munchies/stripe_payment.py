@@ -11,34 +11,7 @@ def process_order(request):
     token = json_object = json.loads(request.POST['stripeToken'])
     total_amount = request.POST['total_amount']
     
-    """#get the customer id from the server; might be null
-    current_user = user.objects.get(account_name=request.session.get('user_name'))
-    
-    #stripe_id = current_user.stripe_id
-    
-    #email = current_user.email
-    
-    #if the customer does not have a credit card token
-    #if stripe_id == None:
-        # Create a Customer
-    customer = stripe.Customer.create(
-        card=token,
-        description="in n out"
-    )
-        #stripe_id = customer.id
-        #current_user.stripe_id = stripe_id
-        #current_user.save()
-        
-    
-    # Charge the Customer instead of the card
-    stripe.Charge.create(
-        amount=total_amount, # in cents
-        currency="usd",
-        customer=customer.id
-    )
-    
-    return customer.id"""
-    
+    # get user from session
     current_user = user.objects.get(account_name=request.session.get('user_name'))
 
     #stripe_id = current_user.stripe_id
@@ -70,19 +43,20 @@ def process_order(request):
         return str(e)+" <br><br> "+str(token)
 
 
-
     #create new order
     order_entry = orders(
                 credit_card_token=token['id'], 
                 user= current_user.id, # get user id from session.
-                total_amount=total_amount
+                total_amount=total_amount,
+                location=current_user.location,
+                status="order_placed"
                 )
     order_entry.save()
 
     # get id from order to assign to each order_part
     last_id = orders.objects.latest('id').id
 
-    #string = ""
+    # add all parts to order
     for order in request.session['orders']:
         current_order_part = request.session['orders'][order]
 
@@ -92,6 +66,7 @@ def process_order(request):
         else:
             type_entry = ""
 
+        # create the order part, and save it
         order_part_entry = order_part(
                     order_id = current_order_part['id'],
                     food = current_order_part['food'],

@@ -19,17 +19,46 @@
 				document.getElementById(show_id).style.display = 'block';
 			}
 			// make sure phone is valid 10 digit number (replace spaces)
-			function validatePhone()
+			// make sure delivery locations are set up
+			function validateData()
 			{
 				var x = document.forms["register_form"]['register_phone'].value;
 				x = x.split(" ").join("");
 				var reg = /^\d+$/;
-				if (reg.test(x) && x.length == 10)
+				if (!reg.test(x) || x.length != 10)
 				  {
-				  return true;
+				  	alert("Please enter a valid 10 digit phone number \n(no parentheses or dashes, please!)");
+				  	return false;
 				  }
-				 alert("Please enter a valid 10 digit phone number \n(no parentheses or dashes, please!)");
-				 return false
+
+				//Now check that locations are filled out
+				var location = document.getElementById('DelivLocation').value;
+				if (location == "default") {
+					alert("Please select a school for delivery")
+					return false
+				}
+
+				// check that some dorm has been filled out
+				var location_dorms = document.getElementsByName('register_location_dorm');
+				var isEmpty = true;
+				for (var index = 0; index < location_dorms.length; ++index) {
+					if (location_dorms[index].value != "default") {
+						isEmpty = false;
+					}
+				}
+
+				// check that either dorm+location are filled out, or off campus + address
+				if (location == "Off Campus" && document.getElementsByName('register_location_other')[0].value == "") {
+					alert("Please give an address for delivery");
+					return false;
+				}
+				if (location != "Off Campus" && isEmpty) {
+					alert("Please choose a dorm for delivery");
+					return false;
+				}
+
+				// Otherwise, all good!
+				return true;
 			}
 
 			// When any of the menus change, update other accordingly
@@ -43,7 +72,7 @@
 						$("#MuddDormType").hide();
 						$("#ScrippsDormType").hide();
 						$("#OffCampusType").hide();
-					} else if ($(this).val() == "Claremont Mckenna") {
+					} else if ($(this).val() == "Claremont McKenna") {
 						$("#PomonaDormType").hide();
 						$("#CMCDormType").show();
 						$("#PitzerDormType").hide();
@@ -104,7 +133,7 @@
 				<input id='toggle_to_register' class='landing_page_field' type="button" value="Need to Register?" onclick="toggle('login_form', 'register_form');" />
 		</form>
 	
-		<form id='register_form' name="register" method="POST" action="." onsubmit="return validatePhone();">{% csrf_token %}	
+		<form id='register_form' name="register" method="POST" action="." onsubmit="return validateData();">{% csrf_token %}	
 			<div id='landing_page_warning'>{{warning}}</div>
 			<div id='register_text'>Register</div>
 
@@ -121,9 +150,9 @@
 
 			<!-- Get Delivery Location -->
 			<select class="landing_page_field" id="DelivLocation" name="register_location">
-			    <option selected="" disabled="" >Delivery Location</option>
+			    <option value="default" selected="" disabled="" >Delivery Location</option>
 			    <option value="Pomona" >Pomona</option>
-			    <option value="Claremont Mckenna" >Claremont Mckenna</option>
+			    <option value="Claremont McKenna" >Claremont McKenna</option>
 			    <option value="Pitzer" >Pitzer</option>
 			    <option value="Scripps" >Scripps</option>
 			    <option value="Harvey Mudd" >Harvey Mudd</option>
@@ -131,7 +160,7 @@
 			</select>
 			<!-- If Pomona -->
 			<select class="landing_page_field" style="display:none;" id="PomonaDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Blaisdell" >Blaisdell</option>
 			    <option value="Clark I" >Clark I</option>
 			    <option value="Clark III" >Clark III</option>
@@ -151,7 +180,7 @@
 			</select>
 			<!-- If Pitzer -->
 			<select class="landing_page_field" style="display:none;" id="PitzerDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Atherton" >Atherton</option>
 			    <option value="East" >East</option>
 			    <option value="Mead" >Mead</option>
@@ -161,12 +190,12 @@
 			</select>
 			<!-- If CMC -->
 			<select class="landing_page_field" style="display:none;" id="CMCDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Appleby" >Appleby</option>
 			    <option value="Auen" >Auen</option>
 			    <option value="Beckett" >Beckett</option>
-			    <option value="cmc_benson" >Benson</option>
-			    <option value="Benson" >Berger</option>
+			    <option value="Benson" >Benson</option>
+			    <option value="Berger" >Berger</option>
 			    <option value="Boswell" >Boswell</option>
 			    <option value="Claremont" >Claremont</option>
 			    <option value="Fawcett" >Fawcett</option>
@@ -179,7 +208,7 @@
 			</select>
 			<!-- If Scripps -->
 			<select class="landing_page_field" style="display:none;" id="ScrippsDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Browning" >Browning</option>
 			    <option value="Dorsey" >Dorsey</option>
 			    <option value="Frankel" >Frankel</option>
@@ -192,7 +221,7 @@
 			</select>
 			<!-- If Harvey Mudd -->
 			<select class="landing_page_field" style="display:none;" id="MuddDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Atwood" >Atwood</option>
 			    <option value="Case" >Case</option>
 			    <option value="East" >East</option>
@@ -204,7 +233,7 @@
 			</select>
 			<!-- If Off Campus -->
 			<span id="OffCampusType" style="display:none;">
-			<input class='landing_page_field' type="text" placeholder="Your Address" name="register_address" />
+			<input class='landing_page_field' type="text" placeholder="Your Address" name="register_location_other" />
 			<span style="font-size: 13px; width: 259px; display: inline-table; margin-top: 8;" id="address_warning"><i>Note: We do not deliver outside of Claremont. If you place an order, we cannot deliver it and will be unable to give a refund. Sorry!</i></span>
 			</span>
 

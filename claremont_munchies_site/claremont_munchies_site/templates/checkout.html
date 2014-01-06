@@ -8,6 +8,7 @@
 <script>
 // When user selects "new location"
 $(document).ready(function (){
+
 	$("#select_location").change(function() {
 	    // Only show the submenus from selected components
 	    if ($(this).val() == "default") {
@@ -31,7 +32,7 @@ $(document).ready(function (){
 			$("#MuddDormType").hide();
 			$("#ScrippsDormType").hide();
 			$("#OffCampusType").hide();
-		} else if ($(this).val() == "Claremont Mckenna") {
+		} else if ($(this).val() == "Claremont McKenna") {
 			$("#PomonaDormType").hide();
 			$("#CMCDormType").show();
 			$("#PitzerDormType").hide();
@@ -101,10 +102,6 @@ $(document).ready(function (){
 		    {% if order.animal == 'yes' %}
 		    <tr><td id="added_desc" >Animal Style</td></tr>{% endif %}
 		    
-		    {% if order.food == 'Drink' %}
-		    <tr><td id="added_desc" >{{order.size}}</td></tr>
-		    {% endif %}
-		    
 		    {% if order.desc %}
 		    <tr><td id="added_desc" ><i>{{order.desc}}</i></td></tr>
 		    {% endif %}
@@ -137,7 +134,7 @@ $(document).ready(function (){
 			<br>
 			<!-- Get Delivery Location (if not default) -->
 			<select class="checkout_location" style="display:none;" id="DelivLocation" name="register_location">
-			    <option selected="" disabled="" >Which School?</option>
+			    <option value="default" selected="" disabled="" >Which School?</option>
 			    <option value="Pomona" >Pomona</option>
 			    <option value="Claremont McKenna" >Claremont McKenna</option>
 			    <option value="Pitzer" >Pitzer</option>
@@ -147,7 +144,7 @@ $(document).ready(function (){
 			</select><br>
 			<!-- If Pomona -->
 			<select class="checkout_location" style="display:none;" id="PomonaDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Blaisdell" >Blaisdell</option>
 			    <option value="Clark I" >Clark I</option>
 			    <option value="Clark III" >Clark III</option>
@@ -167,7 +164,7 @@ $(document).ready(function (){
 			</select>
 			<!-- If Pitzer -->
 			<select class="checkout_location" style="display:none;" id="PitzerDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Atherton" >Atherton</option>
 			    <option value="East" >East</option>
 			    <option value="Mead" >Mead</option>
@@ -177,7 +174,7 @@ $(document).ready(function (){
 			</select>
 			<!-- If CMC -->
 			<select class="checkout_location" style="display:none;" id="CMCDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Appleby" >Appleby</option>
 			    <option value="Auen" >Auen</option>
 			    <option value="Beckett" >Beckett</option>
@@ -195,7 +192,7 @@ $(document).ready(function (){
 			</select>
 			<!-- If Scripps -->
 			<select class="checkout_location" style="display:none;" id="ScrippsDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Browning" >Browning</option>
 			    <option value="Dorsey" >Dorsey</option>
 			    <option value="Frankel" >Frankel</option>
@@ -208,7 +205,7 @@ $(document).ready(function (){
 			</select>
 			<!-- If Harvey Mudd -->
 			<select class="checkout_location" style="display:none;" id="MuddDormType" name="register_location_dorm">
-			    <option selected="" disabled="" >Which Dorm?</option>
+			    <option value="default" selected="" disabled="" >Which Dorm?</option>
 			    <option value="Atwood" >Atwood</option>
 			    <option value="Case" >Case</option>
 			    <option value="East" >East</option>
@@ -220,7 +217,7 @@ $(document).ready(function (){
 			</select>
 			<!-- If Off Campus -->
 			<span id="OffCampusType" style="display:none;">
-			<input class="checkout_location" type="text" placeholder="Your Address" name="register_address" />
+			<input class="checkout_location" type="text" placeholder="Your Address" name="register_location_other" />
 			<span style="font-size: 13px; width: 259px; display: inline-table; margin-top: 8;" id="address_warning"><i>Note: We do not deliver outside of Claremont. If you place an order, we cannot deliver it and will be unable to give a refund. Sorry!</i></span>
 			</span>
 		
@@ -278,13 +275,49 @@ $(document).ready(function (){
 	});
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
-    // Open Checkout with further options
-    handler.open({
-      name: 'Claremont Munchies',
-      description: 'bringing In-N-Out to your door',
-      amount: total*100
-    });
-    e.preventDefault();
+  	// first check that delivery input is valid, if it's not default
+  	var canOpen = true;
+  	if (document.getElementById('select_location').value != 'default') {
+	  	//Now check that locations are filled out
+		var location = document.getElementById('DelivLocation').value;
+		if (location == "default") {
+			alert("Please select a school for delivery")
+			canOpen = false
+		}
+		if (canOpen) {
+			// check that some dorm has been filled out
+			var location_dorms = document.getElementsByName('register_location_dorm');
+			var isEmpty = true;
+			for (var index = 0; index < location_dorms.length; ++index) {
+				if (location_dorms[index].value != "default") {
+					isEmpty = false;
+				}
+			}
+		}
+
+		if (canOpen) {
+			// check that either dorm+location are filled out, or off campus + address
+			if (location == "Off Campus" && document.getElementsByName('register_location_other')[0].value == "") {
+				alert("Please give an address for delivery");
+				canOpen =  false;
+			}
+			if (location != "Off Campus" && isEmpty) {
+				alert("Please choose a dorm for delivery");
+				canOpen =  false;
+			}
+		}
+	}
+
+	// if input is valid
+	if (canOpen) {
+	    // Open Checkout with further options
+	    handler.open({
+	      name: 'Claremont Munchies',
+	      description: 'bringing In-N-Out to your door',
+	      amount: total*100
+	    });
+	    e.preventDefault();
+	}
   });
 </script>
 

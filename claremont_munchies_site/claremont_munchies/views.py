@@ -11,7 +11,11 @@ import os
 import json
 from prices import *
 from view_helper import *
+from datetime import datetime
+from twilio.rest import TwilioRestClient
 
+
+# called from checkout. Process payment, save order, return "thanks" page if successful
 def process(request):
      #user purchased the cart
     if request.method == 'POST': 
@@ -22,17 +26,18 @@ def process(request):
         result = process_order(request)
         if result == "success":
             return HttpResponseRedirect("thanks")
-        else:
-            return HttpResponseRedirect("error")
-    else:
-        return HttpResponse("ERROR")
+    # if something went wrong
+    return HttpResponseRedirect("error")
 
+# after checkout
 def thankyou(request):
     return render_to_response('thankyou.html', context, RequestContext(request))
 
+# if anything goes wrong
 def error(request):
     return render_to_response('error.html', context, RequestContext(request))
 
+# logs user out, send to landing page
 def logout(request):
     request.session['logged_in'] = False
     request.session['user_name'] = ''
@@ -46,7 +51,8 @@ def updateTotal(request):
                 request.session['order_total'] += v.get('price')
         else:
             request.session['order_total'] = 0
-            
+  
+# Send user to order page, also handle all additions to session order storage          
 def order_form(request):
     #redirect to landing page if they are not logged in
     if not is_logged_in(request):
@@ -90,6 +96,7 @@ def order_form(request):
     
     return render_to_response('order_form.html', context, RequestContext(request))
 
+# grab orders and send to checkout page
 def checkout(request):
 
     #redirect to landing page if they are not logged in
@@ -123,6 +130,7 @@ def landing_page(request):
             context['password_2'] = request.POST['register_password_2'] 
             context['fname'] = request.POST['register_fname']
             context['lname'] = request.POST['register_lname']
+            context['phone_num'] = request.POST['register_phone']
             context['address'] = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
         
             #check the registration against the database
@@ -166,5 +174,74 @@ def landing_page(request):
     warning['warning'] = ''
     return render_to_response('landing_page.html', RequestContext(request))
 
+# for the drivers - check status of orders
+def drivers(request):
 
+    # First get all orders from today
+    today = datetime.today().date()
+    todays_orders = orders.objects.filter(date__month=today.month, 
+                                        date__day=today.day, 
+                                        date__year = today.year)
+
+    orders_list = []
+    for index, cur_order in enumerate(todays_orders):
+        this_order = {}
+        this_order['deets'] = cur_order
+
+        # add its parts
+        order_parts = order_part.objects.filter(order_num=cur_order.id)
+        this_order['parts'] = order_parts
+
+        # get who ordered it
+        orderer = user.objects.get(id=cur_order.user)
+        this_order['name'] = str(orderer.first_name)+" "+str(orderer.last_name)
+        this_order['number'] = "(%s%s%s) %s%s%s-%s%s%s%s" % tuple(orderer.phone_num)
+
+        # add this to orders
+        orders_list.append(this_order)
+
+    # sort by id num
+    context['list_orders'] = sorted(orders_list, key=lambda order: order['deets'].id)
+    return render_to_response('drivers.html', context, RequestContext(request))
+
+# When drivers update status of orders
+def update_orders(request):
+
+    # Your Account Sid and Auth Token from twilio.com/user/account
+    account_sid = "AC920ff90e3b41f3c9a79d8060a1e8729c"
+    auth_token  = "cf7284c3bc558112555bb085d40ac4f9"
+    client = TwilioRestClient(account_sid, auth_token)
+    our_number = "+18129727106"
+
+    for post in request.POST:
+        if "order_num_" in post:
+
+            cur_order = orders.objects.get(id=post.split("order_num_")[1])
+            cur_user = user.objects.get(id=cur_order.user)
+            old_status = cur_order.status
+            new_status = request.POST[post]
+            order_num = post.split("order_num_")[1]
+            to_number = cur_user.phone_num
+
+            if not old_status == "order_assigned" and new_status == "order_assigned":
+                body = "Hi %s! The driver has left to pick up your order." % cur_user.first_name
+                message = client.messages.create(body=body,
+                    to="+1"+str(to_number),
+                    from_=our_number)
+
+            if not old_status == "order_incar" and new_status == "order_incar":
+                body = "Hi %s! Your order is on its way back from In-N-Out." % cur_user.first_name
+                message = client.messages.create(body=body,
+                    to="+1"+str(to_number),
+                    from_=our_number)
+                
+            """if not old_status == "order_delivered" and new_status == "order_delivered":
+                body = "Hi %s! The driver has left to pick up your order." % cur_user.first_name
+                message = client.messages.create(body="Jenny please?! I love you <3",
+                to="+15025531965",
+                from_=our_number)"""
+
+            cur_order.status = new_status
+            cur_order.save()
+    return HttpResponseRedirect("drivers")
 

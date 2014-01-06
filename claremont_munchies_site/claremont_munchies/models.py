@@ -9,6 +9,7 @@ class user(models.Model):
     location = models.CharField(max_length=255, null=True)
     claremont_id_number = models.CharField(max_length=20, null=True)
     email = models.CharField(max_length=255)
+    phone_num = models.CharField(max_length=11)
     stripe_id = models.CharField(null=True, max_length=255)
     date = models.DateTimeField(auto_now_add=True, blank=True)
 
@@ -26,6 +27,8 @@ class orders(models.Model):
     user = models.CharField(max_length=11)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     total_amount = models.IntegerField()
+    location = models.CharField(max_length=255)
+    status = models.CharField(max_length=25, null=True)
 
 class deals(models.Model):
     deal_type = models.CharField(max_length=11)

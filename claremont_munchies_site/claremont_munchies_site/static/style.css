@@ -232,7 +232,7 @@ body {
 }
 
 #order_title {
-    padding-bottom:15px;
+    /*padding-bottom:15px;*/
     font-family: 'Molengo', Georgia, Times, serif;
     font-size: 30px;
 }
@@ -259,6 +259,10 @@ body {
     height:453px;
     border:1px 
     groove #000000;
+}
+
+#empty_warning {
+    font-family: 'Cardo', Georgia, Times, serif;
 }
 
 /* CHECKOUT PAGE */
@@ -451,4 +455,38 @@ body {
 }
 .thanks a {
     color:black;
+}
+
+/* DRIVERS PAGE */
+.drivers_table {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 5%;
+    font-family: 'Cardo', Georgia, Times, serif;
+    border-collapse: collapse;
+    margin-bottom: 10%;
+    height:auto;
+    font-size:12px;
+}
+
+.drivers_table .center {
+    text-align:center;
+}
+
+.drivers_table #update_button {
+    text-align:center; 
+    padding-bottom:15px;"
+}
+
+.drivers_table #update_button input {
+    width:150px;
+    font-size: 20px;
+}
+
+.drivers_table .spaced{
+    padding-left: 15px;
+}
+
+tr.border_top td {
+  border-top:1pt solid black;
 }

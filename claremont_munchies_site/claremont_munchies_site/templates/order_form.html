@@ -12,8 +12,6 @@
     {% load staticfiles %}
     <link href='http://fonts.googleapis.com/css?family=Cardo:400,700' rel='stylesheet' type='text/css'>
     <link href="http://fonts.googleapis.com/css?family=Molengo" rel="stylesheet" type="text/css">
-    
-    
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
     <script>
     var fileId = Math.round(Math.random()*100000000); 
@@ -48,7 +46,7 @@
     }
     
     // get the burger price
-    function getPrice(foodtype, moreinfo, size, animal) {
+    function getPrice(foodtype, moreinfo, animal) {
 	var price = 0;
 	switch (foodtype) {
 	    case 'Cheeseburger':
@@ -65,7 +63,7 @@
 		break;
 	    case 'Hamburger':
 		switch (moreinfo) {
-		    case 'Single Single': price += {{ hamburger_1 }}; console.log(price); break;
+		    case 'Single Single': price += {{ hamburger_1 }}; break;
 		    case 'Double Double': price += {{ hamburger_2 }}; break;
 		    case 'Triple Triple': price += {{ hamburger_3 }}; break;
 		    case '4x4': price += {{ hamburger_4 }}; break;
@@ -83,11 +81,7 @@
 		return {{ shake }}
 		break;
 	    case 'Drink':
-		if (size == 'Small') {
-		    return {{ drink_small }}
-		} else {
-		    return {{ drink_large }}		
-		}
+	    	return {{ drink }}		
 		break;
 	}    
     
@@ -100,7 +94,7 @@
 	{csrfmiddlewaretoken: '{{ csrf_token }}', 'object':stripJsonToString(object)},
 	function(data, textStatus, jqXHR)
 	{
-	      console.log(data);
+	      //console.log(data);
 	});
     
     }
@@ -108,83 +102,82 @@
     // add a file to the document and to the json structure
     function addFile() {
 	
-	fileId = Math.round(Math.random()*100000000); // change fileId to get a unique ID for the new element
-	var idString = 'order-'+fileId; //i.e. order-2, order-3
-	
-	//create a new json object to add
-	var JSONObject = {};
-	JSONObject.id = idString;
-	
-	//// get the sub-type
-	var kindOfMeal = document.getElementById('FoodType').value;
-	var type;
-	switch (kindOfMeal) {
-	    case 'Cheeseburger':
-	    case 'Hamburger' :
-		type = document.getElementById('BurgerType').value;
-		break;
-	    case 'Shake':
-		type = document.getElementById('ShakeType').value;
-		break;
-	    case 'Drink':
-		type = document.getElementById('DrinkType').value;
-		size = document.getElementById('DrinkSize').value;
-		break;
-	}
-	
-	//get selected components to construct html
-	var htmlContent = "<table class='order_table' ><tr>";
-	var animal = document.getElementById('AnimalStyle').value;
-	console.log(kindOfMeal,type,size,animal);
-	var price = getPrice(kindOfMeal,type, size, animal);
-	console.log(price);
-	var size = ""; //only for drinks
-	
-	// Generate 'removeElement' javascript call to match current elementID
-	var tellToDelete = "removeElement('"+idString+"');"; 
-	
-	// Add to HTML string
-	if (kindOfMeal == "Cheeseburger" || kindOfMeal=="Hamburger") {
-	    htmlContent += "<td id='order_name'><b>"+kindOfMeal+", " + type + "</b></td>";
-	} else if (kindOfMeal == "Shake") {
-	    htmlContent += "<td id='order_name'><b>"+type+" "+kindOfMeal+"</b></td>";	
-    	} else if (kindOfMeal == "Drink") {
-	    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
-	} else {
-	    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
-	}
-	htmlContent+= "<td id='price_col'>$"+price+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
-	
-	// look for animal style info, if applicable
-	if (animal == "yes") {
-	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>"
-	}
-	
-	// if drink, show size
-	if (kindOfMeal=="Drink") {
-	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;"+size+"</td></tr>"
-	    JSONObject.size = size;
-	}
-	
-	// Add instructions 
-	if (document.getElementById('instructionsText').value != "") {	
-	    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;<i>"+ document.getElementById('instructionsText').value +"</i></td></tr>";
-	}
-	
-	// Then construct JSON object
-	JSONObject.food = kindOfMeal;
-	JSONObject.type = type;
-	JSONObject.animal = document.getElementById('AnimalStyle').value;
-	JSONObject.price = price;
-	JSONObject.desc = document.getElementById('instructionsText').value;
-	
-	// finish up...
-	htmlContent+="</table>"
-	// and add it!
-	addElement('orders', 'p', idString, htmlContent);
-	
-	//do a POST here to move session 
-	postOrder(JSONObject);
+		fileId = Math.round(Math.random()*100000000); // change fileId to get a unique ID for the new element
+		var idString = 'order-'+fileId; //i.e. order-2, order-3
+		
+		//create a new json object to add
+		var JSONObject = {};
+		JSONObject.id = idString;
+		
+		//// get the sub-type
+		var kindOfMeal = document.getElementById('FoodType').value;
+		var type;
+		switch (kindOfMeal) {
+		    case 'Cheeseburger':
+		    case 'Hamburger' :
+			type = document.getElementById('BurgerType').value;
+			break;
+		    case 'Shake':
+			type = document.getElementById('ShakeType').value;
+			break;
+		    case 'Drink':
+			type = document.getElementById('DrinkType').value;
+			//size = document.getElementById('DrinkSize').value;
+			break;
+		}
+		
+		//get selected components to construct html
+		var htmlContent = "<table class='order_table' ><tr>";
+		var animal = document.getElementById('AnimalStyle').value;
+		var price = getPrice(kindOfMeal,type, animal);
+		
+		// Generate 'removeElement' javascript call to match current elementID
+		var tellToDelete = "removeElement('"+idString+"');"; 
+		
+		// Add to HTML string
+		if (kindOfMeal == "Cheeseburger" || kindOfMeal=="Hamburger") {
+		    htmlContent += "<td id='order_name'><b>"+kindOfMeal+", " + type + "</b></td>";
+		} else if (kindOfMeal == "Shake") {
+		    htmlContent += "<td id='order_name'><b>"+type+" "+kindOfMeal+"</b></td>";	
+	    	} else if (kindOfMeal == "Drink") {
+		    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
+		} else {
+		    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
+		}
+		htmlContent+= "<td id='price_col'>$"+price+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
+		
+		// look for animal style info, if applicable
+		if (animal == "yes") {
+		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>"
+		}
+		
+		// if drink, show size
+		/*if (kindOfMeal=="Drink") {
+		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;"+size+"</td></tr>"
+		    JSONObject.size = size;
+		}*/
+		
+		// Add instructions 
+		if (document.getElementById('instructionsText').value != "") {	
+		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;<i>"+ document.getElementById('instructionsText').value +"</i></td></tr>";
+		}
+		
+		// Then construct JSON object
+		JSONObject.food = kindOfMeal;
+		JSONObject.type = type;
+		JSONObject.animal = document.getElementById('AnimalStyle').value;
+		JSONObject.price = price;
+		JSONObject.desc = document.getElementById('instructionsText').value;
+		
+		// finish up...
+		htmlContent+="</table>"
+		// and add it!
+		addElement('orders', 'p', idString, htmlContent);
+
+		$('#empty_warning').hide()
+		
+		//do a POST here to move session 
+		postOrder(JSONObject);
     }
     
     // Actually adds element to the page, and then resets other menus
@@ -213,7 +206,7 @@
 	document.getElementById('FoodType').value = "";
 	document.getElementById('instructionsText').value = "";
 	document.getElementById('DrinkType').value = "";
-	document.getElementById('DrinkSize').value = "";
+	//document.getElementById('DrinkSize').value = "";
 	document.getElementById('ShakeType').value = "";
 	document.getElementById('BurgerType').value = "";
 	document.getElementById('AnimalStyle').value = "";
@@ -252,7 +245,6 @@
 	    } else if ($(this).val() == "Hamburger") {
 		$("#AddInstructions").hide();
 		$("#DrinkMenu").hide();
-		$("#DrinkSubMenu").hide();
 		$("#ShakeMenu").hide();
 		$("#AnimalStyleMenu").hide();
 		$("#BurgerMenu").show();
@@ -268,14 +260,12 @@
 		$("#BurgerMenu").hide();
 		$("#ShakeMenu").hide();
 		$("#AnimalStyleMenu").hide();
-		$("#DrinkSubMenu").hide();
 		$("#DrinkMenu").show();
 	    } else if ($(this).val() == "Shake") {
 		$("#AddInstructions").hide();
 		$("#BurgerMenu").hide();
 		$("#AnimalStyleMenu").hide();
 		$("#DrinkMenu").hide();
-		$("#DrinkSubMenu").hide();
 		$("#ShakeMenu").show();
 	    }
 	});
@@ -286,9 +276,6 @@
 	    $("#AddInstructions").show();
 	});
 	$("#DrinkMenu").change(function() {
-	    $("#DrinkSubMenu").show();
-	});
-	$("#DrinkSubMenu").change(function() {
 	    $("#AddInstructions").show();
 	});
 	$("#ShakeMenu").change(function() {
@@ -356,14 +343,14 @@
 		    <option value="Iced Tea" >Iced Tea</option>
 		</select>
 	    </p>
-	    <p id="DrinkSubMenu" style="display:none; " >
+	    <!-- <p id="DrinkSubMenu" style="display:none; " >
 		<span class="menu_q">size</span><br>
 		<select class="select_button" id="DrinkSize" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Small" >Small</option>
 		    <option value="Large" >Large</option>
 		</select>
-	    </p>
+	    </p> -->
 	    <p id="ShakeMenu" style="display:none; " >
 		<span class="menu_q">flavor?</span><br>
 		<select class="select_button" id="ShakeType" >
@@ -383,6 +370,8 @@
 	  </td>
 	  <td id="col2" >
 		<div id="orders" align="center" ><div id="order_title">your order: </div>
+
+
 		
 		{% for index, order in orders.items %}
 		
@@ -407,15 +396,19 @@
 		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>
 		    {% endif %}
 		    
+		    <!--
 		    {% if order.food == 'Drink' %}
 		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;{{order.size}}</td></tr>
-		    {% endif %}
+		    {% endif %} -->
 		    
 		    {% if order.desc %}
 		    <tr><td id='added_desc'><i>&nbsp;&nbsp;&nbsp;{{order.desc}}</i></td></tr>
 		    {% endif %}
 		    
 		    <tr></table>
+
+		{% empty %}
+    	<span id="empty_warning"><br><i>You haven't ordered anything yet!</i><br><br></span>
 		    
 		{% endfor %}
 		</div> 

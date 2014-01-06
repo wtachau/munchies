@@ -1,0 +1,75 @@
+<html>
+	<head>
+		{% include "header_drivers.html" %}
+		<title>Drivers</title>
+		
+	</head>
+	<body>
+
+		<table class="drivers_table"> 
+
+			<form action="update_orders" method="post">{% csrf_token %}
+
+				<tr><td colspan=8 id="update_button"><input type='submit' value="Update" action="/error"></td></tr>
+
+				<tr>
+					<td class="spaced" style="font-size:16px;">Order #</td>
+					<td class="spaced" style="font-size:16px;">Status</td>
+					<td class="spaced" style="font-size:16px;">Items</td>
+					<td class="spaced" style="font-size:16px;">Name</td>
+					<td class="spaced" style="font-size:16px;">Number</td>
+					<td class="spaced" style="font-size:16px;">Drop Off</td>
+		    		<td class="spaced" style="font-size:16px;">Total</td>
+			    </tr>
+
+				{% for order in list_orders %}
+				    <tr class = "border_top">
+				    	<td class="spaced" style="font-size:16px;">{{order.deets.id }}</td>
+				    	<td style="font-size:16px;" >
+							<select id="status" name="order_num_{{order.deets.id}}">
+							    <option {% if order.deets.status == 'order_placed' %} selected {%endif%} value="order_placed" >Placed</option>
+							    <option {% if order.deets.status == 'order_assigned' %} selected {%endif%} value="order_assigned" >Assigned</option>
+							    <option {% if order.deets.status == 'order_incar' %} selected {%endif%} value="order_incar" >In Transit</option>
+							    <option {% if order.deets.status == 'order_delivered' %} selected {%endif%} value="order_delivered" >Delivered</option>
+							</select><br>	
+						</td>
+				    	<td></td>
+				    	<td class="spaced" style="font-size:16px;">{{order.name }}</td>
+				    	<td class="spaced" style="font-size:16px;">{{order.number }}</td>
+				    	<td class="spaced" style="font-size:16px;">{{order.deets.location}}</td>
+				    	<td class="spaced" style="font-size:16px;">$<script>document.write({{order.deets.total_amount}}/100)</script></td>
+
+				    	{% for order_part in order.parts %}
+					    	
+						    {% if order_part.food == "Shake" %}
+						    <tr><td></td><td></td><td>{{order_part.food_type}} {{order_part.food}}</td>
+						    {%endif%}
+						    {% if order_part.food == "Drink" %}
+						    <tr><td></td><td></td><td>{{order_part.food_type}} </td></tr>
+						    {% endif%}
+						    {% if order_part.food == "Cheeseburger" or order_part.food == "Hamburger" %}
+						    <tr><td></td><td></td><td>{{order_part.food}}, {{order_part.food_type}}</td>
+						    {% endif%}
+						    {% if order_part.food == "French Fries" %}
+						    <tr><td></td><td></td><td>{{order_part.food}}</td>
+						    {%endif%}
+						    
+						    <!--<td id="price_col" >${{order_part.price}}</td> </tr>-->
+						    
+						    {% if order_part.animal == 'yes' %}
+						    <tr><td></td><td></td><td id="added_desc" >Animal Style</td></tr>{% endif %}
+						    
+						    {% if order_part.desc %}
+						    <tr><td></td><td></td><td id="added_desc" ><i>&nbsp;&nbsp;**{{order_part.desc}}</i></td></tr>
+						    {% endif %}
+							 
+				    	{% endfor %}
+			    	</tr>
+				{% endfor %}
+				<tr class = "border_top"><td colspan=8></td></tr>
+			</form>
+		</table>
+
+		{% include "footer.html" %}
+	</body>
+</html>

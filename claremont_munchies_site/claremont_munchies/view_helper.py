@@ -34,7 +34,8 @@ def enter_user(request, login_credentials):
         password=login_credentials['password'],
         first_name=login_credentials['fname'],
         last_name=login_credentials['lname'],
-        location=login_credentials['address']
+        location=login_credentials['address'],
+        phone_num=login_credentials['phone_num']
         )
     
     #check if user is already in db
