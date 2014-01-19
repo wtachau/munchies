@@ -27,6 +27,8 @@ class orders(models.Model):
     user = models.CharField(max_length=11)
     date = models.DateTimeField(auto_now_add=True, blank=True)
     total_amount = models.IntegerField()
+    tip_amount = models.IntegerField()
+    order_amount = models.IntegerField()
     location = models.CharField(max_length=255)
     status = models.CharField(max_length=25, null=True)
 

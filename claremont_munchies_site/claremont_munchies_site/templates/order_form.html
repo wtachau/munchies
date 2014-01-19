@@ -70,7 +70,7 @@
 		
 		// look for animal style info, if applicable
 		if (animal == "yes") {
-		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>"
+		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal</td></tr>"
 		}
 		
 		// Add instructions 
@@ -122,7 +122,6 @@
 		document.getElementById('FoodType').value = "";
 		document.getElementById('instructionsText').value = "";
 		document.getElementById('DrinkType').value = "";
-		//document.getElementById('DrinkSize').value = "";
 		document.getElementById('ShakeType').value = "";
 		document.getElementById('BurgerType').value = "";
 		document.getElementById('AnimalStyle').value = "";
@@ -168,19 +167,19 @@
 		switch (foodtype) {
 		    case 'Cheeseburger':
 				switch (moreinfo) {
-				    case 'Single Single': price += {{ cheeseburger_1 }}; break;
-				    case 'Double Double': price += {{ cheeseburger_2 }}; break;
-				    case 'Triple Triple': price += {{ cheeseburger_3 }}; break;
-				    case '4x4': price += {{ cheeseburger_4 }}; break;
+				    case 'Single': price += {{ cheeseburger_1 }}; break;
+				    case 'Double': price += {{ cheeseburger_2 }}; break;
+				    case 'Triple': price += {{ cheeseburger_3 }}; break;
+				    case '4x': price += {{ cheeseburger_4 }}; break;
 				}
 				return price;
 				break;
 		    case 'Hamburger':
 				switch (moreinfo) {
-				    case 'Single Single': price += {{ hamburger_1 }}; break;
-				    case 'Double Double': price += {{ hamburger_2 }}; break;
-				    case 'Triple Triple': price += {{ hamburger_3 }}; break;
-				    case '4x4': price += {{ hamburger_4 }}; break;
+				    case 'Single': price += {{ hamburger_1 }}; break;
+				    case 'Double': price += {{ hamburger_2 }}; break;
+				    case 'Triple': price += {{ hamburger_3 }}; break;
+				    case '4x': price += {{ hamburger_4 }}; break;
 				}
 				return price;
 				break;
@@ -300,15 +299,15 @@
 		<span class="menu_q">what kind?</span><br>
 		<select class="select_button" id="BurgerType" >
 		    <option selected="" disabled="" ></option>
-		    <option value="Single Single" >Single Single</option>
-		    <option value="Double Double" >Double Double</option>
-		    <option value="Triple Triple" >Triple Triple</option>
-		    <option value="4x4" >4x4</option>
+		    <option value="Single" >Single Burger</option>
+		    <option value="Double" >Double Burger</option>
+		    <option value="Triple" >Triple Burger</option>
+		    <option value="4x" >4 x Burger</option>
 		</select>
 	    </p>
 	    
 	    <p id="AnimalStyleMenu" style="display:none; " >
-		<span class="menu_q">animal style?</span><br>
+		<span class="menu_q">animal?</span><br>
 		<select class="select_button" id="AnimalStyle" >
 		    <option selected="" disabled="" ></option>
 		    <option value="yes" >Yup!</option>
@@ -378,7 +377,7 @@
 		    <td id='price_col'>${{order.price}}</td><td><input id='removebutton' type='submit' value='' onclick= "removeElement('{{order.id}}');"></td></tr>
 		    
 		    {% if order.animal == 'yes' %}
-		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>
+		    <tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal</td></tr>
 		    {% endif %}
 		    
 		    <!--

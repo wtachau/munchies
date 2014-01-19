@@ -5,13 +5,15 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
+from django.db.models import Q
+#from pytz import timezone
 from models import *
 from stripe_payment import *
 import os
 import json
 from prices import *
 from view_helper import *
-from datetime import datetime
+from datetime import datetime, tzinfo, timedelta
 from twilio.rest import TwilioRestClient
 
 
@@ -186,17 +188,34 @@ def landing_page(request):
 
 # for the drivers - check status of orders
 def drivers(request):
+    # PST class to make times correct
+    class PST(tzinfo):
+            def utcoffset(self, dt): 
+                return timedelta(hours=-8)
+            def dst(self, dt):
+                # DST starts last Sunday in March
+                d = datetime(dt.year, 4, 1)   # ends last Sunday in October
+                self.dston = d - timedelta(days=d.weekday() + 1)
+                d = datetime(dt.year, 11, 1)
+                self.dstoff = d - timedelta(days=d.weekday() + 1)
+                if self.dston <=  dt.replace(tzinfo=None) < self.dstoff:
+                    return timedelta(hours=9)
+                else:
+                    return timedelta(hours=-8)
 
     # First get all orders from today
     today = datetime.today().date()
-    todays_orders = orders.objects.filter(date__month=today.month, 
-                                        date__day=today.day, 
-                                        date__year = today.year)
-
+    todays_orders = orders.objects.filter(Q(date__day=today.day) | Q(date__day=(today.day)),
+                                        date__year = today.year,
+                                        date__month=today.month, 
+                                        )
     orders_list = []
     for index, cur_order in enumerate(todays_orders):
         this_order = {}
         this_order['deets'] = cur_order
+
+        
+        this_order['time'] = cur_order.date.astimezone(PST()).strftime('%b %d @ %I:%M %p')
 
         # add its parts
         order_parts = order_part.objects.filter(order_num=cur_order.id)

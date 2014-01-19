@@ -10,6 +10,8 @@ def process_order(request):
     # Get the credit card details submitted by the form
     token = json_object = json.loads(request.POST['stripeToken'])
     total_amount = request.POST['total_amount']
+    tip = request.POST['tip_amount']
+    order_amount = int(total_amount) - int(tip)
     
     # get user from session
     current_user = user.objects.get(account_name=request.session.get('user_name'))
@@ -48,6 +50,8 @@ def process_order(request):
                 credit_card_token=token['id'], 
                 user= current_user.id, # get user id from session.
                 total_amount=total_amount,
+                tip_amount = tip,
+                order_amount = order_amount,
                 location=current_user.location,
                 status="order_placed"
                 )

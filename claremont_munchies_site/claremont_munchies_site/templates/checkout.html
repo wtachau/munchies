@@ -115,7 +115,7 @@ $(document).ready(function (){
 
 		<table id="table_list">
 		    <tr>
-		    	<td >Tip for Delivery:</td>
+		    	<td >Suggested Tip for Delivery:</td>
 		    	<td><input type="text" id="tip_box" onKeyUp="tipChanged()" placeholder="{{ tip_suggestion }}"></td>
 		    </tr>
 		</table>
@@ -271,15 +271,23 @@ $(document).ready(function (){
 			// add stripe token, and order total
 			$form.append($('<input type="hidden" name="stripeToken" />').val(stripJsonToString(token)));
 			$form.append($('<input type="hidden" name="total_amount" />').val(Math.round(total*100)));
-			// and submit
+			$form.append($('<input type="hidden" name="tip_amount" />').val(document.getElementById('tip_box').value*100));
+			// Submit, and disable "pay" button so user doesn't pay >1 times
 			$form.get(0).submit();
-			$form.prop('disabled',true);
+			document.getElementById('pay_button').disabled = true;
 		}
 	});
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
-  	// first check that delivery input is valid, if it's not default
   	var canOpen = true;
+
+  	// first check that order is over $10
+  	if (total < 10) {
+  		alert("Sorry, the delivery minimum is $10");
+  		canOpen = false;
+  	}
+
+  	// first check that delivery input is valid, if it's not default  	
   	if (document.getElementById('select_location').value != 'default') {
 	  	//Now check that locations are filled out
 		var location = document.getElementById('DelivLocation').value;
