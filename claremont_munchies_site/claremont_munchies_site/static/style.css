@@ -462,6 +462,15 @@ body {
     font-size: 23;
     font-family: 'Molengo', Georgia, Times, serif;
 }
+.thanks #small{
+    font-size:18px;
+}
+.thanks #small a {
+    text-decoration: none;
+}
+.thanks #small a:hover {
+    text-decoration: underline;
+}
 .thanks a {
     color:black;
 }

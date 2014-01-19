@@ -37,6 +37,7 @@ def process(request):
 
 # after checkout
 def thankyou(request):
+    context['order_num'] = orders.objects.latest('id').id
     return render_to_response('thankyou.html', context, RequestContext(request))
 
 # if anything goes wrong

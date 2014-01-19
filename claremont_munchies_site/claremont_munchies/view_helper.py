@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response
 from django.http import HttpResponseRedirect
+from django.contrib.auth.hashers import make_password
 from models import *
 
 context = Context()
@@ -31,7 +32,7 @@ def enter_user(request, login_credentials):
     
     #value to be entered into db; other fields null
     entry = user(account_name=login_credentials['username'].lower(), 
-        password=login_credentials['password'],
+        password=make_password(login_credentials['password']),
         first_name=login_credentials['fname'],
         last_name=login_credentials['lname'],
         location=login_credentials['address'],

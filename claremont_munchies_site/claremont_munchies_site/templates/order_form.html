@@ -18,89 +18,10 @@
     var orders = [];
     
     // Turn JSON into string
-    function stripJsonToString (json)
-    {
-	return JSON.stringify(json).replace(',', ', ').replace('[', '').replace(']', '');
+    function stripJsonToString (json) {
+		return JSON.stringify(json).replace(',', ', ').replace('[', '').replace(']', '');
     }
-    
-    // remove an element from both the document and the json structure
-    function removeElement(elementId) {
-	// Removes an element from the document
-	var element = document.getElementById(elementId);
-	element.parentNode.removeChild(element);
-	
-	updateTotal();
-	
-	// delete from server!
-	$.post("order",
-	{csrfmiddlewaretoken: '{{ csrf_token }}', 'delete':elementId},
-	function(data, textStatus, jqXHR)
-	{
-	      //console.log(data);
-	});
-    }
-    
-    function updateTotal() {
-	subtotal = document.getElementById('subtotal');	
-    
-    }
-    
-    // get the burger price
-    function getPrice(foodtype, moreinfo, animal) {
-	var price = 0;
-	switch (foodtype) {
-	    case 'Cheeseburger':
-			switch (moreinfo) {
-			    case 'Single Single': price += {{ cheeseburger_1 }}; break;
-			    case 'Double Double': price += {{ cheeseburger_2 }}; break;
-			    case 'Triple Triple': price += {{ cheeseburger_3 }}; break;
-			    case '4x4': price += {{ cheeseburger_4 }}; break;
-			}
-			/*if (animal == 'yes') {
-			    return price+{{animal}};
-			}*/
-			return price;
-			break;
-	    case 'Hamburger':
-			switch (moreinfo) {
-			    case 'Single Single': price += {{ hamburger_1 }}; break;
-			    case 'Double Double': price += {{ hamburger_2 }}; break;
-			    case 'Triple Triple': price += {{ hamburger_3 }}; break;
-			    case '4x4': price += {{ hamburger_4 }}; break;
-			}
-			/*if (animal == 'yes') {
-			    return price+{{animal}};
-			}*/
-			return price;
-			break;
-	    case 'French Fries':
-			if (animal == 'yes') {
-				return {{animal_fries}};
-			}
-			return {{fries}}
-			break;
-		case 'Shake':
-			return {{ shake }};
-			break;
-	    case 'Drink':
-	    	return {{ drink }};		
-			break;
-	}    
-    
-    }
-    
-    // Send the new order to the server
-    function postOrder(object) {
-	
-	$.post("order",
-	{csrfmiddlewaretoken: '{{ csrf_token }}', 'object':stripJsonToString(object)},
-	function(data, textStatus, jqXHR)
-	{
-	      //console.log(data);
-	});
-    
-    }
-    
+
     // add a file to the document and to the json structure
     function addFile() {
 	
@@ -111,20 +32,19 @@
 		var JSONObject = {};
 		JSONObject.id = idString;
 		
-		//// get the sub-type
+		//// get the sub-type, if applicable
 		var kindOfMeal = document.getElementById('FoodType').value;
 		var type;
 		switch (kindOfMeal) {
 		    case 'Cheeseburger':
 		    case 'Hamburger' :
-			type = document.getElementById('BurgerType').value;
-			break;
+				type = document.getElementById('BurgerType').value;
+				break;
 		    case 'Shake':
-			type = document.getElementById('ShakeType').value;
-			break;
+				type = document.getElementById('ShakeType').value;
+				break;
 		    case 'Drink':
-			type = document.getElementById('DrinkType').value;
-			//size = document.getElementById('DrinkSize').value;
+				type = document.getElementById('DrinkType').value;
 			break;
 		}
 		
@@ -153,12 +73,6 @@
 		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal Style</td></tr>"
 		}
 		
-		// if drink, show size
-		/*if (kindOfMeal=="Drink") {
-		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;"+size+"</td></tr>"
-		    JSONObject.size = size;
-		}*/
-		
 		// Add instructions 
 		if (document.getElementById('instructionsText').value != "") {	
 		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;<i>"+ document.getElementById('instructionsText').value +"</i></td></tr>";
@@ -176,113 +90,183 @@
 		// and add it!
 		addElement('orders', 'p', idString, htmlContent);
 
+		// if there was an "warning", hide it
 		$('#empty_warning').hide()
 		
 		//do a POST here to move session 
 		postOrder(JSONObject);
     }
-    
+
     // Actually adds element to the page, and then resets other menus
     function addElement(parentId, elementTag, elementId, html) {
-    
-	// Adds an element to the document
-	var parent = document.getElementById(parentId);
-	var newElement = document.createElement(elementTag);
-	// set the ID
-	newElement.setAttribute('id', elementId);
-	newElement.innerHTML = html;
-	// and append it!
-	parent.appendChild(newElement);
-	
-	updateTotal()
-	
-	// now, hide all menus
-	$("#AddInstructions").hide();
-	$("#DrinkMenu").hide();
-	$("#DrinkSubMenu").hide();
-	$("#ShakeMenu").hide();
-	$("#AnimalStyleMenu").hide();
-	$("#BurgerMenu").hide();
-	
-	// ... and reset menu values
-	document.getElementById('FoodType').value = "";
-	document.getElementById('instructionsText').value = "";
-	document.getElementById('DrinkType').value = "";
-	//document.getElementById('DrinkSize').value = "";
-	document.getElementById('ShakeType').value = "";
-	document.getElementById('BurgerType').value = "";
-	document.getElementById('AnimalStyle').value = "";
+		// Adds an element to the document
+		var parent = document.getElementById(parentId);
+		var newElement = document.createElement(elementTag);
+		// set the ID
+		newElement.setAttribute('id', elementId);
+		newElement.innerHTML = html;
+		// and append it!
+		parent.appendChild(newElement);
+		
+		updateTotal()
+		
+		// now, hide all menus
+		$("#AddInstructions").hide();
+		$("#DrinkMenu").hide();
+		$("#DrinkSubMenu").hide();
+		$("#ShakeMenu").hide();
+		$("#AnimalStyleMenu").hide();
+		$("#BurgerMenu").hide();
+		
+		// ... and reset menu values
+		document.getElementById('FoodType').value = "";
+		document.getElementById('instructionsText').value = "";
+		document.getElementById('DrinkType').value = "";
+		//document.getElementById('DrinkSize').value = "";
+		document.getElementById('ShakeType').value = "";
+		document.getElementById('BurgerType').value = "";
+		document.getElementById('AnimalStyle').value = "";
     }
-    </script>
+
+    // Save the new order on the server
+    function postOrder(object) {
+		$.post("order",
+			{
+				csrfmiddlewaretoken: '{{ csrf_token }}',
+				'object':stripJsonToString(object)
+			},
+			function(data, textStatus, jqXHR) {}
+		); 
+    }
     
-    <script>
+    // remove an element from both the document and the server
+    function removeElement(elementId) {
+		// Removes an element from the document
+		var element = document.getElementById(elementId);
+		element.parentNode.removeChild(element);
+		
+		updateTotal();
+		
+		// delete from server!
+		$.post("order",
+			{
+				csrfmiddlewaretoken: '{{ csrf_token }}', 
+				'delete':elementId
+			},
+			function(data, textStatus, jqXHR) {}
+		);
+    }
+    
+    // set javascript var equal to current subtotal
+    function updateTotal() {
+		subtotal = document.getElementById('subtotal');	
+    }
+    
+    // get the food item price
+    function getPrice(foodtype, moreinfo, animal) {
+		var price = 0;
+		switch (foodtype) {
+		    case 'Cheeseburger':
+				switch (moreinfo) {
+				    case 'Single Single': price += {{ cheeseburger_1 }}; break;
+				    case 'Double Double': price += {{ cheeseburger_2 }}; break;
+				    case 'Triple Triple': price += {{ cheeseburger_3 }}; break;
+				    case '4x4': price += {{ cheeseburger_4 }}; break;
+				}
+				return price;
+				break;
+		    case 'Hamburger':
+				switch (moreinfo) {
+				    case 'Single Single': price += {{ hamburger_1 }}; break;
+				    case 'Double Double': price += {{ hamburger_2 }}; break;
+				    case 'Triple Triple': price += {{ hamburger_3 }}; break;
+				    case '4x4': price += {{ hamburger_4 }}; break;
+				}
+				return price;
+				break;
+			case 'Grilled Cheese':
+				return {{ grilled_cheese }}; break;
+		    case 'French Fries':
+				if (animal == 'yes') {
+					return {{animal_fries}};
+				}
+				return {{fries}}
+				break;
+			case 'Shake':
+				return {{ shake }};
+				break;
+		    case 'Drink':
+		    	return {{ drink }};		
+				break;
+		}    
+    }
+
     // If user presses enter in the text box, both prevent silly default form submission and hit the submit button
     $(document).ready(function() {
       $(window).keydown(function(event){
-	if(event.keyCode == 13) {
-	  event.preventDefault();
-	  // only submit if the information box is showing!
-	  if ($("#AddInstructions").is(':visible')) {
-	    document.getElementById('submitButton').click();
-	  }
-	  return false;
-	}
+		if(event.keyCode == 13) {
+		  event.preventDefault();
+		  // only submit if the information box is showing!
+		  if ($("#AddInstructions").is(':visible')) {
+		    document.getElementById('submitButton').click();
+		  }
+		  return false;
+		}
       });
     });
     
-    
     // When any of the menus change, update other accordingly
     $(document).ready(function (){
-	$("#FoodType").change(function() {
-	    // make sure animal style goes back to empty! (corner case)
-	    document.getElementById('AnimalStyle').value = "";
-	    
-	    // Only show the submenus from selected components
-	    if ($(this).val() == "Cheeseburger") {
-		$("#AddInstructions").hide();
-		$("#DrinkMenu").hide();
-		$("#ShakeMenu").hide();
-		$("#AnimalStyleMenu").hide();
-		$("#BurgerMenu").show();
-	    } else if ($(this).val() == "Hamburger") {
-		$("#AddInstructions").hide();
-		$("#DrinkMenu").hide();
-		$("#ShakeMenu").hide();
-		$("#AnimalStyleMenu").hide();
-		$("#BurgerMenu").show();
-	    } else if ($(this).val() == "French Fries") {
-		$("#AddInstructions").hide();
-		$("#BurgerMenu").hide();
-		$("#DrinkMenu").hide();
-		$("#ShakeMenu").hide();
-		$("#BurgerSubMenu").hide();
-		$("#AnimalStyleMenu").show();
-	    } else if ($(this).val() == "Drink") {
-		$("#AddInstructions").hide();
-		$("#BurgerMenu").hide();
-		$("#ShakeMenu").hide();
-		$("#AnimalStyleMenu").hide();
-		$("#DrinkMenu").show();
-	    } else if ($(this).val() == "Shake") {
-		$("#AddInstructions").hide();
-		$("#BurgerMenu").hide();
-		$("#AnimalStyleMenu").hide();
-		$("#DrinkMenu").hide();
-		$("#ShakeMenu").show();
-	    }
-	});
-	$("#BurgerMenu").change(function() {
-	    $("#AnimalStyleMenu").show();
-	});
-	$("#AnimalStyleMenu").change(function() {
-	    $("#AddInstructions").show();
-	});
-	$("#DrinkMenu").change(function() {
-	    $("#AddInstructions").show();
-	});
-	$("#ShakeMenu").change(function() {
-	    $("#AddInstructions").show();
-	});
+		$("#FoodType").change(function() {
+		    // make sure animal style goes back to empty! (corner case)
+		    document.getElementById('AnimalStyle').value = "";
+		    
+		    // Only show the submenus from selected components
+		    if ($(this).val() == "Grilled Cheese") {
+			$("#AddInstructions").hide();
+			$("#DrinkMenu").hide();
+			$("#ShakeMenu").hide();
+			$("#AnimalStyleMenu").show();
+			$("#BurgerMenu").hide();
+		    } else if ($(this).val() == "Cheeseburger" || $(this).val() == "Hamburger") {
+			$("#AddInstructions").hide();
+			$("#DrinkMenu").hide();
+			$("#ShakeMenu").hide();
+			$("#AnimalStyleMenu").hide();
+			$("#BurgerMenu").show();
+		    } else if ($(this).val() == "French Fries") {
+			$("#AddInstructions").hide();
+			$("#BurgerMenu").hide();
+			$("#DrinkMenu").hide();
+			$("#ShakeMenu").hide();
+			$("#BurgerSubMenu").hide();
+			$("#AnimalStyleMenu").show();
+		    } else if ($(this).val() == "Drink") {
+			$("#AddInstructions").hide();
+			$("#BurgerMenu").hide();
+			$("#ShakeMenu").hide();
+			$("#AnimalStyleMenu").hide();
+			$("#DrinkMenu").show();
+		    } else if ($(this).val() == "Shake") {
+			$("#AddInstructions").hide();
+			$("#BurgerMenu").hide();
+			$("#AnimalStyleMenu").hide();
+			$("#DrinkMenu").hide();
+			$("#ShakeMenu").show();
+		    }
+		});
+		$("#BurgerMenu").change(function() {
+		    $("#AnimalStyleMenu").show();
+		});
+		$("#AnimalStyleMenu").change(function() {
+		    $("#AddInstructions").show();
+		});
+		$("#DrinkMenu").change(function() {
+		    $("#AddInstructions").show();
+		});
+		$("#ShakeMenu").change(function() {
+		    $("#AddInstructions").show();
+		});
     });
     </script>
     
@@ -305,6 +289,7 @@
 		    <option selected="" disabled="" ></option>
 		    <option value="Cheeseburger" >Cheeseburger</option>
 		    <option value="Hamburger" >Hamburger</option>
+		    <option value="Grilled Cheese">Grilled Cheese</option>
 		    <option value="French Fries" >French Fries</option>
 		    <option value="Shake" >Shake</option>
 		    <option value="Drink" >Drink</option>
@@ -384,6 +369,9 @@
 		    <td id='order_name'><b>{{order.food}}, {{order.type}}</b></td>
 		    {% endif%}
 		    {% if order.food == "French Fries" %}
+		    <td id='order_name'><b>{{order.food}}</b></td>
+		    {%endif%}
+		    {% if order.food == "Grilled Cheese" %}
 		    <td id='order_name'><b>{{order.food}}</b></td>
 		    {%endif%}
 		    

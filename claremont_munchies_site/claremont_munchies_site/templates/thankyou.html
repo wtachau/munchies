@@ -6,7 +6,9 @@
 	</head>
 	<body>
 
-		<div class="thanks"> Thanks for your order! <br> We'll text you when it's on the way.<br><br> <a href="order">Forgot to get something? </a></div>
+		<div class="thanks"> Thanks for your order! <br> We'll text you when it's on the way.<br>Keep your order number for reference: <b>#{{ order_num }}</b><br><br> <a target="_blank" href="https://www.surveymonkey.com/s/Q9KTYQD">We'd love your feedback!</a><br><span id="small">(<a href="order">Forgot to get something?</a>)</span><br>
+		
+		</div>
 
 		{% include "footer.html" %}
 	</body>

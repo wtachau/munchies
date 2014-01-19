@@ -96,6 +96,9 @@ $(document).ready(function (){
 		    {% if order.food == "French Fries" %}
 		    <tr><td><b>{{order.food}}</b></td>
 		    {%endif%}
+		    {% if order.food == "Grilled Cheese" %}
+		    <td id='order_name'><b>{{order.food}}</b></td>
+		    {%endif%}
 		    
 		    <td id="price_col" >${{order.price}}</td> </tr>
 		    
