@@ -133,10 +133,10 @@ input:focus, textarea:focus {
 
 #login_form{
     margin-top:13%; 
-    display:none;
 }
 #register_form {
     margin-top:6%; 
+    display:none;
 }
 
 #landing_page_box{
