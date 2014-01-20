@@ -281,14 +281,31 @@ $(document).ready(function (){
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
   	var canOpen = true;
-
-  	// first check that order is over $10
-  	if (total < 10) {
-  		alert("Sorry, the delivery minimum is $10");
+  	// first check that it's the right time of day (7pm-1am)
+  	var date = new Date;
+  	if ( 
+  		// if it's after 1am or before 9pm
+  		(date.getHours() > 1 && date.getHours() < 21)
+  		// or Monday, Tuesday, or Wednesday
+  		|| (date.getDay() >=1 && date.getDay() <= 3) 
+  		// or Sunday after 1am
+  		|| (date.getHours() > 1 && date.getDay() == 0)
+  		// or Thursday before 9pm
+  		|| (date.getHours() < 21 && date.getDay() == 4) )
+  	{
+  		alert("Sorry! We're not currently accepting orders.\nOur hours are:\n\n\tThursday 7pm - 1am\n\tFriday 7pm - 1am\n\tSaturday 7pm - 1am");
   		canOpen = false;
   	}
 
-  	// first check that delivery input is valid, if it's not default  	
+  	if (canOpen) {
+		// then check that order is over $10
+		if (total < 10) {
+			alert("Sorry, the delivery minimum is $10");
+			canOpen = false;
+		}
+	}
+
+  	// Check that delivery input is valid, if it's not default  	
   	if (document.getElementById('select_location').value != 'default') {
 	  	//Now check that locations are filled out
 		var location = document.getElementById('DelivLocation').value;
