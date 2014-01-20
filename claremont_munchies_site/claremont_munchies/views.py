@@ -237,10 +237,10 @@ def drivers(request):
 def update_orders(request):
 
     # Your Account Sid and Auth Token from twilio.com/user/account
-    account_sid = "AC920ff90e3b41f3c9a79d8060a1e8729c"
-    auth_token  = "cf7284c3bc558112555bb085d40ac4f9"
+    account_sid = "ACc287ec5d974fe942268f46b97d4c40cf"
+    auth_token  = "d1c4702f9dd2dfa7071ec729fb8bd78b"
     client = TwilioRestClient(account_sid, auth_token)
-    our_number = "+18129727106"
+    our_number = "+12137853417"
 
     for post in request.POST:
         if "order_num_" in post:
@@ -253,13 +253,13 @@ def update_orders(request):
             to_number = cur_user.phone_num
 
             if not old_status == "order_assigned" and new_status == "order_assigned":
-                body = "Hi %s! The driver has left to pick up your order." % cur_user.first_name
+                body = "Hi %s! The driver has left to pick up your order from Claremont Munchies." % cur_user.first_name
                 message = client.messages.create(body=body,
                     to="+1"+str(to_number),
                     from_=our_number)
 
             if not old_status == "order_incar" and new_status == "order_incar":
-                body = "Hi %s! Your order is on its way back from In-N-Out." % cur_user.first_name
+                body = "Hi %s! Your order from Claremont Munchies is on its way back from In-N-Out." % cur_user.first_name
                 message = client.messages.create(body=body,
                     to="+1"+str(to_number),
                     from_=our_number)
@@ -268,4 +268,10 @@ def update_orders(request):
             cur_order.save()
 
     return HttpResponseRedirect("drivers")
+
+def terms(request):
+    return render_to_response('terms.html', context, RequestContext(request))
+
+def privacy(request):
+    return render_to_response('privacy.html', context, RequestContext(request))
 

@@ -225,6 +225,7 @@ $(document).ready(function (){
 			</span>
 		
 			<!-- Pay Button (details in footer script) -->
+			<span id="terms_and_privacy"> By ordering below, I acknowledge I am bound by the <a href="JavaScript:newPopup('/terms');">terms of service</a> and <a href="JavaScript:newPopup('/privacy');">privacy policy</a> of ClaremontMunchies.</span>
 			<input type="button" id="pay_button" value="Pay With Card"></input>
 		</form>
 
@@ -331,6 +332,11 @@ $(document).ready(function (){
 	}
   });
 </script>
-
+<script type="text/javascript">
+      // Popup window code
+      function newPopup(url) {
+        popupWindow = window.open(
+          url,'popUpWindow','height=500,width=400,left=100,top=100,resizable=yes,scrollbars=yes,toolbar=yes,menubar=no,location=no,directories=no,status=yes')
+      }
 </script>
 </html>

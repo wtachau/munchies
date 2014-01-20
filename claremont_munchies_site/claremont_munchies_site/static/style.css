@@ -455,6 +455,20 @@ body {
     padding: 2px 0px 2px 5px;
 }
 
+#terms_and_privacy {
+    font-size: 12px;
+    width: 350;
+    display: block;
+}
+#terms_and_privacy a {
+    color: black;
+    text-decoration: none;
+}
+
+#terms_and_privacy a:hover {
+    text-decoration: underline;
+}
+
 /* THANK YOU PAGE */
 .thanks {
     text-align: center;
