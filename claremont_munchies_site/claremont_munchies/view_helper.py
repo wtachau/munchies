@@ -32,7 +32,7 @@ def enter_user(request, login_credentials):
     
     #value to be entered into db; other fields null
     entry = user(account_name=login_credentials['username'].lower(), 
-        password=make_password(login_credentials['password']),
+        password=login_credentials['password'], #use make_password for encryption
         first_name=login_credentials['fname'],
         last_name=login_credentials['lname'],
         location=login_credentials['address'],
