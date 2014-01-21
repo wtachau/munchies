@@ -205,7 +205,7 @@ def drivers(request):
 
     # First get all orders from today
     today = datetime.today().date()
-    todays_orders = orders.objects.filter(Q(date__day=today.day) | Q(date__day=(today.day)),
+    todays_orders = orders.objects.filter(Q(date__day=today.day) | Q(date__day=(today.day-1)),
                                         date__year = today.year,
                                         date__month=today.month, 
                                         )
