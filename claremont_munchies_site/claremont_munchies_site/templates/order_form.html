@@ -217,8 +217,10 @@
     // When any of the menus change, update other accordingly
     $(document).ready(function (){
 		$("#FoodType").change(function() {
-		    // make sure animal style goes back to empty! (corner case)
+		    // make sure animal style, burger goes back to empty! (corner case)
 		    document.getElementById('AnimalStyle').value = "";
+		    document.getElementById('BurgerType').value = "";
+		    console.log("changing burger menu");
 		    
 		    // Only show the submenus from selected components
 		    if ($(this).val() == "Grilled Cheese") {
