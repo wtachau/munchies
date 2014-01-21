@@ -282,7 +282,7 @@ $(document).ready(function (){
   document.getElementById('pay_button').addEventListener('click', function(e) {
   	var canOpen = true;
   	// first check that it's the right time of day (7pm-1am)
-  	/*var date = new Date;
+  	var date = new Date;
   	if ( 
   		// if it's after 1am or before 9pm
   		(date.getHours() > 1 && date.getHours() < 21)
@@ -295,7 +295,7 @@ $(document).ready(function (){
   	{
   		alert("Sorry! We're not currently accepting orders.\nOur hours are:\n\n\tThursday 7pm - 1am\n\tFriday 7pm - 1am\n\tSaturday 7pm - 1am");
   		canOpen = false;
-  	}*/
+  	}
 
   	if (canOpen) {
 		// then check that order is over $10
