@@ -265,7 +265,8 @@ $(document).ready(function (){
 
     // configure the stripe checkout, send token to  server
 	var handler = StripeCheckout.configure({
-		key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', //change this based on stripe account
+		key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
+		//key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
 		image: "{% static 'images/burger.jpg' %}",
 		token: function(token, args) {
 			var $form = $('#pay');
@@ -280,27 +281,31 @@ $(document).ready(function (){
 	});
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
+  	var ignoreTime = true;
+
   	var canOpen = true;
   	// first check that it's the right time of day (7pm-1am)
   	var date = new Date;
-  	if ( 
-  		// if it's after 1am or before 9pm
-  		(date.getHours() > 1 && date.getHours() < 21)
+  	if ( (
+  		// if it's after 1am or before 9:30pm
+  		(date.getHours() > 1 && (date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 30)))
   		// or Monday, Tuesday, or Wednesday
   		|| (date.getDay() >=1 && date.getDay() <= 3) 
   		// or Sunday after 1am
   		|| (date.getHours() > 1 && date.getDay() == 0)
-  		// or Thursday before 9pm
-  		|| (date.getHours() < 21 && date.getDay() == 4) )
+  		// or Thursday before 9:30pm
+  		|| ((date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 30)) && date.getDay() == 4)
+  		// or Friday after 12:30am
+  		|| (date.getHours() < 1 && date.getMinutes() > 30 && date.getDay() == 5) ) && !ignoreTime) 
   	{
-  		alert("Sorry! We're not currently accepting orders.\nOur hours are:\n\n\tThursday 7pm - 1am\n\tFriday 7pm - 1am\n\tSaturday 7pm - 1am");
+  		alert("Sorry! We're not currently accepting orders.\nOur hours are:\n\n\tThursday \t9:30pm - 12:30am\n\tFriday \t9:30pm - 1am\n\tSaturday \t9:30pm - 1am");
   		canOpen = false;
   	}
 
   	if (canOpen) {
-		// then check that order is over $10
-		if (total < 10) {
-			alert("Sorry, the delivery minimum is $10");
+		// then check that order is over $5
+		if (total < 5) {
+			alert("Sorry, the delivery minimum is $5");
 			canOpen = false;
 		}
 	}

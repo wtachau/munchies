@@ -44,7 +44,7 @@ def thankyou(request):
 
 # if anything goes wrong
 def error(request):
-    return render_to_response('error.html', context, RequestContext(request))
+    return render_to_response('500.html', context, RequestContext(request))
 
 # logs user out, send to landing page
 def logout(request):
@@ -275,3 +275,5 @@ def terms(request):
 def privacy(request):
     return render_to_response('privacy.html', context, RequestContext(request))
 
+def aboutus(request):
+    return render_to_response('aboutus.html', context, RequestContext(request))
