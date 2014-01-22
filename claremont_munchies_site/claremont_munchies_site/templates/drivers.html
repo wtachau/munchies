@@ -27,11 +27,29 @@
 				    <tr class = "border_top">
 				    	<td class="spaced" style="font-size:16px;">{{order.deets.id }}</td>
 				    	<td style="font-size:16px;" >
-							<select id="status" name="order_num_{{order.deets.id}}">
+							<select id="status" name="order_num_{{order.deets.id}}" {% if order.deets.status == 'order_delivered' %} disabled {%endif%}>
+
+								{% if order.deets.status == 'order_placed' %} 
+									<option selected value="order_placed" >Placed</option>
+									<option value="order_assigned" >Assigned</option>
+								{%endif%}
+								{% if order.deets.status == 'order_assigned' %} 
+									<option selected value="order_assigned" >Assigned</option>
+									<option value="order_incar" >In Transit</option>
+								{%endif%}
+								{% if order.deets.status == 'order_incar' %} 
+									<option selected value="order_incar" >In Transit</option>
+									<option value="order_delivered" >Delivered</option>
+								{%endif%}
+								{% if order.deets.status == 'order_delivered' %} 
+									<option selected value="order_delivered" >Delivered</option>
+								{%endif%}
+
+								<!--
 							    <option {% if order.deets.status == 'order_placed' %} selected {%endif%} value="order_placed" >Placed</option>
 							    <option {% if order.deets.status == 'order_assigned' %} selected {%endif%} value="order_assigned" >Assigned</option>
 							    <option {% if order.deets.status == 'order_incar' %} selected {%endif%} value="order_incar" >In Transit</option>
-							    <option {% if order.deets.status == 'order_delivered' %} selected {%endif%} value="order_delivered" >Delivered</option>
+							    <option {% if order.deets.status == 'order_delivered' %} selected {%endif%} value="order_delivered" >Delivered</option> -->
 							</select><br>	
 						</td>
 				    	<td></td>

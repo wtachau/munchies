@@ -247,22 +247,37 @@ def update_orders(request):
 
             cur_order = orders.objects.get(id=post.split("order_num_")[1])
             cur_user = user.objects.get(id=cur_order.user)
-            old_status = cur_order.status
-            new_status = request.POST[post]
+            db_status = cur_order.status
+            post_status = request.POST[post]
             order_num = post.split("order_num_")[1]
             to_number = cur_user.phone_num
 
-            if not old_status == "order_assigned" and new_status == "order_assigned":
-                body = "Hi %s! The driver has left to pick up your order from Claremont Munchies." % cur_user.first_name
-                message = client.messages.create(body=body,
-                    to="+1"+str(to_number),
-                    from_=our_number)
+            # by default, set new status to be what was in db
+            new_status = db_status
 
-            if not old_status == "order_incar" and new_status == "order_incar":
-                body = "Hi %s! Your order from Claremont Munchies is on its way back from In-N-Out." % cur_user.first_name
-                message = client.messages.create(body=body,
-                    to="+1"+str(to_number),
-                    from_=our_number)
+            if post_status == "order_assigned":
+                # if the status in db is 'placed'
+                if db_status == "order_placed" :
+                    body = "Hi %s! The driver has left to pick up your order from Claremont Munchies." % cur_user.first_name
+                    message = client.messages.create(body=body,
+                        to="+1"+str(to_number),
+                        from_=our_number)
+                    # and set new status to be what was posted
+                    new_status = post_status
+
+            if post_status == "order_incar":
+                # if status in db is 'assigned'
+                if db_status == "order_assigned":
+                    body = "Hi %s! Your order from Claremont Munchies is on its way back from In-N-Out." % cur_user.first_name
+                    message = client.messages.create(body=body,
+                        to="+1"+str(to_number),
+                        from_=our_number)
+                    # and set new status to be what was posted
+                    new_status = post_status
+
+            if post_status == "order_delivered":
+                # whenever post is to delivered, save it
+                new_status = post_status
 
             cur_order.status = new_status
             cur_order.save()
