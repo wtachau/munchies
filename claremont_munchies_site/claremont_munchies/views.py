@@ -150,6 +150,8 @@ def landing_page(request):
 
             #user commits a valid registration
             if valid_registration == 0:
+                request.session['orders'] = {}
+                request.session['order_total'] = 0
                 return HttpResponseRedirect("/order")
             #user already exists
             elif valid_registration == 1:
@@ -177,7 +179,9 @@ def landing_page(request):
             
             #login the user
             if check_login(request, context):
-                return send_to_order(request)
+                request.session['orders'] = {}
+                request.session['order_total'] = 0
+                return HttpResponseRedirect("/order")
             else:
                 warning['warning'] = '*Invalid Email or Password'
                 return render_to_response('landing_page.html', warning, RequestContext(request))        
