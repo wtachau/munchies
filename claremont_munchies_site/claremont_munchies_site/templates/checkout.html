@@ -4,6 +4,7 @@
 {% load staticfiles %}
 <head>
 <title> Checkout </title>
+<script src="https://checkout.stripe.com/checkout.js"></script>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
 <script>
 // When user selects "new location"
@@ -238,7 +239,6 @@ $(document).ready(function (){
 {% include "footer.html" %}
   
 </body>
-<script src="//checkout.stripe.com/v2/checkout.js"></script>
 <script>
 	var total = {{ order_total }};
 	function tipChanged() {
@@ -265,8 +265,8 @@ $(document).ready(function (){
 
     // configure the stripe checkout, send token to  server
 	var handler = StripeCheckout.configure({
-		key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
-		//key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
+		//key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
+		key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
 		image: "{% static 'images/burger.jpg' %}",
 		token: function(token, args) {
 			var $form = $('#pay');
@@ -281,7 +281,7 @@ $(document).ready(function (){
 	});
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
-  	var ignoreTime = false;
+  	var ignoreTime = true;
 
   	var canOpen = true;
   	// first check that it's the right time of day (7pm-1am)
