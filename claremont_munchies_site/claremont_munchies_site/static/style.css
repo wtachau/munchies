@@ -544,3 +544,11 @@ tr.border_top td {
     margin-top: 12%;
     font-size: 25;
 }
+
+/* TRIAL WARNING */
+#trial {
+font-family: 'Cardo', Georgia, Times, serif;
+display: block;
+margin-left: 486px;
+margin-top: 15px;
+}
