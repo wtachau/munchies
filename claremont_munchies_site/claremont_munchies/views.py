@@ -114,6 +114,12 @@ def checkout(request):
     
     if 'order_total' in request.session:
         total = request.session.get('order_total')
+        tax = total*.08
+        fee = 2
+        total = total+tax + fee
+
+        context['fee_amount'] = "%0.2f" % fee
+        context['tax_amount'] = "%0.2f" % tax
         context['order_total_stripe'] = total*100
         context['order_total'] = "%0.2f" % total
         context['tip_suggestion'] = "20% = $"+str("%.02f"% (float(total)/5))

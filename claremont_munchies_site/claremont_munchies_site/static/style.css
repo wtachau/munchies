@@ -7,10 +7,10 @@ input:focus, textarea:focus {
 .header_button{
     height:35;
     text-decoration: none;
-    margin-right:30px;
+    margin-right:43px;
     position:relative; /*make it fixed! causes some format issues though */
     float:right;
-    margin-top:40;
+    margin-top:55;
     font-family:Molengo;
     font-size:20px;
     color:white;
@@ -25,8 +25,8 @@ input:focus, textarea:focus {
 #header_bar{
     position:relative; 
     height:60;
-    background-color: #EB353D;
-    height: 117px;
+    background-color: #ef3140;
+    height: 133px;
 }
 
 
@@ -110,13 +110,13 @@ input:focus, textarea:focus {
     text-align:center;
 }
 #login_button{
-    background-color: #EB353D; 
+    background-color: #ef3140; 
     border:none;
     color:white;
     text-align: center;
 }
 #register_button{
-    background-color: #EB353D; 
+    background-color: #ef3140; 
     color:white;
     border:none;
     text-align: center;
@@ -306,13 +306,13 @@ body {
 }
 
 #pay_button {
-    display: block;
     position: relative;
     padding: 0 12px;
     height: 30px;
     line-height: 30px;
     background: #1275f;
     background-image: linear-gradient(#7dc5ee,#008cdd 85%,#30a2e4);
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#7dc5ee), to(#008cdd));
     font-size: 14px;
     color: #fff;
     font-weight: bold;
@@ -348,7 +348,8 @@ body {
 #footer {
     position: fixed;
     bottom:0;
-    background-color: #EB353D;
+    /*background-color: #EB353D;*/
+    background-color:#ef3140;
     text-align: center;
     padding-top: 9px;
     height: 42px;
@@ -361,20 +362,21 @@ body {
     color:white;
 }
 
-#title {
+#title a{
     font-family:Molengo;
     font-size:18px;
     color: white;
     float: left;
     position: relative;
     font-family: Molengo;
-    font-size: 44px;
+    font-size: 34px;
     color: white;
     float: left;
     position: relative;
-    top: 24%;
-    margin-left: 10px;
+    top: 36%;
+    margin-left: 32px;
     text-shadow: 2px 2px 3px #000000;
+    text-decoration: none;
 }
 #subtitle {
     top: 70%;
@@ -442,7 +444,7 @@ body {
 }
 
 .checkout_location {
-    font-size: 25;
+    font-size: 14;
     width:200;
 }
 
@@ -548,7 +550,6 @@ tr.border_top td {
 /* TRIAL WARNING */
 #trial {
 font-family: 'Cardo', Georgia, Times, serif;
-display: block;
 margin-left: 486px;
 margin-top: 15px;
 }
