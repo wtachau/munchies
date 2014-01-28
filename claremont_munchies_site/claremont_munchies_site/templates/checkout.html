@@ -84,46 +84,45 @@ $(document).ready(function (){
 <div id="orders" class="checkout" align="center" ><div id="order_title">Your Order: </div>
 		
 		<div id="checkout_table">
-		{% for index, order in orders.items %}
-		    <table id="table_list">
-		    {% if order.food == "Shake" %}
-		    <tr><td><b>{{order.type}} {{order.food}}</b></td>
-		    {%endif%}
-		    {% if order.food == "Drink" %}
-		    <tr><td><b>{{order.type}} </b></td></tr>
-		    {% endif%}
-		    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
-		    <tr><td><b>{{order.food}}, {{order.type}}</b></td>
-		    {% endif%}
-		    {% if order.food == "French Fries" %}
-		    <tr><td><b>{{order.food}}</b></td>
-		    {%endif%}
-		    {% if order.food == "Grilled Cheese" %}
-		    <td id='order_name'><b>{{order.food}}</b></td>
-		    {%endif%}
-		    
-		    <td id="price_col" >${{order.price}}</td> </tr>
-		    
-		    {% if order.animal == 'yes' %}
-		    <tr><td id="added_desc" >*Animal</td></tr>{% endif %}
-		    
-		    {% if order.desc %}
-		    <tr><td id="added_desc" ><i>{{order.desc}}</i></td></tr>
-		    {% endif %}
-		    
-		    <tr></tr><p></p>
-		    
-		{% endfor %}
-		<tr><td><p></p></td></tr>
-		    <tr>
-		    	<td >Tax (CA 8%):</td>
-		    	<td>${{tax_amount}}</td>
-		    </tr>
-		    <tr>
-		    	<td >Delivery Fee:</td>
-		    	<td>${{fee_amount}}</td>
-		    </tr>
-		</table>
+			<table id="table_list">
+				{% for index, order in orders.items %}
+				    {% if order.food == "Shake" %}
+				    <tr><td><b>{{order.type}} {{order.food}}</b></td>
+				    {%endif%}
+				    {% if order.food == "Drink" %}
+				    <tr><td><b>{{order.type}} </b></td></tr>
+				    {% endif%}
+				    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
+				    <tr><td><b>{{order.food}}, {{order.type}}</b></td>
+				    {% endif%}
+				    {% if order.food == "French Fries" %}
+				    <tr><td><b>{{order.food}}</b></td>
+				    {%endif%}
+				    {% if order.food == "Grilled Cheese" %}
+				    <td id='order_name'><b>{{order.food}}</b></td>
+				    {%endif%}
+				    
+				    <td id="price_col" >${{order.price}}</td> </tr>
+				    
+				    {% if order.animal == 'yes' %}
+				    <tr><td id="added_desc" >*Animal</td></tr>{% endif %}
+				    
+				    {% if order.desc %}
+				    <tr><td id="added_desc" ><i>{{order.desc}}</i></td></tr>
+				    {% endif %}
+				    
+				    <tr></tr><p></p>
+				{% endfor %}
+				<tr><td><p></p></td></tr>
+			    <tr>
+			    	<td >Tax (CA 8%):</td>
+			    	<td>${{tax_amount}}</td>
+			    </tr>
+			    <tr>
+			    	<td >Delivery Fee:</td>
+			    	<td>${{fee_amount}}</td>
+			    </tr>
+			</table>
 
 
 		<!--<table id="table_list">
