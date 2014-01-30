@@ -80,7 +80,7 @@ $(document).ready(function (){
 
 
 <div id="menu" class="checkout_menu" >
-	<span id="trial" style="margin-left:0px"> Hours: Thu 9:30-12:30, Fri/Sat 9:30-1<br><i>Thanks for bearing with us during our second trial weekend. <br> If you experience any difficulties, <a style="color:black;"href="mailto:claremontmunchies@gmail.com">please let us know!</a></i></span>
+	<span id="trial" style="margin-left:0px"> Hours: Thu 10-12:30, Fri/Sat 10-1<br><i>Thanks for bearing with us during our second trial weekend. <br> If you experience any difficulties, <a style="color:black;"href="mailto:claremontmunchies@gmail.com">please let us know!</a></i></span>
 <div id="orders" class="checkout" align="center" ><div id="order_title">Your Order: </div>
 		
 		<div id="checkout_table">
@@ -125,12 +125,12 @@ $(document).ready(function (){
 			</table>
 
 
-		<!--<table id="table_list">
+		<table id="table_list">
 		    <tr>
-		    	<td >Suggested Tip for Delivery:</td>
+		    	<td >Suggested Tip:</td>
 		    	<td><input type="text" id="tip_box" onKeyUp="tipChanged()" placeholder="{{ tip_suggestion }}"></td>
 		    </tr>
-		</table>-->
+		</table>
 
 		<!-- Show order total -->
 	    <span id="order_total_orig" style="display:none;">{{order_total}}</span>
@@ -298,18 +298,18 @@ $(document).ready(function (){
   	// first check that it's the right time of day (7pm-1am)
   	var date = new Date;
   	if ( (
-  		// if it's after 1am or before 9:30pm
-  		(date.getHours() > 0 && (date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 30)))
+  		// if it's after 1am or before 10pm
+  		(date.getHours() > 0 && date.getHours() < 10) //(date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45)))
   		// or Monday, Tuesday, or Wednesday
   		|| (date.getDay() >= 1 && date.getDay() <= 3) 
   		// or Sunday after 1am
   		|| (date.getHours() > 1 && date.getDay() == 0)
   		// or Thursday before 9:30pm
-  		|| ((date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 30)) && date.getDay() == 4)
+  		|| /*((date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45))*/ (date.getHours()<10 && date.getDay() == 4)
   		// or Friday after 12:30am
   		|| (date.getHours() < 1 && date.getMinutes() > 30 && date.getDay() == 5) ) && !ignoreTime) 
   	{
-  		alert("Sorry! We're not currently accepting orders.\nOur hours are:\n\n\tThursday \t9:30pm - 12:30am\n\tFriday \t9:30pm - 1am\n\tSaturday \t9:30pm - 1am");
+  		alert("Sorry! We're not currently accepting orders.\nOur hours are:\n\n\tThursday \t9:30pm - 12:30am\n\tFriday \t10pm - 1am\n\tSaturday \t10pm - 1am");
   		canOpen = false;
   	}
 
