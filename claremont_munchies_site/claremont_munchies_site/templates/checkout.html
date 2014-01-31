@@ -298,14 +298,14 @@ $(document).ready(function (){
   	// first check that it's the right time of day (7pm-1am)
   	var date = new Date;
   	if ( (
-  		// if it's after 1am or before 10pm
-  		(date.getHours() > 0 && date.getHours() < 22) //(date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45)))
+  		// if it's after 1am and before 9:45pm
+  		(date.getHours() > 0 && /*date.getHours() < 22) */ (date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45)))
   		// or Monday, Tuesday, or Wednesday
   		|| (date.getDay() >= 1 && date.getDay() <= 3) 
   		// or Sunday after 1am
   		|| (date.getHours() > 1 && date.getDay() == 0)
   		// or Thursday before 9:30pm
-  		|| /*((date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45))*/ (date.getHours()<22 && date.getDay() == 4)
+  		|| ( (date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45)) /*(date.getHours()<22*/ && date.getDay() == 4)
   		// or Friday after 12:30am
   		|| (date.getHours() < 1 && date.getMinutes() > 30 && date.getDay() == 5) ) && !ignoreTime) 
   	{
