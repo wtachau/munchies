@@ -34,6 +34,8 @@ def process(request):
         request.session['order_total'] = 0
         if result == "success":
             return HttpResponseRedirect("thanks")
+        else:
+            return HttpResponse(result)
     # if something went wrong
     return HttpResponseRedirect("error")
 
