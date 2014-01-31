@@ -55,7 +55,7 @@ def enter_user(request, login_credentials):
     #save the entry into the database
     else:
         request.session['logged_in'] = True
-        request.session['user_name'] = login_credentials['username']
+        request.session['user_name'] = login_credentials['username'].lower()
         entry.save()
         return 0
     
@@ -66,7 +66,7 @@ def check_login(request, login_credentials):
                                    password=login_credentials['password']).count()
     if validate > 0:
         request.session['logged_in'] = True
-        request.session['user_name'] = login_credentials['username']
+        request.session['user_name'] = login_credentials['username'].lower()
         return True
     else:
         return False
