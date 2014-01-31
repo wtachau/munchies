@@ -126,7 +126,11 @@ def checkout(request):
         context['order_total'] = "%0.2f" % total
         context['tip_suggestion'] = "20% = $"+str("%.02f"% (float(total)/5))
         context['orders'] = request.session['orders'] # give the page all session orders 
-        context['location'] = user.objects.filter(account_name=request.session['user_name']).values('location')[0]['location'] # look up from database
+        location = user.objects.filter(account_name=request.session['user_name']).values('location')
+        if len(location) > 0:
+            context['location'] = location[0]['location'] # look up from database
+        else:
+            context['location'] = "unassigned"
            
     return render_to_response('checkout.html', context, RequestContext(request))
     
