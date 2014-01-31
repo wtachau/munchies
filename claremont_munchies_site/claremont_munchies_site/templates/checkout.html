@@ -284,7 +284,7 @@ $(document).ready(function (){
 			// add stripe token, and order total
 			$form.append($('<input type="hidden" name="stripeToken" />').val(stripJsonToString(token)));
 			$form.append($('<input type="hidden" name="total_amount" />').val(Math.round(total*100)));
-			$form.append($('<input type="hidden" name="tip_amount" />').val(document.getElementById('tip_box').value*100));
+			$form.append($('<input type="hidden" name="tip_amount" />').val(Math.round(document.getElementById('tip_box').value*100)));
 			// Submit, and disable "pay" button so user doesn't pay >1 times
 			$form.get(0).submit();
 			document.getElementById('pay_button').disabled = true;
