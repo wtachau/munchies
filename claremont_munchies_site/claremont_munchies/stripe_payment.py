@@ -15,7 +15,7 @@ def process_order(request):
     order_amount = int(total_amount) - int(tip)
     
     # get user from session
-    current_user = user.objects.get(account_name=request.session.get('user_name'))
+    current_user = user.objects.get(account_name=request.session.get('user_name').lower())
 
     #stripe_id = current_user.stripe_id
     

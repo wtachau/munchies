@@ -23,11 +23,12 @@ def process(request):
     if request.method == 'POST': 
         #so that debug shows session variables
         test_dict = {}
+        test_dict['session'] = "yes"
         for thing, value in request.session.iteritems():
             test_dict[thing] = value
 
         if request.POST['delivery_location'] == 'change':
-            newlocation = user.objects.get(account_name=request.session['user_name'])
+            newlocation = user.objects.get(account_name=request.session['user_name'].lower())
             if 'register_location_dorm' in request.POST:
                 newlocation.location = str(request.POST['register_location'])+" > "+str(request.POST['register_location_dorm'])
             else:
@@ -121,6 +122,7 @@ def checkout(request):
 
     # just so debug shows session variables
     test_dict = {}
+    test_dict['session'] = "yes"
     for thing, value in request.session.iteritems():
         test_dict[thing] = value
     
@@ -136,7 +138,7 @@ def checkout(request):
         context['order_total'] = "%0.2f" % total
         context['tip_suggestion'] = "20% = $"+str("%.02f"% (float(total)/5))
         context['orders'] = request.session['orders'] # give the page all session orders 
-        location = user.objects.filter(account_name=request.session['user_name']).values('location')
+        location = user.objects.filter(account_name=request.session['user_name'].lower()).values('location')
         if len(location) > 0:
             context['location'] = location[0]['location'] # look up from database
         else:
