@@ -16,10 +16,7 @@ warning = Context()
 
 #helper functions
 def is_logged_in(request):
-    if request.session.get('logged_in') == True:
-        return True
-    else:
-        return False
+    return request.session.get('logged_in') and ('user_name' in request.session)
 
 def send_to_order(request):
     return HttpResponseRedirect("/order")

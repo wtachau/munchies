@@ -21,6 +21,11 @@ from twilio.rest import TwilioRestClient
 def process(request):
      #user purchased the cart
     if request.method == 'POST': 
+        #so that debug shows session variables
+        test_dict = {}
+        for thing, value in request.session.iteritems():
+            test_dict[thing] = value
+
         if request.POST['delivery_location'] == 'change':
             newlocation = user.objects.get(account_name=request.session['user_name'])
             if 'register_location_dorm' in request.POST:
@@ -112,7 +117,12 @@ def checkout(request):
 
     #redirect to landing page if they are not logged in
     if not is_logged_in(request):
-        return send_to_landing_page(request)    
+        return send_to_landing_page(request)   
+
+    # just so debug shows session variables
+    test_dict = {}
+    for thing, value in request.session.iteritems():
+        test_dict[thing] = value
     
     if 'order_total' in request.session:
         total = request.session.get('order_total')
