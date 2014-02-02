@@ -233,9 +233,9 @@ def drivers(request):
 
     # First get all orders from today
     today = datetime.today().date()
-    todays_orders = orders.objects.filter(Q(date__day=today.day) | Q(date__day=(today.day-1)),
-                                        date__year = today.year,
-                                        date__month=today.month, 
+    yesterday = (datetime.today() - timedelta(days=1)).date()
+    todays_orders = orders.objects.filter(Q(date__month=today.month, date__day=today.day) | Q(date__month=yesterday.month,date__day=(yesterday.day)),
+                                        date__year = today.year
                                         )
     orders_list = []
     for index, cur_order in enumerate(todays_orders):
