@@ -90,7 +90,7 @@ $(document).ready(function (){
 				    <tr><td><b>{{order.type}} {{order.food}}</b></td>
 				    {%endif%}
 				    {% if order.food == "Drink" %}
-				    <tr><td><b>{{order.type}} </b></td></tr>
+				    <tr><td><b>{{order.type}} </b></td>
 				    {% endif%}
 				    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
 				    <tr><td><b>{{order.food}}, {{order.type}}</b></td>
