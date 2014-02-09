@@ -312,6 +312,21 @@ def update_orders(request):
 
     return HttpResponseRedirect("drivers")
 
+# From the checkout page, looking up promocodes
+def ajax(request):
+    if request.is_ajax():
+        try:
+            promo = request.POST['promocode']
+            valid = deals.objects.filter(deal_type=promo)
+            if (len(valid) > 0):
+                return HttpResponse(valid[0].deal_value)
+            else: 
+                return HttpResponse('invalid')
+        except:
+            HttpResponse('except')
+    else:
+        return HttpResponse('else')
+
 def terms(request):
     return render_to_response('terms.html', context, RequestContext(request))
 

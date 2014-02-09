@@ -5,7 +5,8 @@
 <head>
 <title> Checkout </title>
 <script src="https://checkout.stripe.com/checkout.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script> 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
 <script>
 // When user selects "new location"
 $(document).ready(function (){
@@ -80,7 +81,7 @@ $(document).ready(function (){
 
 
 <div id="menu" class="checkout_menu" >
-	<span id="trial" style="margin-left:0px"> Hours: Thu 10-12:30, Fri/Sat 10-1<br><i>If you experience any difficulties, <a style="color:black;"href="mailto:claremontmunchies@gmail.com">please let us know!</a></i></span>
+	<!--<span id="trial" style="margin-left:0px"> Hours: Thu 10-12:30, Fri/Sat 10-1<br></span>-->
 <div id="orders" class="checkout" align="center" ><div id="order_title">Your Order: </div>
 		
 		<div id="checkout_table">
@@ -102,7 +103,8 @@ $(document).ready(function (){
 				    <td id='order_name'><b>{{order.food}}</b></td>
 				    {%endif%}
 				    
-				    <td id="price_col" >${{order.price}}</td> </tr>
+				    <td></td>
+				    <td id="price_col" class="right_side">${{order.price}}</td> </tr>
 				    
 				    {% if order.animal == 'yes' %}
 				    <tr><td id="added_desc" >*Animal</td></tr>{% endif %}
@@ -116,16 +118,25 @@ $(document).ready(function (){
 				<tr><td><p></p></td></tr>
 			    <tr>
 			    	<td >Tax (CA 8%):</td>
-			    	<td>${{tax_amount}}</td>
+			    	<td></td>
+			    	<td class="right_side">${{tax_amount}}</td>
 			    </tr>
 			    <tr>
 			    	<td >Delivery Fee:</td>
-			    	<td>${{fee_amount}}</td>
+			    	<td> </td>
+			    	<td class="right_side">${{fee_amount}}</td>
 			    </tr>
-			</table>
-
-
-		<table id="table_list">
+			<tr>
+		    	<td><b>*Got a promo code?</b></td>
+					<td>
+						<form style="margin-bottom: 0em;" id="promoform" action="" method="post">
+							 <input type="text" id="promocode" name="promocode">
+						</form>
+					</td>
+					<td>
+						<div id="promocodeCheck"></div>
+					</td>
+				</tr>
 		    <tr>
 		    	<td >Suggested Tip:</td>
 		    	<td><input type="text" id="tip_box" onKeyUp="tipChanged()" placeholder="{{ tip_suggestion }}"></td>
@@ -252,6 +263,8 @@ $(document).ready(function (){
 </body>
 <script>
 	var total = {{ order_total }};
+	var dealEntered = false;
+	var dealAmount = 0;
 	function tipChanged() {
 		var orig = Number(document.getElementById("order_total_orig").innerHTML);
 		var tip = document.getElementById('tip_box').value;
@@ -268,6 +281,58 @@ $(document).ready(function (){
 			}
 	}
 
+	/*
+	 * Handle AJAX for Promo code entry
+	 */
+	$(document).ready(function(){
+		var usernameCheck = $('#promocodeCheck');
+		$('#promocode').on('keyup', function(){
+			var promocode = $('#promocode').val();
+			if (promocode.length >= 3) {
+				$.ajax({
+					type: 'POST',
+					url: 'ajax',
+					cache: 'false',
+					data: {
+						csrfmiddlewaretoken: '{{csrf_token}}',
+						promocode: promocode
+						}, // form data
+					beforeSend: function() {
+						// show loading image
+						usernameCheck.attr('class', 'usernameLoading');
+					},
+					success: function(d) {
+						//console.log(d);
+						if (d == 'invalid') {
+							// show fail image
+							usernameCheck.attr('class', 'usernameFail');
+						} else {
+							// show ok image
+							usernameCheck.attr('class', 'usernamePassed');
+							if (!dealEntered) {
+								total = total * (100 - d)/100;
+								dealAmount = d
+								document.getElementById("order_total").innerHTML = (total).toFixed(2);
+								// update "orig" order total
+								document.getElementById("order_total_orig").innerHTML = (total).toFixed(2);
+								dealEntered = true; 
+							} else {
+								console.log("cannot use more than one deal!")
+							}
+						}
+					}
+				});
+			};
+		});
+	});
+	// and disable form submit on enter
+	$(window).keydown(function(event){
+		if(event.keyCode == 13) {
+		  event.preventDefault();
+		  return false;
+		}
+     });
+
 	// Turn JSON into string
     function stripJsonToString (json)
     {
@@ -283,6 +348,7 @@ $(document).ready(function (){
 			var $form = $('#pay');
 			// add stripe token, and order total
 			$form.append($('<input type="hidden" name="stripeToken" />').val(stripJsonToString(token)));
+			$form.append($('<input type="hidden" name="dealAmount" />').val(Math.round(dealAmount)));
 			$form.append($('<input type="hidden" name="total_amount" />').val(Math.round(total*100)));
 			$form.append($('<input type="hidden" name="tip_amount" />').val(Math.round(document.getElementById('tip_box').value*100)));
 			// Submit, and disable "pay" button so user doesn't pay >1 times

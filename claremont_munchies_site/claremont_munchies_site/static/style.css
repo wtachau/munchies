@@ -431,16 +431,54 @@ body {
     text-transform:uppercase;
 }
 
+.right_side {
+    text-align: right;
+}
+
 #tip_box {
     height: 32;
     font-size: 17;
     width: 128;
-    margin-left: 60;
+    margin-left: 90;
     border-radius: 5;
     border: 1px solid;
     border-color: #9C9C9C;
     text-align: right;
     padding-right: 4px;
+    margin-top: 5px;
+}
+
+#promocode {
+    height: 32;
+    font-size: 17;
+    width: 128;
+    margin-left: 90;
+    border-radius: 5;
+    border: 1px solid;
+    border-color: #9C9C9C;
+    text-align: right;
+    padding-right: 4px;
+    margin-top: 5px;
+}
+#promocodeCheck{
+    display: block;
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    float: right;
+    margin-right: -50px;
+    margin-top: 2px;
+}
+.usernameLoading{
+    background: url(images/gif.gif)
+}
+.usernameFail{
+    background: url(images/no.png)
+}
+.usernamePassed{
+    background: url(images/ok.png)
 }
 
 .checkout_location {

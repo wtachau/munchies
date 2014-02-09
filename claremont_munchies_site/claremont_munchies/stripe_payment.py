@@ -12,6 +12,7 @@ def process_order(request):
     token = json_object = json.loads(request.POST['stripeToken'])
     total_amount = request.POST['total_amount']
     tip = request.POST['tip_amount']
+    dealAmount = request.POST['dealAmount']
     order_amount = int(total_amount) - int(tip)
     
     # get user from session
@@ -84,11 +85,13 @@ def process_order(request):
         order_part_entry.save()
 
 
-    """# Save orders to the database (once charge goes through)
-    order_string = ""
-    for thing in request.session['orders']:
-        order_string+=str(request.session['orders'][thing])+" "
-    return order_string"""
+    # lastly, save deal amount
+    #create new order
+    deal_entry = dealInstances( 
+                user_id= current_user.id, # get user id from session.
+                deal_id = dealAmount
+                )
+    deal_entry.save()
 
     return "success" # otherwise, will redirect to error page
 

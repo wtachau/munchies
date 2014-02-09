@@ -31,7 +31,7 @@
 		JSONObject.id = idString;
 		
 		//// get the sub-type, if applicable
-		var kindOfMeal = document.getElementById('FoodType').value;
+		var kindOfMeal = document.getElementById('BurgerFoodType').value;
 		var type;
 		switch (kindOfMeal) {
 		    case 'Cheeseburger':
@@ -117,7 +117,7 @@
 		$("#BurgerMenu").hide();
 		
 		// ... and reset menu values
-		document.getElementById('FoodType').value = "";
+		document.getElementById('BurgerFoodType').value = "";
 		document.getElementById('instructionsText').value = "";
 		document.getElementById('DrinkType').value = "";
 		document.getElementById('ShakeType').value = "";
@@ -214,7 +214,16 @@
     
     // When any of the menus change, update other accordingly
     $(document).ready(function (){
-		$("#FoodType").change(function() {
+    	$("#MenuType").change(function() {
+    		if ($(this).val() == "burger") {
+    			$("#BurgerTypeMenu").show();
+    			$("#MexicanMenu").hide();
+    		} else if ($(this).val() == "mexican") {
+    			$("#MexicanMenu").show();
+    			$("#BurgerTypeMenu").hide();
+    		}
+    	});
+		$("#BurgerFoodType").change(function() {
 		    // make sure animal style, burger goes back to empty! (corner case)
 		    document.getElementById('AnimalStyle').value = "";
 		    document.getElementById('BurgerType').value = "";
@@ -278,14 +287,24 @@
     <div id='logo'></div>
     <table id="menu" style="margin-left:auto; margin-right:auto; margin-top:25px; text-align:center; " >
     <div id="spacing">&nbsp;</div>
-    <td colspan=2 id="trial"> Hours: Thu 10-12:30, Fri/Sat 10-1<br><i>If you experience any difficulties, <a style="color:black;"href="mailto:claremontmunchies@gmail.com">please let us know!</a></i></td>
+    <!--<td colspan=2 id="trial"> Hours: Thu 10-12:30, Fri/Sat 10-1<br></td>-->
 	
 	<tr >
 	  <td id="col1">
 	    <form id="submitorder" action="order" >
+	    
 	    <p style="left:2px; top:47px; " >
-		<span class="menu_q_big">what would you like?</span><br>
-		<select class="select_button" id="FoodType" >
+		<span class="menu_q_big">what kind of food?</span><br>
+		<select class="select_button" id="MenuType" >
+		    <option selected="" disabled="" ></option>
+		    <option value="burger" >burgers and fries!</option>
+		    <option value="mexican" >mexican food!</option>
+		</select>
+	    </p>
+
+	    <p style="left:2px; top:47px; " id="BurgerTypeMenu" >
+		<span class="menu_q">what would you like?</span><br>
+		<select class="select_button" id="BurgerFoodType" >
 		    <option selected="" disabled="" ></option>
 		    <option value="Cheeseburger" >Cheeseburger</option>
 		    <option value="Hamburger" >Hamburger</option>
@@ -293,6 +312,16 @@
 		    <option value="French Fries" >French Fries</option>
 		    <option value="Shake" >Shake</option>
 		    <option value="Drink" >Can of Soda</option>
+		</select>
+	    </p>
+
+	    <p style="left:2px; top:47px; display:none;" id="MexicanMenu">
+		<span class="menu_q">what would you like?</span><br>
+		<select class="select_button" id="MexicanFoodType" >
+		    <option selected="" disabled="" ></option>
+		    <option value="burrito" >Burrito</option>
+		    <option value="taco" >Taco</option>
+		    <option value="quesadilla">Quesadilla</option>
 		</select>
 	    </p>
 	
