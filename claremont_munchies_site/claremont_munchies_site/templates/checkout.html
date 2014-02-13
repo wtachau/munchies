@@ -100,7 +100,7 @@ $(document).ready(function (){
 				    <td><b>{{order.food}}</b></td>
 				    {%endif%}
 				    {% if order.food == "Grilled Cheese" %}
-				    <td id='order_name'><b>{{order.food}}</b></td>
+				    <td ><b>{{order.food}}</b></td>
 				    {%endif%}
 				    
 				    {% if order.food == "Burrito" %}
@@ -358,8 +358,8 @@ $(document).ready(function (){
 
     // configure the stripe checkout, send token to  server
 	var handler = StripeCheckout.configure({
-		key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
-		//key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
+		//key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
+		key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
 		image: "{% static 'images/burger.jpg' %}",
 		token: function(token, args) {
 			var $form = $('#pay');

@@ -283,13 +283,23 @@ def update_orders(request):
             # by default, set new status to be what was in db
             new_status = db_status
 
-            if post_status == "order_assigned":
-                # if the status in db is 'placed'
+            """if post_status == "order_placed":
                 if db_status == "order_placed" :
                     body = "Hi %s! The driver has left to pick up your order from Claremont Munchies." % cur_user.first_name
                     message = client.messages.create(body=body,
                         to="+1"+str(to_number),
                         from_=our_number)
+            """
+
+            if post_status == "order_assigned":
+                # if the status in db is 'placed'
+                if db_status == "order_placed" :
+                    """
+                    body = "Hi %s! The driver has left to pick up your order from Claremont Munchies." % cur_user.first_name
+                    message = client.messages.create(body=body,
+                        to="+1"+str(to_number),
+                        from_=our_number)
+                    """
                     # and set new status to be what was posted
                     new_status = post_status
 

@@ -1,9 +1,10 @@
 from models import *
 import stripe
 import json
+from twilio.rest import TwilioRestClient
 
-stripe.api_key = "sk_live_ivvVx7l8aXJSs1gCKv2IF4wU" # live
-#stripe.api_key = "sk_test_li3UZktBt8Fc3mRghlkAw1HR" # testing
+#stripe.api_key = "sk_live_ivvVx7l8aXJSs1gCKv2IF4wU" # live
+stripe.api_key = "sk_test_li3UZktBt8Fc3mRghlkAw1HR" # testing
 
     
 def process_order(request):
@@ -92,6 +93,20 @@ def process_order(request):
                 deal_id = dealAmount
                 )
     deal_entry.save()
+
+    # and send text!
+    # Your Account Sid and Auth Token from twilio.com/user/account
+    account_sid = "ACc287ec5d974fe942268f46b97d4c40cf"
+    auth_token  = "d1c4702f9dd2dfa7071ec729fb8bd78b"
+    client = TwilioRestClient(account_sid, auth_token)
+    our_number = "+12137853417"
+    body = "Hi %s! We've received your order from ClaremontMunchies and will get it to you as soon as possible." % current_user.first_name
+    try:
+        message = client.messages.create(body=body,
+            to="+1"+str(current_user.phone_num),
+            from_=our_number)
+    except:
+        pass
 
     return "success" # otherwise, will redirect to error page
 
