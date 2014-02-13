@@ -88,19 +88,36 @@ $(document).ready(function (){
 			<table id="table_list">
 				{% for index, order in orders.items %}
 				    {% if order.food == "Shake" %}
-				    <tr><td><b>{{order.type}} {{order.food}}</b></td>
+				    <td><b>{{order.type}} {{order.food}}</b></td>
 				    {%endif%}
 				    {% if order.food == "Drink" %}
-				    <tr><td><b>{{order.type}} </b></td>
+				    <td><b>{{order.type}} </b></td>
 				    {% endif%}
 				    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
-				    <tr><td><b>{{order.food}}, {{order.type}}</b></td>
+				    <td><b>{{order.food}}, {{order.type}}</b></td>
 				    {% endif%}
 				    {% if order.food == "French Fries" %}
-				    <tr><td><b>{{order.food}}</b></td>
+				    <td><b>{{order.food}}</b></td>
 				    {%endif%}
 				    {% if order.food == "Grilled Cheese" %}
 				    <td id='order_name'><b>{{order.food}}</b></td>
+				    {%endif%}
+				    
+				    {% if order.food == "Burrito" %}
+				    <td><b>{{order.type}} {{order.food}}</b></td>
+				    {%endif%}
+				    
+				    {% if order.food == "Taco" %}
+				    	<td ><b>
+				    	{% if order.type == "Tacquitos" %}
+				    		3 Tacquitos
+				    	{% else %}
+				    		{{order.type}} {{order.food}}
+				    	{% endif %}
+				    	</b></td>
+				    {%endif%}
+				    {% if order.food == "Quesadilla" %}
+				    <td id='order_name'><b>{{order.type}} {{order.food}}</b></td>
 				    {%endif%}
 				    
 				    <td></td>

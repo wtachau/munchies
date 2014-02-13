@@ -31,41 +31,75 @@
 		JSONObject.id = idString;
 		
 		//// get the sub-type, if applicable
-		var kindOfMeal = document.getElementById('BurgerFoodType').value;
-		var type;
-		switch (kindOfMeal) {
-		    case 'Cheeseburger':
-		    case 'Hamburger' :
-				type = document.getElementById('BurgerType').value;
+		var kindOfMenu = document.getElementById('MenuType').value;
+		var kindOfMeal = ''; // fill this out below
+		var type = ''; // fill this out below
+		switch(kindOfMenu) {
+			case 'burger':
+				kindOfMeal = document.getElementById('BurgerFoodType').value;
+				switch (kindOfMeal) {
+				    case 'Cheeseburger':
+				    case 'Hamburger' :
+						type = document.getElementById('BurgerType').value;
+						break;
+				    case 'Shake':
+						type = document.getElementById('ShakeType').value;
+						break;
+				    case 'Drink':
+						type = document.getElementById('DrinkType').value;
+					break;
+				}
 				break;
-		    case 'Shake':
-				type = document.getElementById('ShakeType').value;
+			case 'mexican':
+				kindOfMeal = document.getElementById('MexicanFoodType').value;
+				switch (kindOfMeal) {
+					case 'Burrito':
+						type = document.getElementById('BurritoType').value;
+						break;
+					case 'Taco':
+						type = document.getElementById('TacoType').value;
+						break;
+					case 'Quesadilla':
+						type = document.getElementById('QuesadillaType').value;
+						break;
+				}
 				break;
-		    case 'Drink':
-				type = document.getElementById('DrinkType').value;
-			break;
 		}
 		
 		//get selected components to construct html
 		var htmlContent = "<table class='order_table' ><tr>";
 		var animal = document.getElementById('AnimalStyle').value;
-		var price = getPrice(kindOfMeal,type, animal);
+		var price = getPrice(kindOfMenu, kindOfMeal, type, animal);
 		
 		// Generate 'removeElement' javascript call to match current elementID
 		var tellToDelete = "removeElement('"+idString+"');"; 
 		
-		// Add to HTML string
-		if (kindOfMeal == "Cheeseburger" || kindOfMeal=="Hamburger") {
-		    htmlContent += "<td id='order_name'><b>"+kindOfMeal+", " + type + "</b></td>";
-		} else if (kindOfMeal == "Shake") {
-		    htmlContent += "<td id='order_name'><b>"+type+" "+kindOfMeal+"</b></td>";	
-	    	} else if (kindOfMeal == "Drink") {
-		    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
-		} else {
-		    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
+		switch(kindOfMenu) {
+			case 'burger':
+				// Add to HTML string
+				if (kindOfMeal == "Cheeseburger" || kindOfMeal=="Hamburger") {
+				    htmlContent += "<td id='order_name'><b>"+kindOfMeal+", " + type + "</b></td>";
+				} else if (kindOfMeal == "Shake") {
+				    htmlContent += "<td id='order_name'><b>"+type+" "+kindOfMeal+"</b></td>";	
+			    	} else if (kindOfMeal == "Drink") {
+				    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
+				} else {
+				    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
+				}
+				break;
+			case 'mexican':
+				// special code
+				if (kindOfMeal == "Taco" && type == "Tacquitos") {
+					htmlContent += "<td id='order_name'><b> 3 Tacquitos</b></td>";
+				} else {
+					htmlContent += "<td id='order_name'><b>"+ type +" "+kindOfMeal+"</b></td>";
+				}
+				break;
 		}
+
+		// And add price
 		htmlContent+= "<td id='price_col'>$"+price+"</td><td ><input id='removebutton' type='submit' value='' onclick="+tellToDelete+"></td></tr>";
-		
+				
 		// look for animal style info, if applicable
 		if (animal == "yes") {
 		    htmlContent+= "<tr><td id='added_desc'>&nbsp;&nbsp;&nbsp;Animal</td></tr>"
@@ -115,6 +149,9 @@
 		$("#ShakeMenu").hide();
 		$("#AnimalStyleMenu").hide();
 		$("#BurgerMenu").hide();
+		$("#BurritoMenu").hide();
+		$("#TacoMenu").hide();
+		$("#QuesadillaMenu").hide();
 		
 		// ... and reset menu values
 		document.getElementById('BurgerFoodType').value = "";
@@ -123,6 +160,11 @@
 		document.getElementById('ShakeType').value = "";
 		document.getElementById('BurgerType').value = "";
 		document.getElementById('AnimalStyle').value = "";
+		document.getElementById('BurritoType').value = "";
+		document.getElementById('TacoType').value = "";
+		document.getElementById('QuesadillaType').value = "";
+		document.getElementById('MexicanFoodType').value = "";
+
     }
 
     // Save the new order on the server
@@ -160,40 +202,71 @@
     }
     
     // get the food item price
-    function getPrice(foodtype, moreinfo, animal) {
+    function getPrice(menutype, foodtype, moreinfo, animal) {
 		var price = 0;
-		switch (foodtype) {
-		    case 'Cheeseburger':
-				switch (moreinfo) {
-				    case 'Single': price += {{ cheeseburger_1 }}; break;
-				    case 'Double': price += {{ cheeseburger_2 }}; break;
-				    case 'Triple': price += {{ cheeseburger_3 }}; break;
-				    case '4x': price += {{ cheeseburger_4 }}; break;
+		switch (menutype) {
+			case 'burger':
+				switch (foodtype) {
+				    case 'Cheeseburger':
+						switch (moreinfo) {
+						    case 'Single': price += {{ cheeseburger_1 }}; break;
+						    case 'Double': price += {{ cheeseburger_2 }}; break;
+						    case 'Triple': price += {{ cheeseburger_3 }}; break;
+						    case '4x': price += {{ cheeseburger_4 }}; break;
+						}
+						return price;
+						break;
+				    case 'Hamburger':
+						switch (moreinfo) {
+						    case 'Single': price += {{ hamburger_1 }}; break;
+						    case 'Double': price += {{ hamburger_2 }}; break;
+						    case 'Triple': price += {{ hamburger_3 }}; break;
+						    case '4x': price += {{ hamburger_4 }}; break;
+						}
+						return price;
+						break;
+					case 'Grilled Cheese':
+						return {{ grilled_cheese }}; break;
+				    case 'French Fries':
+						if (animal == 'yes') {
+							return {{animal_fries}};
+						}
+						return {{fries}}
+						break;
+					case 'Shake':
+						return {{ shake }};
+						break;
+				    case 'Drink':
+				    	return {{ drink }};		
+						break;
 				}
-				return price;
 				break;
-		    case 'Hamburger':
-				switch (moreinfo) {
-				    case 'Single': price += {{ hamburger_1 }}; break;
-				    case 'Double': price += {{ hamburger_2 }}; break;
-				    case 'Triple': price += {{ hamburger_3 }}; break;
-				    case '4x': price += {{ hamburger_4 }}; break;
+			case 'mexican':
+				switch(foodtype) {
+					case 'Burrito':
+						switch(moreinfo) {
+							case 'Carne Asada': return {{burrito_carne}}; break;
+							case 'Beans': return {{burrito_beans}}; break;
+							case 'Beef': return {{burrito_beef}}; break;
+							case 'Chicken': return {{burrito_chicken}}; break;
+						}
+						break;
+					case 'Taco':
+						switch(moreinfo) {
+							case 'Beef': return {{taco_beef}}; break;
+							case 'Chicken': return {{taco_chicken}}; break;
+							case 'Carne Asada': return {{taco_carne}}; break;
+							case 'Tacquitos': return {{taco_tacquitos}}; break;
+						}
+						break;
+					case 'Quesadilla':
+						switch(moreinfo) {
+							case 'Cheese': return {{quesadilla_cheese}}; break;
+							case 'Chicken': return {{quesadilla_chicken}}; break;
+							case 'Beef': return {{quesadilla_beef}}; break;
+						}
+						break;
 				}
-				return price;
-				break;
-			case 'Grilled Cheese':
-				return {{ grilled_cheese }}; break;
-		    case 'French Fries':
-				if (animal == 'yes') {
-					return {{animal_fries}};
-				}
-				return {{fries}}
-				break;
-			case 'Shake':
-				return {{ shake }};
-				break;
-		    case 'Drink':
-		    	return {{ drink }};		
 				break;
 		}    
     }
@@ -215,14 +288,68 @@
     // When any of the menus change, update other accordingly
     $(document).ready(function (){
     	$("#MenuType").change(function() {
+    		// clear all values
+    		document.getElementById('BurgerFoodType').value = "";
+		    document.getElementById('MexicanFoodType').value = "";
+		    document.getElementById('BurgerType').value = "";
+    		document.getElementById('AnimalStyle').value = "";
+    		document.getElementById('DrinkType').value = "";
+    		document.getElementById('ShakeType').value = "";
+		    document.getElementById('BurritoType').value = "";
+		    document.getElementById('TacoType').value = "";
+		    document.getElementById('QuesadillaType').value = "";
+    		$("#AddInstructions").hide();
+
     		if ($(this).val() == "burger") {
     			$("#BurgerTypeMenu").show();
     			$("#MexicanMenu").hide();
+    			// and all submenus
+    			$("#BurritoMenu").hide();
+				$("#TacoMenu").hide();
+				$("#QuesadillaMenu").hide();
     		} else if ($(this).val() == "mexican") {
     			$("#MexicanMenu").show();
     			$("#BurgerTypeMenu").hide();
+    			// and all submenus
+				$("#BurgerMenu").hide();
+				$("#ShakeMenu").hide();
+				$("#AnimalStyleMenu").hide();
+				$("#DrinkMenu").hide();
     		}
     	});
+
+    	/* FOR MEXICAN FOOD */
+
+    	$("#MexicanFoodType").change(function() {
+		    
+		    // Only show the submenus from selected components
+		    if ($(this).val() == "Burrito") {
+				$("#BurritoMenu").show();
+				$("#TacoMenu").hide();
+				$("#QuesadillaMenu").hide();
+			} else if ($(this).val() == "Taco") {
+				$("#BurritoMenu").hide();
+				$("#TacoMenu").show();
+				$("#QuesadillaMenu").hide();
+    		} else if ($(this).val() == "Quesadilla") {
+				$("#BurritoMenu").hide();
+				$("#TacoMenu").hide();
+				$("#QuesadillaMenu").show();
+    		}
+		});
+		$("#BurritoMenu").change(function() {
+		    $("#AddInstructions").show();
+		});
+		$("#TacoMenu").change(function() {
+		    $("#AddInstructions").show();
+		});
+		$("#QuesadillaMenu").change(function() {
+		    $("#AddInstructions").show();
+		});
+
+
+		/* FOR BURGERS */
+
 		$("#BurgerFoodType").change(function() {
 		    // make sure animal style, burger goes back to empty! (corner case)
 		    document.getElementById('AnimalStyle').value = "";
@@ -319,9 +446,9 @@
 		<span class="menu_q">what would you like?</span><br>
 		<select class="select_button" id="MexicanFoodType" >
 		    <option selected="" disabled="" ></option>
-		    <option value="burrito" >Burrito</option>
-		    <option value="taco" >Taco</option>
-		    <option value="quesadilla">Quesadilla</option>
+		    <option value="Burrito" >Burrito</option>
+		    <option value="Taco" >Taco</option>
+		    <option value="Quesadilla">Quesadilla</option>
 		</select>
 	    </p>
 	
@@ -372,6 +499,42 @@
 		    <option value="Neopolitan" >Neopolitan</option>
 		</select>
 	    </p>
+
+	    <!-- FOR MEXICAN FOOD -->
+	    <p id="BurritoMenu" style="display:none; " >
+		<span class="menu_q">what kind?</span><br>
+		<select class="select_button" id="BurritoType" >
+		    <option selected="" disabled="" ></option>
+		    <option value="Carne Asada" >Carne Asada</option>
+		    <option value="Bean" >Bean and Cheese</option>
+		    <option value="Beef" >Beef</option>
+		    <option value="Chicken" >Chicken</option>
+		</select>
+	    </p>
+
+	    <p id="TacoMenu" style="display:none; " >
+		<span class="menu_q">what kind?</span><br>
+		<select class="select_button" id="TacoType" >
+		    <option selected="" disabled="" ></option>
+		    <option value="Beef" >Beef</option>
+		    <option value="Chicken" >Chicken</option>
+		    <option value="Carne Asada" >Carne Asada</option>
+		    <option value="Tacquitos" >3 Tacquitos</option>
+		</select>
+	    </p>
+
+	    <p id="QuesadillaMenu" style="display:none; " >
+		<span class="menu_q">what kind?</span><br>
+		<select class="select_button" id="QuesadillaType" >
+		    <option selected="" disabled="" ></option>
+		    <option value="Cheese" >Cheese</option>
+		    <option value="Beef" >Beef</option>
+		    <option value="Chicken" >Chicken</option>
+		</select>
+	    </p>
+
+	    <!-- ADD INSTRUCTIONS -->
+
 	    <p id="AddInstructions" style="display:none; " >
 		<span class="menu_q">special instructions?</span><br>
 		<input id="instructionsText" type="text" placeholder="nope!" size="45" value="" /><br>
@@ -402,6 +565,20 @@
 		    {%endif%}
 		    {% if order.food == "Grilled Cheese" %}
 		    <td id='order_name'><b>{{order.food}}</b></td>
+		    {%endif%}
+
+		    {% if order.food == "Burrito" %}
+		    <td id='order_name'><b>{{order.type}} {{order.food}}</b></td>
+		    {%endif%}
+		    {% if order.food == "Taco" %}
+		    	{% if order.type == "Tacquitos" %}
+		    		<td id='order_name'><b>3 Tacquitos</b></td>
+		    	{% else %}
+		    		<td id='order_name'><b>{{order.type}} {{order.food}}</b></td>
+		    	{% endif %}
+		    {%endif%}
+		    {% if order.food == "Quesadilla" %}
+		    <td id='order_name'><b>{{order.type}} {{order.food}}</b></td>
 		    {%endif%}
 		    
 		    <td id='price_col'>${{order.price}}</td><td><input id='removebutton' type='submit' value='' onclick= "removeElement('{{order.id}}');"></td></tr>
