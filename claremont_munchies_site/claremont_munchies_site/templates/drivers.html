@@ -84,9 +84,11 @@
 						    <tr><td></td><td></td><td id="added_desc" >&nbsp;&nbsp;**Animal</td></tr>
 						    {% endif %}
 						    
-						    {% if order_part.desc %}
-						    <tr><td></td><td></td><td id="added_desc" ><i>&nbsp;&nbsp;**{{order_part.desc}}</i></td></tr>
-						    {% endif %}
+						    {% if order_part.food == "Shake" or order_part.food == "Drink" or order_part.food == "Cheeseburger" or order_part.food == "Hamburger" or order_part.food == "French Fries" or order_part.food == "Grilled Cheese" %}
+							    {% if order_part.desc %}
+							    <tr><td></td><td></td><td id="added_desc" ><i>&nbsp;&nbsp;**{{order_part.desc}}</i></td></tr>
+							    {% endif %}
+							{% endif %}
 							 
 				    	{% endfor %}
 				    	<!-- MEXICAN FOOD -->
@@ -111,12 +113,10 @@
 						    
 						    <!--<td id="price_col" >${{order_part.price}}</td> </tr>-->
 						    
-						    {% if order_part.animal_style == 'yes' %}
-						    <tr><td></td><td></td><td id="added_desc" >&nbsp;&nbsp;**Animal</td></tr>
-						    {% endif %}
-						    
-						    {% if order_part.desc %}
-						    <tr><td></td><td></td><td id="added_desc" ><i>&nbsp;&nbsp;**{{order_part.desc}}</i></td></tr>
+						    {% if order_part.food == "Burrito" or order_part.food == "Taco" or order_part.food == "Quesadilla" %}
+							    {% if order_part.desc %}
+							    <tr><td></td><td></td><td id="added_desc" ><i>&nbsp;&nbsp;**{{order_part.desc}}</i></td></tr>
+							    {% endif %}
 						    {% endif %}
 
 				    	{% endfor %}
