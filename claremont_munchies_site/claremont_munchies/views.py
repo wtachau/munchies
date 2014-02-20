@@ -234,9 +234,25 @@ def drivers(request):
     # First get all orders from today
     today = datetime.today().date()
     yesterday = (datetime.today() - timedelta(days=1)).date()
-    todays_orders = orders.objects.filter(Q(date__month=today.month, date__day=today.day) | Q(date__month=yesterday.month,date__day=(yesterday.day)),
+
+    # create datetimes for yesterday at 3:00 and today, respectively
+    yesterdayAtThree = datetime(yesterday.year, yesterday.month, yesterday.day, 15, 0, 0)
+    todayAtThree = datetime(today.year, today.month, today.day, 15, 0, 0)
+
+    # If it's before 3pm, show all after 3pm yday
+    if datetime.today().hour < 15:
+        todays_orders = orders.objects.filter(date__gt=yesterdayAtThree)
+    # If after 3pm, show only from today after 3pm
+    else:
+        todays_orders = orders.objects.filter(date__gt=todayAtThree)
+    
+    """
+    todays_orders = orders.objects.filter(Q(date__month=today.month, date__day=today.day) 
+                                        | Q(date__month=yesterday.month, date__day=(yesterday.day)),
                                         date__year = today.year
                                         )
+    """
+
     orders_list = []
     for index, cur_order in enumerate(todays_orders):
         this_order = {}
@@ -291,21 +307,20 @@ def update_orders(request):
                         from_=our_number)
             """
 
-            if post_status == "order_assigned":
+            """if post_status == "order_assigned":
                 # if the status in db is 'placed'
                 if db_status == "order_placed" :
-                    """
                     body = "Hi %s! The driver has left to pick up your order from Claremont Munchies." % cur_user.first_name
                     message = client.messages.create(body=body,
                         to="+1"+str(to_number),
                         from_=our_number)
-                    """
                     # and set new status to be what was posted
                     new_status = post_status
+            """
 
             if post_status == "order_incar":
                 # if status in db is 'assigned'
-                if db_status == "order_assigned":
+                if db_status == "order_placed":
                     body = "Hi %s! Your order from Claremont Munchies is on its way back from In-N-Out." % cur_user.first_name
                     message = client.messages.create(body=body,
                         to="+1"+str(to_number),

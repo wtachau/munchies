@@ -31,10 +31,6 @@
 
 								{% if order.deets.status == 'order_placed' %} 
 									<option selected value="order_placed" >Placed</option>
-									<option value="order_assigned" >Assigned</option>
-								{%endif%}
-								{% if order.deets.status == 'order_assigned' %} 
-									<option selected value="order_assigned" >Assigned</option>
 									<option value="order_incar" >In Transit</option>
 								{%endif%}
 								{% if order.deets.status == 'order_incar' %} 

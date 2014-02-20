@@ -62,6 +62,8 @@
 					case 'Quesadilla':
 						type = document.getElementById('QuesadillaType').value;
 						break;
+					case 'Drink':
+						type = document.getElementById('DrinkType').value;
 				}
 				break;
 		}
@@ -81,7 +83,7 @@
 				    htmlContent += "<td id='order_name'><b>"+kindOfMeal+", " + type + "</b></td>";
 				} else if (kindOfMeal == "Shake") {
 				    htmlContent += "<td id='order_name'><b>"+type+" "+kindOfMeal+"</b></td>";	
-			    	} else if (kindOfMeal == "Drink") {
+		    	} else if (kindOfMeal == "Drink") {
 				    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
 				} else {
 				    htmlContent += "<td id='order_name'><b>"+kindOfMeal+"</b></td>";
@@ -91,6 +93,8 @@
 				// special code
 				if (kindOfMeal == "Taco" && type == "Tacquitos") {
 					htmlContent += "<td id='order_name'><b> 3 Tacquitos</b></td>";
+				} else if (kindOfMeal == "Drink") {
+				    htmlContent += "<td id='order_name'><b>"+type+"</b></td>";	
 				} else {
 					htmlContent += "<td id='order_name'><b>"+ type +" "+kindOfMeal+"</b></td>";
 				}
@@ -266,6 +270,9 @@
 							case 'Beef': return {{quesadilla_beef}}; break;
 						}
 						break;
+					case 'Drink':
+				    	return {{ drink }};		
+						break;
 				}
 				break;
 		}    
@@ -327,15 +334,23 @@
 				$("#BurritoMenu").show();
 				$("#TacoMenu").hide();
 				$("#QuesadillaMenu").hide();
+				$("#DrinkMenu").hide();
 			} else if ($(this).val() == "Taco") {
 				$("#BurritoMenu").hide();
 				$("#TacoMenu").show();
 				$("#QuesadillaMenu").hide();
+				$("#DrinkMenu").hide();
     		} else if ($(this).val() == "Quesadilla") {
 				$("#BurritoMenu").hide();
 				$("#TacoMenu").hide();
 				$("#QuesadillaMenu").show();
-    		}
+				$("#DrinkMenu").hide();
+    		} else if ($(this).val() == "Drink") {
+				$("#BurritoMenu").hide();
+				$("#TacoMenu").hide();
+				$("#QuesadillaMenu").hide();
+				$("#DrinkMenu").show();
+		    }
 		});
 		$("#BurritoMenu").change(function() {
 		    $("#AddInstructions").show();
@@ -358,36 +373,36 @@
 		    
 		    // Only show the submenus from selected components
 		    if ($(this).val() == "Grilled Cheese") {
-			$("#AddInstructions").hide();
-			$("#DrinkMenu").hide();
-			$("#ShakeMenu").hide();
-			$("#AnimalStyleMenu").show();
-			$("#BurgerMenu").hide();
+				$("#AddInstructions").hide();
+				$("#DrinkMenu").hide();
+				$("#ShakeMenu").hide();
+				$("#AnimalStyleMenu").show();
+				$("#BurgerMenu").hide();
 		    } else if ($(this).val() == "Cheeseburger" || $(this).val() == "Hamburger") {
-			$("#AddInstructions").hide();
-			$("#DrinkMenu").hide();
-			$("#ShakeMenu").hide();
-			$("#AnimalStyleMenu").hide();
-			$("#BurgerMenu").show();
+				$("#AddInstructions").hide();
+				$("#DrinkMenu").hide();
+				$("#ShakeMenu").hide();
+				$("#AnimalStyleMenu").hide();
+				$("#BurgerMenu").show();
 		    } else if ($(this).val() == "French Fries") {
-			$("#AddInstructions").hide();
-			$("#BurgerMenu").hide();
-			$("#DrinkMenu").hide();
-			$("#ShakeMenu").hide();
-			$("#BurgerSubMenu").hide();
-			$("#AnimalStyleMenu").show();
+				$("#AddInstructions").hide();
+				$("#BurgerMenu").hide();
+				$("#DrinkMenu").hide();
+				$("#ShakeMenu").hide();
+				$("#BurgerSubMenu").hide();
+				$("#AnimalStyleMenu").show();
 		    } else if ($(this).val() == "Drink") {
-			$("#AddInstructions").hide();
-			$("#BurgerMenu").hide();
-			$("#ShakeMenu").hide();
-			$("#AnimalStyleMenu").hide();
-			$("#DrinkMenu").show();
+				$("#AddInstructions").hide();
+				$("#BurgerMenu").hide();
+				$("#ShakeMenu").hide();
+				$("#AnimalStyleMenu").hide();
+				$("#DrinkMenu").show();
 		    } else if ($(this).val() == "Shake") {
-			$("#AddInstructions").hide();
-			$("#BurgerMenu").hide();
-			$("#AnimalStyleMenu").hide();
-			$("#DrinkMenu").hide();
-			$("#ShakeMenu").show();
+				$("#AddInstructions").hide();
+				$("#BurgerMenu").hide();
+				$("#AnimalStyleMenu").hide();
+				$("#DrinkMenu").hide();
+				$("#ShakeMenu").show();
 		    }
 		});
 		$("#BurgerMenu").change(function() {
@@ -449,6 +464,7 @@
 		    <option value="Burrito" >Burrito</option>
 		    <option value="Taco" >Taco</option>
 		    <option value="Quesadilla">Quesadilla</option>
+		    <option value="Drink" >Can of Soda</option>
 		</select>
 	    </p>
 	
@@ -505,10 +521,10 @@
 		<span class="menu_q">what kind?</span><br>
 		<select class="select_button" id="BurritoType" >
 		    <option selected="" disabled="" ></option>
-		    <option value="Carne Asada" >Carne Asada</option>
+		    <option value="Carne Asada" >Carne Asada (w/ guac, onions, cilantro)</option>
 		    <option value="Bean" >Bean and Cheese</option>
-		    <option value="Beef" >Beef</option>
-		    <option value="Chicken" >Chicken</option>
+		    <option value="Beef" >Beef (w/ rice, beans, cheese, lettuce, tomatoes)</option>
+		    <option value="Chicken" >Chicken (w/ rice, beans, cheese, lettuce, tomatoes)</option>
 		</select>
 	    </p>
 
@@ -516,9 +532,9 @@
 		<span class="menu_q">what kind?</span><br>
 		<select class="select_button" id="TacoType" >
 		    <option selected="" disabled="" ></option>
-		    <option value="Beef" >Beef</option>
-		    <option value="Chicken" >Chicken</option>
-		    <option value="Carne Asada" >Carne Asada</option>
+		    <option value="Beef" >Beef (w/ cheese, lettuce, tomatoes)</option>
+		    <option value="Chicken" >Chicken (w/ cheese, lettuce, tomatoes)</option>
+		    <option value="Carne Asada" >Carne Asada (w/ guacamole, onions, cilantro)</option>
 		    <option value="Tacquitos" >3 Tacquitos</option>
 		</select>
 	    </p>
