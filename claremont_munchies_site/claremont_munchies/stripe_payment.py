@@ -3,8 +3,8 @@ import stripe
 import json
 from twilio.rest import TwilioRestClient
 
-stripe.api_key = "sk_live_ivvVx7l8aXJSs1gCKv2IF4wU" # live
-#stripe.api_key = "sk_test_li3UZktBt8Fc3mRghlkAw1HR" # testing
+#stripe.api_key = "sk_live_ivvVx7l8aXJSs1gCKv2IF4wU" # live
+stripe.api_key = "sk_test_li3UZktBt8Fc3mRghlkAw1HR" # testing
 
     
 def process_order(request):
