@@ -358,8 +358,8 @@ $(document).ready(function (){
 
     // configure the stripe checkout, send token to  server
 	var handler = StripeCheckout.configure({
-		//key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
-		key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
+		key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
+		//key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
 		image: "{% static 'images/burger.jpg' %}",
 		token: function(token, args) {
 			var $form = $('#pay');
@@ -375,7 +375,7 @@ $(document).ready(function (){
 	});
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
-  	var ignoreTime = true;
+  	var ignoreTime = false;
 
   	var canOpen = true;
   	// first check that it's the right time of day (7pm-1am)
