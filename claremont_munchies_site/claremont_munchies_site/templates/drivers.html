@@ -73,6 +73,9 @@
 						    {% if order_part.food == "Grilled Cheese" %}
 						    <tr><td></td><td></td><td>{{order_part.food}}</td>
 						    {%endif%}
+						    {% if order_part.food == "Munchie Meal" %}
+						    <tr><td></td><td></td><td>{{order_part.food}}</td>
+						    {%endif%}
 						    
 						    <!--<td id="price_col" >${{order_part.price}}</td> </tr>-->
 						    
@@ -80,7 +83,7 @@
 						    <tr><td></td><td></td><td id="added_desc" >&nbsp;&nbsp;**Animal</td></tr>
 						    {% endif %}
 						    
-						    {% if order_part.food == "Shake" or order_part.food == "Drink" or order_part.food == "Cheeseburger" or order_part.food == "Hamburger" or order_part.food == "French Fries" or order_part.food == "Grilled Cheese" %}
+						    {% if order_part.food == "Shake" or order_part.food == "Drink" or order_part.food == "Cheeseburger" or order_part.food == "Hamburger" or order_part.food == "French Fries" or order_part.food == "Grilled Cheese" or order_part.food == "Munchie Meal" %}
 							    {% if order_part.desc %}
 							    <tr><td></td><td></td><td id="added_desc" ><i>&nbsp;&nbsp;**{{order_part.desc}}</i></td></tr>
 							    {% endif %}

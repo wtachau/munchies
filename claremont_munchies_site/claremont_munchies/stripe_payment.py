@@ -100,7 +100,7 @@ def process_order(request):
     auth_token  = "d1c4702f9dd2dfa7071ec729fb8bd78b"
     client = TwilioRestClient(account_sid, auth_token)
     our_number = "+12137853417"
-    body = "Hi %s! We've received your order from ClaremontMunchies and will get it to you as soon as possible." % current_user.first_name
+    body = "Hi %s! We've received your order from ClaremontMunchies and will get it to you as soon as possible. Estimated delivery time is 35-70 min" % current_user.first_name
     try:
         message = client.messages.create(body=body,
             to="+1"+str(current_user.phone_num),

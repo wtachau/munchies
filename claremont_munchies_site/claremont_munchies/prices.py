@@ -17,6 +17,7 @@ def get_prices():
     context['shake'] = 4.49
     context['drink'] = 0.99
     context['animal_fries'] = 4.99
+    context['meal'] = 8.49
 
     #mexican
     context['burrito_carne'] = 6.49

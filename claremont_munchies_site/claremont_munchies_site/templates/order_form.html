@@ -243,6 +243,9 @@
 				    case 'Drink':
 				    	return {{ drink }};		
 						break;
+					case 'Munchie Meal':
+				    	return {{ meal }};		
+						break;
 				}
 				break;
 			case 'mexican':
@@ -403,7 +406,14 @@
 				$("#AnimalStyleMenu").hide();
 				$("#DrinkMenu").hide();
 				$("#ShakeMenu").show();
+		    } else if ($(this).val() == "Munchie Meal") {
+				$("#AddInstructions").show();
+				$("#BurgerMenu").hide();
+				$("#AnimalStyleMenu").hide();
+				$("#DrinkMenu").hide();
+				$("#ShakeMenu").hide();
 		    }
+
 		});
 		$("#BurgerMenu").change(function() {
 		    $("#AnimalStyleMenu").show();
@@ -454,6 +464,7 @@
 		    <option value="French Fries" >French Fries</option>
 		    <option value="Shake" >Shake</option>
 		    <option value="Drink" >Can of Soda</option>
+		    <option value="Munchie Meal" >Munchie Meal (Double Cheeseburger, Fries, Soda)</option>
 		</select>
 	    </p>
 
@@ -580,6 +591,9 @@
 		    <td id='order_name'><b>{{order.food}}</b></td>
 		    {%endif%}
 		    {% if order.food == "Grilled Cheese" %}
+		    <td id='order_name'><b>{{order.food}}</b></td>
+		    {%endif%}
+		    {% if order.food == "Munchie Meal" %}
 		    <td id='order_name'><b>{{order.food}}</b></td>
 		    {%endif%}
 

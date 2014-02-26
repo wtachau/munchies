@@ -96,11 +96,8 @@ $(document).ready(function (){
 				    {% if order.food == "Cheeseburger" or order.food == "Hamburger" %}
 				    <td><b>{{order.food}}, {{order.type}}</b></td>
 				    {% endif%}
-				    {% if order.food == "French Fries" %}
+				    {% if order.food == "French Fries" or order.food == "Grilled Cheese" or order.food == "Munchie Meal" %}
 				    <td><b>{{order.food}}</b></td>
-				    {%endif%}
-				    {% if order.food == "Grilled Cheese" %}
-				    <td ><b>{{order.food}}</b></td>
 				    {%endif%}
 				    
 				    {% if order.food == "Burrito" %}
