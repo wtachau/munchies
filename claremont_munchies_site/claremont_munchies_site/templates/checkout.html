@@ -375,9 +375,18 @@ $(document).ready(function (){
   	var ignoreTime = false;
 
   	var canOpen = true;
+
+
+  	// if it's closed for some reason (i.e. spring break)
+  	var isClosed = true;
+  	if (isClosed) {
+  		alert("Sorry! We're closed for spring break. Check back in starting Thursday, March 27th!");
+  		canOpen = false;
+  	}
+
   	// first check that it's the right time of day (7pm-1am)
   	var date = new Date;
-  	if ( (
+  	if (canOpen && (
   		// if it's after 1am and before 9:45pm
   		(date.getHours() > 0 && /*date.getHours() < 22) */ (date.getHours() < 21 || (date.getHours() == 21 && date.getMinutes() < 45)))
   		// or Monday, Tuesday, or Wednesday
