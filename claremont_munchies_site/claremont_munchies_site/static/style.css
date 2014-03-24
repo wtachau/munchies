@@ -389,10 +389,12 @@ body {
     padding-right:270px;
 }
 #logo {
-    width: 17%;
+    width: 15%;
     top: 3%;
     position: relative;
     float: left;
+    padding-left: 20px;
+    margin-top: 6px;
 }
 #col1{
     border-right: 2px solid;

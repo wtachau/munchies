@@ -1,6 +1,6 @@
 # Django settings for django_test project.
 import os
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 PROJECT_PATH = os.path.dirname(__file__)
