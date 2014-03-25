@@ -129,7 +129,7 @@ def checkout(request):
     if 'order_total' in request.session:
         total = request.session.get('order_total')
         tax = total*.08
-        fee = 2
+        fee = 2.49
         total = total+tax + fee
 
         context['fee_amount'] = "%0.2f" % fee
