@@ -186,17 +186,14 @@ LOGGING = {
 
 # HEROKU CONFIG
 # Parse database configuration from $DATABASE_URL
-# import dj_database_url
-# host = "ec2-54-204-16-232.compute-1.amazonaws.com"
-# db = "d734dff54i7ogt"
-# user = "qpqdqruwrbrnrd"
-# password = "qYYVVmWRJmKCUNcWW1voGqBYRx"
-# port = "5432"
-
 import dj_database_url
-DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
+host = "ec2-50-19-219-235.compute-1.amazonaws.com"
+db = "d6sut8farqcbks"
+user = "onxmuavubfkdgp"
+password = "3kokPX-JfoiYSx6AvL0mMiI285"
+port = "5432"
 
-# DATABASES['default'] =  dj_database_url.config(default='postgres://'+user+':'+password+'@'+host+':'+port+'/'+db)
+DATABASES['default'] =  dj_database_url.config(default='postgres://'+user+':'+password+'@'+host+':'+port+'/'+db)
 
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()
