@@ -1,6 +1,6 @@
 # Django settings for django_test project.
 import os
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 PROJECT_PATH = os.path.dirname(__file__)
@@ -186,15 +186,15 @@ LOGGING = {
 
 # HEROKU CONFIG
 # Parse database configuration from $DATABASE_URL
-import dj_database_url
-host = "ec2-54-204-16-232.compute-1.amazonaws.com"
-db = "d734dff54i7ogt"
-user = "qpqdqruwrbrnrd"
-password = "qYYVVmWRJmKCUNcWW1voGqBYRx"
-port = "5432"
+# import dj_database_url
+# host = "ec2-54-204-16-232.compute-1.amazonaws.com"
+# db = "d734dff54i7ogt"
+# user = "qpqdqruwrbrnrd"
+# password = "qYYVVmWRJmKCUNcWW1voGqBYRx"
+# port = "5432"
 
 
-DATABASES['default'] =  dj_database_url.config(default='postgres://'+user+':'+password+'@'+host+':'+port+'/'+db)
+# DATABASES['default'] =  dj_database_url.config(default='postgres://'+user+':'+password+'@'+host+':'+port+'/'+db)
 
 
 # Honor the 'X-Forwarded-Proto' header for request.is_secure()

@@ -334,6 +334,10 @@ $(document).ready(function (){
 								console.log("cannot use more than one deal!")
 							}
 						}
+					},
+					error: function() {
+						console.log("failure");
+						usernameCheck.attr('class', 'usernameFail');
 					}
 				});
 			};
@@ -355,8 +359,8 @@ $(document).ready(function (){
 
     // configure the stripe checkout, send token to  server
 	var handler = StripeCheckout.configure({
-		key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
-		//key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
+		//key: 'pk_live_PSXmALcL03hCZ1AJ8KlohmZV', // live
+		key: 'pk_test_PPM2Mljl9kJRjpFOUKqHBrBg', //test
 		image: "{% static 'images/burger.jpg' %}",
 		token: function(token, args) {
 			var $form = $('#pay');
@@ -372,13 +376,13 @@ $(document).ready(function (){
 	});
 
   document.getElementById('pay_button').addEventListener('click', function(e) {
-  	var ignoreTime = false;
+  	
+  	// if you want to ignore time, i.e. for testing
+  	var ignoreTime = true;
+	// if it's closed for some reason (i.e. spring break)
+  	var isClosed = false;
 
   	var canOpen = true;
-
-
-  	// if it's closed for some reason (i.e. spring break)
-  	var isClosed = true;
   	if (isClosed) {
   		alert("Sorry! We're temporarily closed for the weekend. Check back in starting Thursday, April 3rd!");
   		canOpen = false;

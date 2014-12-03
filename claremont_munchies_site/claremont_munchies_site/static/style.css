@@ -26,7 +26,7 @@ input:focus, textarea:focus {
     position:relative; 
     height:60;
     background-color: #ef3140;
-    height: 133px;
+    height: 112px;
 }
 
 
@@ -352,7 +352,7 @@ body {
     background-color:#ef3140;
     text-align: center;
     padding-top: 9px;
-    height: 55px;
+    height: 42px;
     font-family:Molengo;
     font-size:14px;
     color: white;
@@ -379,10 +379,10 @@ body {
     text-decoration: none;
 }
 #subtitle {
-    top: 70%;
-    color: white;
+    top: 124px;
+    color: darkgrey;
     font-family: Molengo;
-    font-size: 18px;
+    font-size: 15px;
     margin-left: -86px;
     float: left;
     position: absolute;
@@ -501,6 +501,7 @@ body {
     font-size: 12px;
     width: 350;
     display: block;
+    padding-top: 20px;
 }
 #terms_and_privacy a {
     color: black;
