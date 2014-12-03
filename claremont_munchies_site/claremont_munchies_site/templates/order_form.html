@@ -71,7 +71,7 @@
 		//get selected components to construct html
 		var htmlContent = "<table class='order_table' ><tr>";
 		var animal = document.getElementById('AnimalStyle').value;
-		var price = getPrice(kindOfMenu, kindOfMeal, type, animal);
+		var price = 3.5; //getPrice(kindOfMenu, kindOfMeal, type, animal); //fixme db call
 		
 		// Generate 'removeElement' javascript call to match current elementID
 		var tellToDelete = "removeElement('"+idString+"');"; 
